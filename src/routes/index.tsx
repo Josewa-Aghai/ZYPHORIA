@@ -1,8 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 import { Terminal, Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, Upload, CheckCircle, Loader2 } from 'lucide-react'
 import toast, { Toaster } from 'react-hot-toast'
 import { createClient } from '@supabase/supabase-js'
+import { IntroLoader } from '../components/IntroLoader'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder'
@@ -1187,8 +1189,18 @@ function Footer() {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 function ZyphoriaHome() {
+  const [showIntro, setShowIntro] = useState(true)
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return
+    }
+
+    setShowIntro(window.sessionStorage.getItem('intro_seen') !== 'true')
+  }, [])
+
   return (
-    <>
+    <div className="relative min-h-screen">
       <Toaster position="bottom-right" toastOptions={{
         style: {
           background: 'var(--surface)',
@@ -1198,13 +1210,23 @@ function ZyphoriaHome() {
           fontSize: '13px'
         }
       }} />
-      <Navbar />
-      <main>
-        <Hero />
-        <EventsSection />
-        <RegistrationSection />
-      </main>
-      <Footer />
-    </>
+
+      <IntroLoader showIntro={showIntro} onComplete={() => setShowIntro(false)} />
+
+      <motion.div
+        initial={false}
+        animate={{ opacity: showIntro ? 0 : 1, y: showIntro ? 8 : 0 }}
+        transition={{ duration: 0.45, ease: 'easeOut' }}
+        className="relative"
+      >
+        <Navbar />
+        <main>
+          <Hero />
+          <EventsSection />
+          <RegistrationSection />
+        </main>
+        <Footer />
+      </motion.div>
+    </div>
   )
 }

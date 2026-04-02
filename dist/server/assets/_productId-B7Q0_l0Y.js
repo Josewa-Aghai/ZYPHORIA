@@ -1,6 +1,7 @@
 import { jsxs, jsx } from "react/jsx-runtime";
 import { Link } from "@tanstack/react-router";
-import { R as Route } from "./router-rAeTWogx.js";
+import { R as Route } from "./router-DZept7jm.js";
+import "react";
 function RouteComponent() {
   const product = Route.useLoaderData();
   return /* @__PURE__ */ jsxs("div", { className: "flex flex-col md:flex-row gap-8 p-5", children: [
