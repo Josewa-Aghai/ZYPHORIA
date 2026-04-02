@@ -1,5 +1,6 @@
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 import '../styles.css'
+import useFluidCursor from '../hooks/useFluidCursor'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -20,12 +21,15 @@ export const Route = createRootRoute({
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  useFluidCursor();
+
   return (
     <html lang="en">
       <head>
         <HeadContent />
       </head>
       <body>
+        <canvas id="fluid" />
         {children}
         <Scripts />
       </body>
