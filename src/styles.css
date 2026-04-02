@@ -1,0 +1,341 @@
+@import "tailwindcss" source("../");
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'Clash Display';
+  src: url('https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500&display=swap');
+}
+
+:root {
+  --bg: #08080C;
+  --surface: #101018;
+  --elevated: #16161F;
+  --stroke: #1E1E2E;
+  --text-primary: #EEEEF5;
+  --text-muted: #8888A8;
+  --accent: #C8FA64;
+  --accent-glow: #C8FA6418;
+  --danger: #FF4D6D;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Geist Mono', 'Courier New', monospace;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Grain noise overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* Scanlines */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.015) 2px,
+    rgba(255, 255, 255, 0.015) 4px
+  );
+}
+
+.font-display {
+  font-family: 'Clash Display', 'Arial Black', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.font-mono {
+  font-family: 'Geist Mono', 'Courier New', monospace;
+}
+
+/* Star field */
+.star-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle var(--duration, 3s) ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  0% { opacity: var(--min-opacity, 0.1); }
+  100% { opacity: var(--max-opacity, 0.6); }
+}
+
+/* Countdown */
+.countdown-digit {
+  font-family: 'Geist Mono', monospace;
+  color: var(--accent);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
+  display: inline-block;
+  min-width: 2.5ch;
+  text-align: center;
+}
+
+.countdown-sep {
+  color: var(--accent);
+  font-size: 2rem;
+  opacity: 0.6;
+  padding: 0 4px;
+  text-shadow: 0 0 10px var(--accent);
+}
+
+/* Event card */
+.event-card {
+  background: var(--surface);
+  border: 1px solid var(--stroke);
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.event-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transition: transform 0.2s ease;
+}
+
+.event-card:hover {
+  background: var(--elevated);
+  box-shadow: 0 0 20px var(--accent-glow), 0 0 40px var(--accent-glow);
+  border-color: var(--stroke);
+}
+
+.event-card:hover::before {
+  transform: scaleY(1);
+}
+
+.event-card:hover .event-name {
+  color: var(--text-primary);
+}
+
+/* Team card */
+.team-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--stroke);
+  transition: all 0.2s ease;
+}
+
+.team-card:hover {
+  border-color: var(--accent);
+}
+
+.team-card:hover .team-name {
+  color: var(--accent);
+}
+
+.team-card .photo-wrap {
+  overflow: hidden;
+}
+
+.team-card:hover .photo-wrap img {
+  border: 2px solid var(--accent);
+}
+
+/* Buttons */
+.btn-filled {
+  background: var(--accent);
+  color: var(--bg);
+  border: 1px solid var(--accent);
+  font-family: 'Geist Mono', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.btn-filled:hover {
+  background: white;
+  border-color: white;
+  box-shadow: 0 0 20px var(--accent);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--stroke);
+  font-family: 'Geist Mono', monospace;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-lime-pill {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 9999px;
+  font-family: 'Geist Mono', monospace;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.btn-lime-pill:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* Navbar */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+  background: rgba(8, 8, 12, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom-color: var(--stroke);
+}
+
+/* Section layout */
+.section-padding {
+  padding: 120px 0;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.section-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+/* CTA ASCII brackets */
+.cta-container {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--stroke);
+}
+
+.ascii-corner {
+  position: absolute;
+  font-family: 'Geist Mono', monospace;
+  color: var(--accent);
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.6;
+}
+
+.ascii-corner.tl { top: 12px; left: 12px; }
+.ascii-corner.tr { top: 12px; right: 12px; }
+.ascii-corner.bl { bottom: 12px; left: 12px; }
+.ascii-corner.br { bottom: 12px; right: 12px; }
+
+/* Category pills */
+.pill-tech {
+  background: var(--accent-glow);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  display: inline-block;
+}
+
+.pill-nontech {
+  background: rgba(255, 77, 109, 0.1);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  border-radius: 2px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+  .section-padding {
+    padding: 72px 0;
+  }
+}
