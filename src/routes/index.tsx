@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
+import { Terminal, Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X } from 'lucide-react'
 
 export const Route = createFileRoute('/')({
   component: ZyphoriaHome,
@@ -7,121 +8,32 @@ export const Route = createFileRoute('/')({
 
 // ─── Data ───────────────────────────────────────────────────────────────────
 
-const events = [
-  {
-    id: 1,
-    category: 'technical',
-    name: 'Code Clash',
-    description: 'Algorithmic speed run. Solve the hardest problems fastest under pressure.',
-    team: 'Solo',
-  },
-  {
-    id: 2,
-    category: 'technical',
-    name: 'Hack Orbit',
-    description: '12-hour hackathon sprint. Build something real, something bold.',
-    team: 'Duo',
-  },
-  {
-    id: 3,
-    category: 'technical',
-    name: 'Debug Duel',
-    description: 'Find the bugs others planted. Fastest fix takes the crown.',
-    team: 'Solo',
-  },
-  {
-    id: 4,
-    category: 'technical',
-    name: 'Circuit Surge',
-    description: 'Hardware meets software. Design, wire, and program under the clock.',
-    team: 'Duo',
-  },
-  {
-    id: 5,
-    category: 'technical',
-    name: 'Query Quest',
-    description: 'SQL sorcery and data wrangling. Your schema, your rules.',
-    team: 'Solo',
-  },
-  {
-    id: 6,
-    category: 'technical',
-    name: 'Net Phantom',
-    description: 'CTF-style cybersecurity challenge. Infiltrate, capture, report.',
-    team: 'Duo',
-  },
-  {
-    id: 7,
-    category: 'technical',
-    name: 'Paper Blitz',
-    description: 'Present your research in 5 minutes. Judges are relentless.',
-    team: 'Duo',
-  },
-  {
-    id: 8,
-    category: 'non-tech',
-    name: 'Pixel Wars',
-    description: 'UI design battle. Given a brief, create the sharpest interface.',
-    team: 'Duo',
-  },
-  {
-    id: 9,
-    category: 'non-tech',
-    name: 'Mind Matrix',
-    description: 'Tech trivia warfare. Knowledge is the only weapon.',
-    team: 'Duo',
-  },
-  {
-    id: 10,
-    category: 'non-tech',
-    name: 'Robo Royale',
-    description: 'Remote control combat arena. Last bot standing wins.',
-    team: 'Duo',
-  },
-  {
-    id: 11,
-    category: 'non-tech',
-    name: 'Signal Jam',
-    description: 'Improvised tech talk. No slides. No notes. Pure articulation.',
-    team: 'Solo',
-  },
-  {
-    id: 12,
-    category: 'non-tech',
-    name: 'Capture Frame',
-    description: 'Tech-themed photography. One lens, one shot, one story.',
-    team: 'Solo',
-  },
-  {
-    id: 13,
-    category: 'non-tech',
-    name: 'Code Poetry',
-    description: 'Write code that reads like art. Creativity meets logic.',
-    team: 'Solo',
-  },
-  {
-    id: 14,
-    category: 'non-tech',
-    name: 'Startup Sprint',
-    description: 'Pitch your tech startup idea in 3 minutes. Sharks are watching.',
-    team: 'Duo',
-  },
-]
+export type EventItem = {
+  id: number;
+  category: 'technical' | 'non-tech';
+  name: string;
+  description: string;
+  team: string;
+  icon: React.ElementType;
+}
 
-const team = [
-  {
-    id: 1,
-    name: 'Arjun Krishnan',
-    role: 'Event Coordinator',
-    featured: true,
-    initials: 'AK',
-    color: '#C8FA64',
-  },
-  { id: 2, name: 'Priya Nair', role: 'Technical Head', featured: false, initials: 'PN', color: '#8888A8' },
-  { id: 3, name: 'Karthik Raj', role: 'Design Lead', featured: false, initials: 'KR', color: '#8888A8' },
-  { id: 4, name: 'Sneha Varma', role: 'Logistics Head', featured: false, initials: 'SV', color: '#8888A8' },
-  { id: 5, name: 'Rahul Dev', role: 'Outreach Lead', featured: false, initials: 'RD', color: '#8888A8' },
-  { id: 6, name: 'Ananya Iyer', role: 'Web Developer', featured: false, initials: 'AI', color: '#8888A8' },
+const events: EventItem[] = [
+  // TECHNICAL
+  { id: 1, category: 'technical', name: 'Reverse Engineering Arena', description: 'Decode and reverse-engineer software or logic puzzles to uncover hidden functionality.', team: 'Solo / Duo', icon: SearchCode },
+  { id: 2, category: 'technical', name: 'AI Prompt Engineering Battle', description: 'Craft the most effective AI prompts to solve challenges using generative AI tools.', team: 'Individual', icon: Bot },
+  { id: 3, category: 'technical', name: 'UI/UX Redesign Challenge', description: 'Redesign a given app or website to improve usability, aesthetics and user experience.', team: '2–3', icon: Paintbrush },
+  { id: 4, category: 'technical', name: 'Tech Treasure Hunt', description: 'Solve technical clues and puzzles scattered across campus to find the final treasure.', team: '3–4', icon: MapPin },
+  { id: 5, category: 'technical', name: 'Research Pitch', description: 'Present your research idea or paper in a concise, compelling pitch to a panel of judges.', team: '1–2', icon: Presentation },
+  { id: 6, category: 'technical', name: 'Build a Startup in 60 Min', description: 'Conceptualize and pitch a startup idea with a full business model in just 60 minutes.', team: '2–4', icon: Briefcase },
+  { id: 7, category: 'technical', name: 'Bug Hunt', description: 'Find and fix bugs in provided code snippets across multiple rounds of increasing difficulty.', team: 'Solo / Duo', icon: Bug },
+  // NON-TECHNICAL
+  { id: 8, category: 'non-tech', name: 'Engineering Standup Comedy', description: 'Make the audience laugh with your best engineering-themed original comedy routine.', team: 'Individual', icon: Mic },
+  { id: 9, category: 'non-tech', name: 'Tech Meme War', description: 'Create the funniest and most relatable tech memes in a timed competition.', team: 'Individual', icon: Image },
+  { id: 10, category: 'non-tech', name: 'Mystery Box Innovation', description: 'Build something innovative using only random items revealed from a mystery box.', team: '2–3', icon: Box },
+  { id: 11, category: 'non-tech', name: 'Reel Making Challenge', description: 'Create an engaging short reel on a given topic within the time limit, edited on-site.', team: '1–3', icon: Video },
+  { id: 12, category: 'non-tech', name: 'Tech Dum Charades', description: 'Act out tech terms, software names and programming concepts without speaking.', team: '3–4', icon: AppWindow },
+  { id: 13, category: 'non-tech', name: 'E-Sports', description: 'Compete in popular esports titles against the best gamers from various colleges.', team: 'Solo / Team', icon: Gamepad2 },
+  { id: 14, category: 'non-tech', name: 'Marketing a Useless Product', description: 'Pitch and market the most useless product imaginable — creativity is king.', team: '2–3', icon: Megaphone },
 ]
 
 // ─── Countdown ───────────────────────────────────────────────────────────────
@@ -207,7 +119,7 @@ function Navbar() {
 
         {/* Center nav — desktop */}
         <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }} className="desktop-nav">
-          {['EVENTS', 'TEAM', 'CONTACT'].map((link) => (
+          {['EVENTS', 'CONTACT'].map((link) => (
             <a
               key={link}
               href={`#${link.toLowerCase()}`}
@@ -246,7 +158,7 @@ function Navbar() {
       {/* Mobile menu */}
       {menuOpen && (
         <div style={{ background: 'var(--surface)', borderTop: '1px solid var(--stroke)', padding: '1rem 2rem' }}>
-          {['EVENTS', 'TEAM', 'CONTACT'].map((link) => (
+          {['EVENTS', 'CONTACT'].map((link) => (
             <a
               key={link}
               href={`#${link.toLowerCase()}`}
@@ -356,9 +268,6 @@ function Hero() {
               <a href="#events" className="btn-filled" style={{ fontSize: '12px' }}>
                 Explore Events
               </a>
-              <a href="#team" className="btn-ghost" style={{ fontSize: '12px' }}>
-                Meet the Team →
-              </a>
             </div>
           </div>
 
@@ -444,71 +353,311 @@ function Hero() {
 
 // ─── Events ───────────────────────────────────────────────────────────────────
 
-function EventCard({ event }: { event: (typeof events)[0] }) {
+function EventCard({ event, onClick }: { event: EventItem; onClick: () => void }) {
+  const isTech = event.category === 'technical'
+  const pillClass = isTech ? 'pill-tech' : 'pill-nontech'
+  const pillText = isTech ? 'Technical' : 'Non-Tech'
+  
+  const accentColor = isTech ? 'var(--accent)' : 'var(--danger)'
+  
   return (
-    <div className="event-card">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem' }}>
-        <span className={event.category === 'technical' ? 'pill-tech' : 'pill-nontech'}>
-          {event.category === 'technical' ? 'Technical' : 'Non-Tech'}
+    <div 
+      className="event-card group" 
+      onClick={onClick}
+      style={{ cursor: 'pointer', ['--card-accent' as string]: accentColor } as any}
+    >
+      <style>{`
+        .event-card.group:hover {
+          box-shadow: 0 0 20px ${isTech ? 'var(--accent-glow)' : 'rgba(255, 77, 109, 0.15)'}, 0 0 40px ${isTech ? 'var(--accent-glow)' : 'rgba(255, 77, 109, 0.15)'};
+        }
+        .event-card.group::before {
+          background: ${accentColor};
+        }
+        .event-card.group:active {
+          transform: scale(0.98);
+        }
+      `}</style>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
+        <span className={pillClass}>
+          {pillText}
         </span>
-        <span
-          className="font-mono"
-          style={{ fontSize: '10px', color: 'var(--text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}
-        >
-          {event.team}
-        </span>
+        <event.icon size={28} strokeWidth={1.5} color={accentColor} />
       </div>
 
       <h3
         className="event-name font-display"
-        style={{ fontSize: '20px', color: 'var(--text-primary)', marginBottom: '0.5rem' }}
+        style={{ fontSize: '20px', color: 'var(--text-primary)', marginBottom: '0.75rem', lineHeight: '1.2' }}
       >
         {event.name}
       </h3>
 
       <p
         className="font-mono"
-        style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '1.25rem' }}
+        style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: '2rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
       >
         {event.description}
       </p>
 
-      <a
-        href="#register"
-        className="btn-ghost font-mono"
-        style={{ fontSize: '11px', padding: '0.5rem 1rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span
+          className="font-mono"
+          style={{ fontSize: '11px', color: 'var(--text-muted)', letterSpacing: '0.05em' }}
+        >
+          Team: {event.team}
+        </span>
+        <button
+          className="btn-ghost font-mono"
+          style={{ fontSize: '11px', padding: '0.4rem 0.75rem', border: 'none' }}
+        >
+          VIEW →
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function EventModal({ event, onClose }: { event: EventItem; onClose: () => void }) {
+  const [opening, setOpening] = useState(true)
+  
+  useEffect(() => {
+    const t = setTimeout(() => setOpening(false), 10)
+    return () => clearTimeout(t)
+  }, [])
+  
+  const handleClose = () => {
+    setOpening(true) // trigger close animation
+    setTimeout(onClose, 120)
+  }
+
+  if (!event) return null
+
+  const isTech = event.category === 'technical'
+  const accentColor = isTech ? 'var(--accent)' : 'var(--danger)'
+
+  return (
+    <div 
+      className="modal-overlay" 
+      onClick={handleClose}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: 'rgba(8, 8, 12, 0.8)',
+        backdropFilter: 'blur(8px)',
+        zIndex: 9999,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: opening ? 0 : 1,
+        transition: 'opacity 150ms ease'
+      }}
+    >
+      <div 
+        className="modal-container"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: '100%',
+          maxWidth: '640px',
+          maxHeight: '80vh',
+          backgroundColor: 'var(--surface)',
+          border: '1px solid var(--stroke)',
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          transform: opening ? 'scale(0.95)' : 'scale(1)',
+          transition: 'all 180ms ease-out',
+        }}
       >
-        JOIN →
-      </a>
+        {/* ASCII corners */}
+        <span className="ascii-corner tl" style={{ color: accentColor }}>┌</span>
+        <span className="ascii-corner tr" style={{ color: accentColor }}>┐</span>
+        <span className="ascii-corner bl" style={{ color: accentColor }}>└</span>
+        <span className="ascii-corner br" style={{ color: accentColor }}>┘</span>
+
+        {/* Header */}
+        <div style={{ padding: '2rem 2rem 1.5rem', position: 'relative' }}>
+          <button 
+            onClick={handleClose}
+            className="font-mono"
+            style={{ 
+              position: 'absolute', 
+              top: '1.5rem', 
+              right: '1.5rem', 
+              background: 'none', 
+              border: 'none', 
+              color: 'var(--text-muted)', 
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '32px',
+              height: '32px'
+            }}
+          >
+            <X size={20} />
+          </button>
+          
+          <div style={{ marginBottom: '1.25rem' }}>
+            <span className={isTech ? 'pill-tech' : 'pill-nontech'}>
+              {isTech ? 'Technical' : 'Non-Tech'}
+            </span>
+          </div>
+          
+          <h2 className="font-display" style={{ fontSize: '32px', color: 'var(--text-primary)', marginBottom: '0.5rem', lineHeight: 1.1 }}>
+            {event.name}
+          </h2>
+          <p className="font-mono" style={{ fontSize: '15px', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+            {event.description}
+          </p>
+        </div>
+
+        <div style={{ height: '1px', backgroundColor: 'var(--stroke)', width: '100%' }} />
+
+        {/* Scrollable content */}
+        <div style={{ padding: '2rem', overflowY: 'auto' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            {/* INSTRUCTIONS */}
+            <div>
+              <h4 className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>INSTRUCTIONS</h4>
+              <ul className="font-mono" style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px', color: '#EEEEF5', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Individual or team of {event.team}</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Laptops allowed</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Multiple rounds</li>
+              </ul>
+            </div>
+
+            {/* RULES */}
+            <div>
+              <h4 className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>RULES</h4>
+              <ul className="font-mono" style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px', color: '#EEEEF5', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> No external tools unless noted</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Time-limited rounds</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Points for accuracy and speed</li>
+              </ul>
+            </div>
+
+            {/* EVALUATION */}
+            <div>
+              <h4 className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>EVALUATION</h4>
+              <ul className="font-mono" style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px', color: '#EEEEF5', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Correctness of output</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Speed of completion</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Depth of analysis</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ height: '1px', backgroundColor: 'var(--stroke)', width: '100%' }} />
+
+        {/* Footer CTA */}
+        <div style={{ padding: '1.5rem 2rem' }}>
+          <button 
+            className="font-mono"
+            style={{ 
+              width: '100%', 
+              backgroundColor: accentColor, 
+              color: 'var(--bg)', 
+              border: 'none', 
+              padding: '1rem', 
+              fontSize: '14px', 
+              fontWeight: 700, 
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease'
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.backgroundColor = 'white';
+              e.currentTarget.style.boxShadow = `0 0 20px ${accentColor}`;
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.backgroundColor = accentColor;
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+            onClick={() => {
+              window.location.href = '#register';
+              handleClose();
+            }}
+          >
+            REGISTER NOW →
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
 
 function EventsSection() {
+  const [activeEvent, setActiveEvent] = useState<EventItem | null>(null)
+  
+  const techEvents = events.filter(e => e.category === 'technical')
+  const nonTechEvents = events.filter(e => e.category === 'non-tech')
+
+  useEffect(() => {
+    if (activeEvent) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => { document.body.style.overflow = 'auto'; }
+  }, [activeEvent])
+
   return (
     <section id="events" className="section-padding" style={{ background: 'var(--bg)' }}>
-      <div className="container">
-        <div style={{ marginBottom: '4rem' }}>
-          <p className="section-label">[02 — EVENTS]</p>
-          <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)' }}>
-            14 Ways to Win.
-          </h2>
+      <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: '6rem' }}>
+        
+        {/* Technical Section */}
+        <div>
+          <div style={{ marginBottom: '3rem' }}>
+            <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ 02 — TECHNICAL ]</p>
+            <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)' }}>
+              Prove Your Skill.
+            </h2>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '1px',
+              background: 'var(--stroke)',
+            }}
+            className="events-grid"
+          >
+            {techEvents.map((event) => (
+              <EventCard key={event.id} event={event} onClick={() => setActiveEvent(event)} />
+            ))}
+            {/* Filler cells to complete row if needed */}
+            <div style={{ background: 'var(--bg)' }} />
+            <div style={{ background: 'var(--bg)' }} />
+          </div>
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '1px',
-            background: 'var(--stroke)',
-          }}
-          className="events-grid"
-        >
-          {events.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
-          {/* Filler cell to complete row if needed */}
-          <div style={{ background: 'var(--bg)' }} />
+        {/* Non-Technical Section */}
+        <div>
+          <div style={{ marginBottom: '3rem' }}>
+            <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ 03 — NON-TECHNICAL ]</p>
+            <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)' }}>
+              Unleash the Chaos.
+            </h2>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '1px',
+              background: 'var(--stroke)',
+            }}
+            className="events-grid"
+          >
+            {nonTechEvents.map((event) => (
+              <EventCard key={event.id} event={event} onClick={() => setActiveEvent(event)} />
+            ))}
+            {/* Filler cells to complete row if needed */}
+            <div style={{ background: 'var(--bg)' }} />
+            <div style={{ background: 'var(--bg)' }} />
+          </div>
         </div>
       </div>
 
@@ -520,126 +669,8 @@ function EventsSection() {
           .events-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
-    </section>
-  )
-}
-
-// ─── Team ─────────────────────────────────────────────────────────────────────
-
-function TeamCard({ member, large }: { member: (typeof team)[0]; large?: boolean }) {
-  const [hovered, setHovered] = useState(false)
-
-  return (
-    <div
-      className="team-card"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{ borderColor: hovered ? 'var(--accent)' : 'var(--stroke)', transition: 'border-color 0.2s' }}
-    >
-      {/* Photo placeholder — sharp rectangle avatar */}
-      <div
-        className="photo-wrap"
-        style={{
-          aspectRatio: large ? '4/3' : '1/1',
-          background: 'var(--elevated)',
-          borderBottom: '1px solid var(--stroke)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        {/* Initials fallback */}
-        <span
-          className="font-display"
-          style={{
-            fontSize: large ? '72px' : '36px',
-            color: hovered ? 'var(--accent)' : 'var(--stroke)',
-            transition: 'color 0.2s',
-          }}
-        >
-          {member.initials}
-        </span>
-        {/* Border overlay on hover */}
-        {hovered && (
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              border: '2px solid var(--accent)',
-              pointerEvents: 'none',
-            }}
-          />
-        )}
-      </div>
-
-      <div style={{ padding: large ? '1.5rem' : '1rem' }}>
-        <h3
-          className="team-name font-display"
-          style={{
-            fontSize: large ? '24px' : '16px',
-            color: hovered ? 'var(--accent)' : 'var(--text-primary)',
-            marginBottom: '4px',
-            transition: 'color 0.2s',
-          }}
-        >
-          {member.name}
-        </h3>
-        <p
-          className="font-mono"
-          style={{ fontSize: '11px', color: 'var(--text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}
-        >
-          {member.role}
-        </p>
-      </div>
-    </div>
-  )
-}
-
-function TeamSection() {
-  const featured = team.find((m) => m.featured)!
-  const rest = team.filter((m) => !m.featured)
-
-  return (
-    <section id="team" className="section-padding" style={{ background: 'var(--surface)' }}>
-      <div className="container">
-        <div style={{ marginBottom: '4rem' }}>
-          <p className="section-label">[03 — TEAM]</p>
-          <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)' }}>
-            The people behind it.
-          </h2>
-        </div>
-
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '2fr 1fr 1fr',
-            gridTemplateRows: 'auto auto',
-            gap: '1px',
-            background: 'var(--stroke)',
-          }}
-          className="team-grid"
-        >
-          {/* Featured card spans 2 rows */}
-          <div style={{ gridRow: '1 / 3' }}>
-            <TeamCard member={featured} large />
-          </div>
-          {rest.map((m) => (
-            <TeamCard key={m.id} member={m} />
-          ))}
-        </div>
-      </div>
-
-      <style>{`
-        @media (max-width: 900px) {
-          .team-grid { grid-template-columns: 1fr 1fr !important; grid-template-rows: unset !important; }
-          .team-grid > div:first-child { grid-row: unset !important; }
-        }
-        @media (max-width: 600px) {
-          .team-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
+      
+      {activeEvent && <EventModal event={activeEvent} onClose={() => setActiveEvent(null)} />}
     </section>
   )
 }
@@ -733,7 +764,7 @@ function Footer() {
           {/* Col 2 — nav */}
           <div>
             <p className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Navigation</p>
-            {['Events', 'Team', 'Register', 'Contact'].map((item) => (
+            {['Events', 'Register', 'Contact'].map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
@@ -827,7 +858,6 @@ function ZyphoriaHome() {
       <main>
         <Hero />
         <EventsSection />
-        <TeamSection />
         <RegisterCTA />
       </main>
       <Footer />
