@@ -1,6 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
-import { Terminal, Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X } from 'lucide-react'
+import { Terminal, Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, Upload, CheckCircle, Loader2 } from 'lucide-react'
+import toast, { Toaster } from 'react-hot-toast'
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder'
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 export const Route = createFileRoute('/')({
   component: ZyphoriaHome,
@@ -675,59 +681,388 @@ function EventsSection() {
   )
 }
 
-// ─── Register CTA ─────────────────────────────────────────────────────────────
+// ─── Constants ───────────────────────────────────────────────────────────────
 
-function RegisterCTA() {
+const techDropdownEvents = [
+  "Reverse Engineering Arena",
+  "AI Prompt Engineering Battle",
+  "UI/UX Redesign Challenge",
+  "Tech Treasure Hunt",
+  "Research Pitch",
+  "Build a Startup in 60 Min",
+  "Bug Hunt"
+]
+
+const nonTechDropdownEvents = [
+  "Engineering Standup Comedy",
+  "Tech Meme War",
+  "Mystery Box Innovation",
+  "Reel Making Challenge",
+  "Tech Dum Charades",
+  "E-Sports",
+  "Marketing a Useless Product"
+]
+
+const PAYMENT_LINK = "https://edu.easebuzz.in/register/RAJALAKSHMIbw5w4/ZYPHORIA_2026_SYMPOSIUM"
+
+const NAME_REGEX = /^[A-Za-z\s.'-]{2,100}$/
+const PHONE_REGEX = /^(\+91[\s-]?)?[6-9]\d{9}$/
+const DEPT_REGEX = /^[A-Za-z\s&./()-]{2,100}$/
+const COLLEGE_REGEX = /^[A-Za-z\s&.,'/()-]{2,200}$/
+const TEAM_NAME_REGEX = /^[A-Za-z0-9\s&._'-]{2,100}$/
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+// ─── Registration ─────────────────────────────────────────────────────────────
+
+function RegistrationSection() {
+  const [tab, setTab] = useState<'tech' | 'nontech'>('tech');
+  const [formData, setFormData] = useState({
+    event: '',
+    teamName: '',
+    participantCount: '0',
+    leader: { name: '', department: '', college: '', email: '', phone: '' },
+    participants: [
+      { name: '', department: '', college: '', email: '', phone: '' },
+      { name: '', department: '', college: '', email: '', phone: '' },
+      { name: '', department: '', college: '', email: '', phone: '' },
+    ]
+  });
+  const [file, setFile] = useState<File | null>(null);
+  const [filePreview, setFilePreview] = useState<string | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  // accent based on tab
+  const accent = tab === 'tech' ? 'var(--accent)' : 'var(--danger)';
+  const eventsList = tab === 'tech' ? techDropdownEvents : nonTechDropdownEvents;
+  const dateLabel = tab === 'tech' ? '15 Apr' : '16 Apr';
+
+  // Handle updates
+  const handleLeaderChange = (field: string, val: string) => setFormData(p => ({ ...p, leader: { ...p.leader, [field]: val } }));
+  const handleParticipantChange = (idx: number, field: string, val: string) => {
+    const nextArr = [...formData.participants];
+    nextArr[idx] = { ...nextArr[idx], [field]: val };
+    setFormData(p => ({ ...p, participants: nextArr }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    if (f.size > 5 * 1024 * 1024) {
+      toast.error("File size must be under 5MB");
+      return;
+    }
+    setFile(f);
+    const url = URL.createObjectURL(f);
+    setFilePreview(url);
+    setErrors(prev => ({ ...prev, file: '' }));
+  };
+
+  const validate = () => {
+    let errs: Record<string, string> = {};
+
+    if (!formData.event) errs['event'] = 'Please select an event.';
+    if (!formData.participantCount) errs['participantCount'] = 'Please select participant count.';
+    if (!file) errs['file'] = 'Payment screenshot required.';
+
+    if (!TEAM_NAME_REGEX.test(formData.teamName)) errs['teamName'] = 'Invalid team name.';
+    
+    // Validate leader
+    if (!NAME_REGEX.test(formData.leader.name)) errs['leader.name'] = 'Invalid name.';
+    if (!DEPT_REGEX.test(formData.leader.department)) errs['leader.department'] = 'Invalid dept.';
+    if (!COLLEGE_REGEX.test(formData.leader.college)) errs['leader.college'] = 'Invalid college.';
+    if (!EMAIL_REGEX.test(formData.leader.email)) errs['leader.email'] = 'Invalid email.';
+    if (!PHONE_REGEX.test(formData.leader.phone)) errs['leader.phone'] = 'Invalid phone.';
+
+    // Validate participants based on count
+    const count = parseInt(formData.participantCount);
+    for (let i = 0; i < count; i++) {
+      if (!NAME_REGEX.test(formData.participants[i].name)) errs[`p${i}.name`] = 'Invalid name.';
+      if (!DEPT_REGEX.test(formData.participants[i].department)) errs[`p${i}.department`] = 'Invalid dept.';
+      if (!COLLEGE_REGEX.test(formData.participants[i].college)) errs[`p${i}.college`] = 'Invalid college.';
+      if (!EMAIL_REGEX.test(formData.participants[i].email)) errs[`p${i}.email`] = 'Invalid email.';
+      if (!PHONE_REGEX.test(formData.participants[i].phone)) errs[`p${i}.phone`] = 'Invalid phone.';
+    }
+
+    setErrors(errs);
+    if (Object.keys(errs).length > 0) {
+      toast.error("Please fix the highlighted errors.");
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    if (!validate() || !file) return;
+
+    setIsSubmitting(true);
+    try {
+      // Step 1 - Upload file
+      const ext = file.name.split('.').pop();
+      const filename = `${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`;
+      
+      const { error: uploadErr } = await supabase.storage
+        .from('payment-screenshots')
+        .upload(filename, file);
+        
+      if (uploadErr) throw uploadErr;
+
+      const { data: publicUrlData } = supabase.storage
+        .from('payment-screenshots')
+        .getPublicUrl(filename);
+      const publicUrl = publicUrlData.publicUrl;
+
+      // Step 2 - Insert to Supabase DB
+      const count = parseInt(formData.participantCount);
+      const insertData = {
+        team_name: formData.teamName,
+        leader_name: formData.leader.name,
+        leader_email: formData.leader.email,
+        leader_phone: formData.leader.phone,
+        leader_department: formData.leader.department,
+        leader_college: formData.leader.college,
+        technical_event: tab === 'tech' ? formData.event : null,
+        non_technical_event: tab === 'nontech' ? formData.event : null,
+        payment_screenshot_url: publicUrl,
+        participant1_name: count >= 1 ? formData.participants[0].name : null,
+        participant1_department: count >= 1 ? formData.participants[0].department : null,
+        participant1_college: count >= 1 ? formData.participants[0].college : null,
+        participant1_email: count >= 1 ? formData.participants[0].email : null,
+        participant1_phone: count >= 1 ? formData.participants[0].phone : null,
+        participant2_name: count >= 2 ? formData.participants[1].name : null,
+        participant2_department: count >= 2 ? formData.participants[1].department : null,
+        participant2_college: count >= 2 ? formData.participants[1].college : null,
+        participant2_email: count >= 2 ? formData.participants[1].email : null,
+        participant2_phone: count >= 2 ? formData.participants[1].phone : null,
+        participant3_name: count == 3 ? formData.participants[2].name : null,
+        participant3_department: count == 3 ? formData.participants[2].department : null,
+        participant3_college: count == 3 ? formData.participants[2].college : null,
+        participant3_email: count == 3 ? formData.participants[2].email : null,
+        participant3_phone: count == 3 ? formData.participants[2].phone : null,
+      };
+
+      const { error: insertErr } = await supabase
+        .from('registrations')
+        .insert([insertData]);
+
+      if (insertErr) throw insertErr;
+
+      // Step 3 - Sync to Sheets (fire & forget)
+      supabase.functions.invoke('sync-to-sheets', {
+        body: { registration: insertData },
+      }).catch((err) => console.error("Sheets sync failed:", err));
+
+      // Step 4 - Success
+      setIsSuccess(true);
+      
+    } catch (err) {
+      console.error(err);
+      toast.error("Registration failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // UI rendering
+  const Label = ({ children }: { children: React.ReactNode }) => (
+    <label className="font-mono text-xs uppercase tracking-wider text-[#8888A8] mb-2 block">{children}</label>
+  );
+
+  const Input = ({ err, ...props }: any) => (
+    <div className="mb-4">
+      <input
+        className="w-full bg-[#101018] border outline-none font-mono text-sm p-3 text-[#EEEEF5] transition-colors"
+        style={{ borderColor: err ? 'var(--danger)' : 'var(--stroke)' }}
+        onFocus={(e) => e.target.style.borderColor = accent}
+        onBlur={(e) => e.target.style.borderColor = err ? 'var(--danger)' : 'var(--stroke)'}
+        {...props}
+      />
+      {err && <div className="text-[var(--danger)] text-xs mt-1 font-mono">{err}</div>}
+    </div>
+  );
+
   return (
     <section id="register" className="section-padding" style={{ background: 'var(--bg)' }}>
-      <div className="container">
-        <div className="cta-container" style={{ padding: '4rem' }}>
-          {/* ASCII corners */}
-          <span className="ascii-corner tl">┌──────────────────────────┐</span>
-          <span className="ascii-corner bl">└──────────────────────────┘</span>
-          <span className="ascii-corner tr" style={{ right: '12px' }}>┐</span>
-          <span className="ascii-corner br" style={{ right: '12px' }}>┘</span>
+      <div className="container" style={{ maxWidth: '800px', margin: '0 auto' }}>
+        <div style={{ marginBottom: '3rem', textAlign: 'center' }}>
+          <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ 04 — REGISTER ]</p>
+          <h2 className="font-display" style={{ fontSize: 'clamp(32px, 4vw, 52px)', color: 'var(--text-primary)' }}>
+            Join the Arena.
+          </h2>
+          <p className="font-mono text-sm text-[#8888A8] mt-2">Secure your spot in the symposium.</p>
+        </div>
 
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '3rem',
-              flexWrap: 'wrap',
-            }}
-          >
-            {/* Left copy */}
-            <div>
-              <h2
-                className="font-display"
-                style={{ fontSize: 'clamp(32px, 4vw, 52px)', color: 'var(--text-primary)', lineHeight: 0.95 }}
-              >
-                Ready to compete?
-                <br />
-                <span style={{ color: 'var(--accent)' }}>Register now.</span>
-              </h2>
+        <div className="cta-container" style={{ padding: '3rem', position: 'relative' }}>
+          <span className="ascii-corner tl" style={{ color: accent }}>┌</span>
+          <span className="ascii-corner bl" style={{ color: accent }}>└</span>
+          <span className="ascii-corner tr" style={{ right: '12px', color: accent }}>┐</span>
+          <span className="ascii-corner br" style={{ right: '12px', color: accent }}>┘</span>
+
+          {isSuccess ? (
+            <div style={{ textAlign: 'center', padding: '4rem 0', opacity: 1, transform: 'scale(1)', transition: 'all 0.5s ease' }}>
+              <CheckCircle style={{ margin: '0 auto 1rem', color: accent }} size={48} />
+              <h3 className="font-display" style={{ fontSize: '32px', marginBottom: '0.5rem' }}>"You're In!"</h3>
+              <p className="font-mono text-sm text-[#8888A8]">"Your Technical/Non-Technical event registration has been submitted."</p>
             </div>
+          ) : (
+            <div>
+              {/* Tab Switcher */}
+              <div style={{ display: 'flex', gap: '1rem', marginBottom: '3rem', borderBottom: '1px solid var(--stroke)' }}>
+                <button
+                  onClick={() => setTab('tech')}
+                  className="font-mono text-sm uppercase tracking-wider bg-transparent border-none cursor-pointer"
+                  style={{ 
+                    padding: '1rem 1.5rem', 
+                    color: tab === 'tech' ? 'var(--accent)' : 'var(--text-muted)',
+                    borderBottom: tab === 'tech' ? '2px solid var(--accent)' : '2px solid transparent',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  Technical
+                </button>
+                <button
+                  onClick={() => setTab('nontech')}
+                  className="font-mono text-sm uppercase tracking-wider bg-transparent border-none cursor-pointer"
+                  style={{ 
+                    padding: '1rem 1.5rem', 
+                    color: tab === 'nontech' ? 'var(--danger)' : 'var(--text-muted)',
+                    borderBottom: tab === 'nontech' ? '2px solid var(--danger)' : '2px solid transparent',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  Non-Technical
+                </button>
+              </div>
 
-            {/* Right button block */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.75rem' }}>
-              <a
-                href="mailto:zyphoria@rit.ac.in?subject=Registration%20for%20ZYPHORIA%2026"
-                className="btn-filled"
-                style={{ fontSize: '14px', padding: '1rem 2rem' }}
-              >
-                Register Now
-              </a>
-              <div
-                className="font-mono"
-                style={{ fontSize: '11px', color: 'var(--text-muted)', textAlign: 'right', lineHeight: 2 }}
-              >
-                <span>Free · RIT Students</span>
-                <br />
-                <span>₹200 · External Teams</span>
+              {/* Form body */}
+              <div>
+                <Label>{tab === 'tech' ? 'Technical Event' : 'Non-Technical Event'} ({dateLabel})</Label>
+                <div className="mb-6">
+                  <select
+                    value={formData.event}
+                    onChange={(e) => setFormData(p => ({ ...p, event: e.target.value }))}
+                    className="w-full bg-[#101018] border outline-none font-mono text-sm p-3 text-[#EEEEF5]"
+                    style={{ borderColor: errors.event ? 'var(--danger)' : 'var(--stroke)' }}
+                  >
+                    <option value="">-- Select Event --</option>
+                    {eventsList.map(ev => <option key={ev} value={ev}>{ev}</option>)}
+                  </select>
+                  {errors.event && <div className="text-[var(--danger)] text-xs mt-1 font-mono">{errors.event}</div>}
+                </div>
+
+                <Label>Team Name</Label>
+                <Input value={formData.teamName} onChange={(e: any) => setFormData(p => ({ ...p, teamName: e.target.value }))} err={errors.teamName} placeholder="Enter Team Name" />
+
+                <div className="mt-8 mb-6">
+                  <h4 className="font-display text-xl mb-4" style={{ color: accent }}>👑 Team Leader</h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0 1rem' }}>
+                    <div>
+                      <Label>Full Name</Label>
+                      <Input value={formData.leader.name} onChange={(e: any) => handleLeaderChange('name', e.target.value)} err={errors['leader.name']} placeholder="John Doe" />
+                    </div>
+                    <div>
+                      <Label>Department</Label>
+                      <Input value={formData.leader.department} onChange={(e: any) => handleLeaderChange('department', e.target.value)} err={errors['leader.department']} placeholder="Computer Science" />
+                    </div>
+                    <div>
+                      <Label>College</Label>
+                      <Input value={formData.leader.college} onChange={(e: any) => handleLeaderChange('college', e.target.value)} err={errors['leader.college']} placeholder="RIT" />
+                    </div>
+                    <div>
+                      <Label>Email</Label>
+                      <Input value={formData.leader.email} onChange={(e: any) => handleLeaderChange('email', e.target.value)} err={errors['leader.email']} placeholder="john@example.com" />
+                    </div>
+                    <div>
+                      <Label>Phone</Label>
+                      <Input value={formData.leader.phone} onChange={(e: any) => handleLeaderChange('phone', e.target.value)} err={errors['leader.phone']} placeholder="9876543210" />
+                    </div>
+                  </div>
+                </div>
+
+                <Label>Number of Participants (excluding leader)</Label>
+                <div className="mb-6">
+                  <select
+                    value={formData.participantCount}
+                    onChange={(e) => setFormData(p => ({ ...p, participantCount: e.target.value }))}
+                    className="w-full bg-[#101018] border outline-none font-mono text-sm p-3 text-[#EEEEF5]"
+                    style={{ borderColor: errors.participantCount ? 'var(--danger)' : 'var(--stroke)' }}
+                  >
+                    <option value="0">0 (Solo)</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                  {errors.participantCount && <div className="text-[var(--danger)] text-xs mt-1 font-mono">{errors.participantCount}</div>}
+                </div>
+
+                {Array.from({ length: parseInt(formData.participantCount) }).map((_, idx) => (
+                  <div key={idx} className="mt-6 mb-6 p-4 border" style={{ borderColor: 'var(--stroke)', background: 'var(--elevated)' }}>
+                    <h4 className="font-display text-lg mb-4 text-[#EEEEF5]">Participant {idx + 1}</h4>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0 1rem' }}>
+                      <div>
+                        <Label>Full Name</Label>
+                        <Input value={formData.participants[idx].name} onChange={(e: any) => handleParticipantChange(idx, 'name', e.target.value)} err={errors[`p${idx}.name`]} placeholder="Jane Doe" />
+                      </div>
+                      <div>
+                        <Label>Department</Label>
+                        <Input value={formData.participants[idx].department} onChange={(e: any) => handleParticipantChange(idx, 'department', e.target.value)} err={errors[`p${idx}.department`]} placeholder="Information Tech" />
+                      </div>
+                      <div>
+                        <Label>College</Label>
+                        <Input value={formData.participants[idx].college} onChange={(e: any) => handleParticipantChange(idx, 'college', e.target.value)} err={errors[`p${idx}.college`]} placeholder="RIT" />
+                      </div>
+                      <div>
+                        <Label>Email</Label>
+                        <Input value={formData.participants[idx].email} onChange={(e: any) => handleParticipantChange(idx, 'email', e.target.value)} err={errors[`p${idx}.email`]} placeholder="jane@example.com" />
+                      </div>
+                      <div>
+                        <Label>Phone</Label>
+                        <Input value={formData.participants[idx].phone} onChange={(e: any) => handleParticipantChange(idx, 'phone', e.target.value)} err={errors[`p${idx}.phone`]} placeholder="9123456780" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                <div className="mt-8 mb-8 pt-8 border-t" style={{ borderColor: 'var(--stroke)' }}>
+                  <h4 className="font-display text-xl mb-4 flex items-center gap-2" style={{ color: accent }}>💳 Payment</h4>
+                  <p className="font-mono text-sm text-[#8888A8] mb-6">
+                    Pay ₹300 per team for an event via the secure portal, then upload the screenshot below.
+                  </p>
+                  
+                  <a href={PAYMENT_LINK} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-6 py-3 border font-mono text-xs uppercase tracking-wider hover:bg-white transition-all cursor-pointer mb-8" style={{ borderColor: accent, color: accent }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'white'; e.currentTarget.style.color = 'var(--bg)'; e.currentTarget.style.boxShadow = `0 0 15px ${accent}`; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = accent; e.currentTarget.style.boxShadow = 'none'; }}>
+                    ↗ Pay ₹300 Now
+                  </a>
+
+                  <div className="relative border-2 border-dashed p-8 text-center flex flex-col items-center justify-center cursor-pointer transition-colors" style={{ borderColor: errors.file ? 'var(--danger)' : 'var(--stroke)', background: 'var(--elevated)' }}>
+                    <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                    {filePreview ? (
+                      <div className="flex flex-col items-center">
+                        <img src={filePreview} alt="Preview" className="h-24 object-cover mb-2 border" style={{ borderColor: 'var(--stroke)' }} />
+                        <span className="font-mono text-xs text-[#8888A8]">{file?.name}</span>
+                      </div>
+                    ) : (
+                      <>
+                        <Upload size={32} style={{ color: accent, marginBottom: '1rem' }} />
+                        <p className="font-mono text-sm text-[#EEEEF5]">Click to upload screenshot</p>
+                        <p className="font-mono text-xs text-[#8888A8] mt-2">Max 5MB (Images only)</p>
+                      </>
+                    )}
+                  </div>
+                  {errors.file && <div className="text-[var(--danger)] text-xs mt-2 font-mono text-center">{errors.file}</div>}
+                </div>
+
+                <button 
+                  onClick={handleSubmit} 
+                  disabled={isSubmitting}
+                  className="w-full font-mono font-bold text-sm uppercase tracking-wider py-4 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  style={{ backgroundColor: isSubmitting ? 'var(--stroke)' : accent, color: isSubmitting ? 'var(--text-muted)' : 'var(--bg)' }}
+                >
+                  {isSubmitting ? <><Loader2 className="animate-spin" size={18} /> Submitting...</> : 'Register Now'}
+                </button>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>
@@ -854,11 +1189,20 @@ function Footer() {
 function ZyphoriaHome() {
   return (
     <>
+      <Toaster position="bottom-right" toastOptions={{
+        style: {
+          background: 'var(--surface)',
+          color: 'var(--text-primary)',
+          border: '1px solid var(--stroke)',
+          fontFamily: 'Geist Mono, monospace',
+          fontSize: '13px'
+        }
+      }} />
       <Navbar />
       <main>
         <Hero />
         <EventsSection />
-        <RegisterCTA />
+        <RegistrationSection />
       </main>
       <Footer />
     </>
