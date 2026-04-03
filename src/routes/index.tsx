@@ -989,10 +989,7 @@ function OrganizersSection() {
                     <User size={16} color="var(--accent)" />
                   </div>
                   <div style={{ overflow: 'hidden', minWidth: 0 }}>
-                    <div
-                      className="font-display font-bold text-[14px] text-[#EEEEF5]"
-                      style={{ textTransform: 'none', letterSpacing: 'normal', whiteSpace: 'normal', wordSpacing: 'normal' }}
-                    >
+                    <div className="font-display font-bold text-[18px] text-[#EEEEF5]">
                       {p.name}
                     </div>
                     <a href={`tel:+91${p.phone}`} className="font-mono text-[11px] text-[#8888A8] hover:text-[var(--accent)] flex items-center gap-1 mt-1 truncate" style={{ transition: 'color 0.2s' }}>
