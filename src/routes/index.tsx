@@ -824,8 +824,8 @@ function OrganizersSection() {
             <p className="font-mono" style={sectionLabelStyle}>STUDENT COORDINATORS</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { name: 'Divyadarshini K', phone: '8056120505' },
-                { name: 'Gajalakshmi C', phone: '9994335576' },
+                { name: 'Divyadarshini  K', phone: '8056120505' },
+                { name: 'Gajalakshmi  C', phone: '9994335576' },
                 { name: 'M. S. Sathish', phone: '9384579988' },
                 { name: 'S. Sanjit Kumar', phone: '8667509464' }
               ].map(p => (
@@ -911,8 +911,8 @@ function Footer() {
             ))}
           </div>
 
-          {/* Col 3 — social only */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {/* Col 3 — social only (mobile) */}
+          <div className="social-mobile-only" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
               {['IG', 'LI', 'TW'].map((social) => (
                 <a
@@ -947,6 +947,47 @@ function Footer() {
           </div>
         </div>
 
+        {/* Desktop social row */}
+        <div
+          className="social-desktop-only"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '0.75rem',
+            padding: '1rem 0 0.5rem',
+          }}
+        >
+          {['IG', 'LI', 'TW'].map((social) => (
+            <a
+              key={`desktop-${social}`}
+              href="#"
+              className="font-mono"
+              style={{
+                width: '32px',
+                height: '32px',
+                border: '1px solid var(--stroke)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '10px',
+                color: 'var(--text-muted)',
+                textDecoration: 'none',
+                transition: 'all 0.15s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--accent)'
+                e.currentTarget.style.color = 'var(--accent)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--stroke)'
+                e.currentTarget.style.color = 'var(--text-muted)'
+              }}
+            >
+              {social}
+            </a>
+          ))}
+        </div>
+
         {/* Bottom strip */}
         <div
           className="font-mono"
@@ -964,8 +1005,16 @@ function Footer() {
       </div>
 
       <style>{`
+        .social-desktop-only { display: flex; }
+        .social-mobile-only { display: flex; }
+
         @media (max-width: 768px) {
           .footer-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+          .social-desktop-only { display: none !important; }
+        }
+
+        @media (min-width: 769px) {
+          .social-mobile-only { display: none !important; }
         }
       `}</style>
     </footer>

@@ -1,4 +1,5 @@
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import '../styles.css'
 import useFluidCursor from '../hooks/useFluidCursor'
 
@@ -32,6 +33,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <canvas id="fluid" />
         {children}
+        <SpeedInsights />
         <Scripts />
       </body>
     </html>
