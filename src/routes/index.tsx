@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Terminal, Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, Upload, CheckCircle, Loader2 } from 'lucide-react'
+import { Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, Upload, CheckCircle, Loader2, User, Phone } from 'lucide-react'
 import toast, { Toaster } from 'react-hot-toast'
 import { createClient } from '@supabase/supabase-js'
 import { IntroLoader } from '../components/IntroLoader'
@@ -127,10 +127,15 @@ function Navbar() {
 
         {/* Center nav — desktop */}
         <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }} className="desktop-nav">
-          {['EVENTS', 'CONTACT'].map((link) => (
+          {[
+            { label: 'ABOUT', target: 'about' },
+            { label: 'EVENTS', target: 'events' },
+            { label: 'TEAM', target: 'organizers' },
+            { label: 'REGISTER', target: 'register' }
+          ].map((link) => (
             <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
+              key={link.label}
+              href={`#${link.target}`}
               className="font-mono"
               style={{
                 fontSize: '12px',
@@ -143,7 +148,7 @@ function Navbar() {
               onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
               onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
             >
-              {link}
+              {link.label}
             </a>
           ))}
         </div>
@@ -166,10 +171,15 @@ function Navbar() {
       {/* Mobile menu */}
       {menuOpen && (
         <div style={{ background: 'var(--surface)', borderTop: '1px solid var(--stroke)', padding: '1rem 2rem' }}>
-          {['EVENTS', 'CONTACT'].map((link) => (
+          {[
+            { label: 'ABOUT', target: 'about' },
+            { label: 'EVENTS', target: 'events' },
+            { label: 'TEAM', target: 'organizers' },
+            { label: 'REGISTER', target: 'register' }
+          ].map((link) => (
             <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
+              key={link.label}
+              href={`#${link.target}`}
               className="font-mono"
               onClick={() => setMenuOpen(false)}
               style={{
@@ -183,7 +193,7 @@ function Navbar() {
                 borderBottom: '1px solid var(--stroke)',
               }}
             >
-              {link}
+              {link.label}
             </a>
           ))}
         </div>
@@ -714,39 +724,179 @@ const COLLEGE_REGEX = /^[A-Za-z\s&.,'/()-]{2,200}$/
 const TEAM_NAME_REGEX = /^[A-Za-z0-9\s&._'-]{2,100}$/
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+
+// ─── About ────────────────────────────────────────────────────────────────────
+
+function AboutSection() {
+  return (
+    <section id="about" className="section-padding" style={{ background: 'var(--bg)' }}>
+      <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
+        <div style={{ textAlign: 'left' }}>
+          <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ 01 — ABOUT ]</p>
+          <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)', marginBottom: '2rem' }}>
+            The Future, Compiled.
+          </h2>
+          <p className="font-mono text-base text-[#8888A8] max-w-[800px] leading-relaxed">
+            Zyphoria'26 is an International Symposium organized by the Department of Computer Science and Engineering at Rajalakshmi Institute of Technology (RIT) in association with iDataMind. The symposium brings together students, innovators, and technology enthusiasts from various institutions to participate in engaging technical and non-technical competitions, encouraging creativity, innovation, and collaboration.
+          </p>
+        </div>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
+          {/* Card 1 */}
+          <div className="group" style={{ background: '#101018', border: '1px solid #1E1E2E', padding: '2rem', transition: 'all 0.3s ease' }} onMouseEnter={e => { e.currentTarget.style.borderLeft = '3px solid var(--accent)'; e.currentTarget.style.background = '#16161F'; }} onMouseLeave={e => { e.currentTarget.style.borderLeft = '1px solid #1E1E2E'; e.currentTarget.style.background = '#101018'; }}>
+            <div className="font-display text-[24px] mb-4 font-bold" style={{ color: 'var(--accent)' }}>⚡ · INNOVATION</div>
+            <p className="font-mono" style={{ color: 'var(--text-muted)', fontSize: '14px', lineHeight: 1.6 }}>Experience cutting-edge technology showcases, AI-driven challenges, and hands-on competitions curated by iDataMind and CSE faculty.</p>
+          </div>
+          {/* Card 2 */}
+          <div className="group" style={{ background: '#101018', border: '1px solid #1E1E2E', padding: '2rem', transition: 'all 0.3s ease' }} onMouseEnter={e => { e.currentTarget.style.borderLeft = '3px solid var(--accent)'; e.currentTarget.style.background = '#16161F'; }} onMouseLeave={e => { e.currentTarget.style.borderLeft = '1px solid #1E1E2E'; e.currentTarget.style.background = '#101018'; }}>
+            <div className="font-display text-[24px] mb-4 font-bold" style={{ color: 'var(--accent)' }}>⚔ · COMPETITION</div>
+            <p className="font-mono" style={{ color: 'var(--text-muted)', fontSize: '14px', lineHeight: 1.6 }}>Battle the brightest minds across institutions in 14+ technical and non-technical events — from coding duels to creative showdowns.</p>
+          </div>
+          {/* Card 3 */}
+          <div className="group" style={{ background: '#101018', border: '1px solid #1E1E2E', padding: '2rem', transition: 'all 0.3s ease' }} onMouseEnter={e => { e.currentTarget.style.borderLeft = '3px solid var(--accent)'; e.currentTarget.style.background = '#16161F'; }} onMouseLeave={e => { e.currentTarget.style.borderLeft = '1px solid #1E1E2E'; e.currentTarget.style.background = '#101018'; }}>
+            <div className="font-display text-[24px] mb-4 font-bold" style={{ color: 'var(--accent)' }}>🌐 · COMMUNITY</div>
+            <p className="font-mono" style={{ color: 'var(--text-muted)', fontSize: '14px', lineHeight: 1.6 }}>Connect with industry experts, researchers, and fellow tech enthusiasts from institutions worldwide at RIT's flagship international symposium.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Organizers ───────────────────────────────────────────────────────────────
+
+function OrganizersSection() {
+  const sectionLabelStyle = { fontSize: '11px', textTransform: 'uppercase' as const, color: '#8888A8', letterSpacing: '0.15em', marginBottom: '1rem' };
+  return (
+    <section id="organizers" className="section-padding" style={{ background: 'var(--bg)' }}>
+      <div className="container">
+        <div style={{ marginBottom: '4rem' }}>
+          <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ 05 — TEAM ]</p>
+          <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)' }}>
+            Organizers & Coordinators.
+          </h2>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+          {/* Organizers */}
+          <div>
+            <p className="font-mono" style={sectionLabelStyle}>ORGANIZERS</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+              {[
+                { name: 'Dr. S. Uma', role: 'HOD / CSE' },
+                { name: 'Dr. N. Indumathi', role: 'AP / CSE' }
+              ].map(p => (
+                <div key={p.name} className="flex items-center gap-4 p-4 group" style={{ background: '#101018', border: '1px solid #1E1E2E', transition: 'all 0.3s ease' }} onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'} onMouseLeave={e => e.currentTarget.style.borderColor = '#1E1E2E'}>
+                  <div className="w-12 h-12 flex items-center justify-center transition-colors" style={{ background: 'rgba(200,250,100,0.05)', border: '1px solid var(--accent)' }}>
+                    <User size={20} color="var(--accent)" />
+                  </div>
+                  <div>
+                    <div className="font-display font-bold text-[18px] text-[#EEEEF5]">{p.name}</div>
+                    <div className="font-mono text-[11px] text-[#8888A8] uppercase">{p.role}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          {/* Faculty */}
+          <div>
+            <p className="font-mono" style={sectionLabelStyle}>FACULTY COORDINATORS</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+              {[
+                { name: 'Ms. J. Sindhuja', role: 'AP / CSE' },
+                { name: 'Mr. P. Murugan', role: 'AP / CSE' }
+              ].map(p => (
+                <div key={p.name} className="flex items-center gap-4 p-4 group" style={{ background: '#101018', border: '1px solid #1E1E2E', transition: 'all 0.3s ease' }} onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'} onMouseLeave={e => e.currentTarget.style.borderColor = '#1E1E2E'}>
+                  <div className="w-12 h-12 flex items-center justify-center transition-colors" style={{ background: 'rgba(200,250,100,0.05)', border: '1px solid var(--accent)' }}>
+                    <User size={20} color="var(--accent)" />
+                  </div>
+                  <div>
+                    <div className="font-display font-bold text-[18px] text-[#EEEEF5]">{p.name}</div>
+                    <div className="font-mono text-[11px] text-[#8888A8] uppercase">{p.role}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Student Coordinators */}
+          <div>
+            <p className="font-mono" style={sectionLabelStyle}>STUDENT COORDINATORS</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { name: 'Divyadarshini K', phone: '8056120505' },
+                { name: 'Gajalakshmi C', phone: '9994335576' },
+                { name: 'M. S. Sathish', phone: '9384579988' },
+                { name: 'S. Sanjit Kumar', phone: '8667509464' }
+              ].map(p => (
+                <div key={p.name} className="flex items-center gap-4 p-4 group" style={{ background: '#101018', border: '1px solid #1E1E2E', transition: 'all 0.3s ease' }} onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'} onMouseLeave={e => e.currentTarget.style.borderColor = '#1E1E2E'}>
+                  <div className="w-10 h-10 flex items-center justify-center shrink-0 transition-colors" style={{ background: 'rgba(200,250,100,0.05)', border: '1px solid var(--accent)' }}>
+                    <User size={16} color="var(--accent)" />
+                  </div>
+                  <div style={{ overflow: 'hidden' }}>
+                    <div className="font-display font-bold text-[14px] text-[#EEEEF5] truncate">{p.name}</div>
+                    <a href={`tel:+91${p.phone}`} className="font-mono text-[11px] text-[#8888A8] hover:text-[var(--accent)] flex items-center gap-1 mt-1 truncate" style={{ transition: 'color 0.2s' }}>
+                      <Phone size={10} /> {p.phone}
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 // ─── Registration ─────────────────────────────────────────────────────────────
+
+const InputField = ({ name, placeholder, err, ...props }: any) => {
+  return (
+    <div className="mb-5 sm:mb-6 last:mb-0">
+      <input
+        name={name}
+        placeholder={placeholder}
+        className="w-full bg-[#0D0D14] border outline-none font-mono text-[15px] sm:text-base px-4 py-3.5 text-[#EEEEF5] transition-all duration-300 hover:bg-[#12121A] placeholder-[#4A4A62]"
+        style={{
+          borderColor: err ? '#FF4D6D' : '#1E1E2E',
+          borderRadius: '0',
+        }}
+        onFocus={(e) => {
+          e.target.style.borderColor = '#C8FA64';
+        }}
+        onBlur={(e) => {
+          e.target.style.borderColor = err ? '#FF4D6D' : '#1E1E2E';
+        }}
+        {...props}
+      />
+      {err && <div className="text-[#FF4D6D] text-[11px] mt-2 font-mono tracking-wide">{err}</div>}
+    </div>
+  );
+};
+
+const FormLabel = ({ children }: { children: React.ReactNode }) => (
+  <label className="font-mono text-[#8888A8] text-[10px] tracking-[0.15em] uppercase mb-2.5 block">{children}</label>
+);
 
 function RegistrationSection() {
   const [tab, setTab] = useState<'tech' | 'nontech'>('tech');
   const [formData, setFormData] = useState({
     event: '',
-    teamName: '',
-    participantCount: '0',
-    leader: { name: '', department: '', college: '', email: '', phone: '' },
-    participants: [
-      { name: '', department: '', college: '', email: '', phone: '' },
-      { name: '', department: '', college: '', email: '', phone: '' },
-      { name: '', department: '', college: '', email: '', phone: '' },
-    ]
+    participantCount: '0'
   });
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  
+  const formRef = useRef<HTMLFormElement>(null);
 
-  // accent based on tab
-  const accent = tab === 'tech' ? 'var(--accent)' : 'var(--danger)';
+  const accent = '#C8FA64';
   const eventsList = tab === 'tech' ? techDropdownEvents : nonTechDropdownEvents;
   const dateLabel = tab === 'tech' ? '15 Apr' : '16 Apr';
-
-  // Handle updates
-  const handleLeaderChange = (field: string, val: string) => setFormData(p => ({ ...p, leader: { ...p.leader, [field]: val } }));
-  const handleParticipantChange = (idx: number, field: string, val: string) => {
-    const nextArr = [...formData.participants];
-    nextArr[idx] = { ...nextArr[idx], [field]: val };
-    setFormData(p => ({ ...p, participants: nextArr }));
-  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
@@ -761,52 +911,65 @@ function RegistrationSection() {
     setErrors(prev => ({ ...prev, file: '' }));
   };
 
-  const validate = () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formRef.current) return;
+    const fd = new FormData(formRef.current);
+
+    const teamName = fd.get('teamName') as string;
+    const leaderName = fd.get('leader.name') as string;
+    const leaderDepartment = fd.get('leader.department') as string;
+    const leaderCollege = fd.get('leader.college') as string;
+    const leaderEmail = fd.get('leader.email') as string;
+    const leaderPhone = fd.get('leader.phone') as string;
+
+    const count = parseInt(formData.participantCount);
+    const parts = [];
+    for (let i = 0; i < count; i++) {
+        parts.push({
+            name: fd.get(`p${i}.name`) as string,
+            department: fd.get(`p${i}.department`) as string,
+            college: fd.get(`p${i}.college`) as string,
+            email: fd.get(`p${i}.email`) as string,
+            phone: fd.get(`p${i}.phone`) as string,
+        });
+    }
+
     let errs: Record<string, string> = {};
 
     if (!formData.event) errs['event'] = 'Please select an event.';
     if (!formData.participantCount) errs['participantCount'] = 'Please select participant count.';
     if (!file) errs['file'] = 'Payment screenshot required.';
 
-    if (!TEAM_NAME_REGEX.test(formData.teamName)) errs['teamName'] = 'Invalid team name.';
-    
-    // Validate leader
-    if (!NAME_REGEX.test(formData.leader.name)) errs['leader.name'] = 'Invalid name.';
-    if (!DEPT_REGEX.test(formData.leader.department)) errs['leader.department'] = 'Invalid dept.';
-    if (!COLLEGE_REGEX.test(formData.leader.college)) errs['leader.college'] = 'Invalid college.';
-    if (!EMAIL_REGEX.test(formData.leader.email)) errs['leader.email'] = 'Invalid email.';
-    if (!PHONE_REGEX.test(formData.leader.phone)) errs['leader.phone'] = 'Invalid phone.';
+    if (!TEAM_NAME_REGEX.test(teamName || '')) errs['teamName'] = 'Invalid team name.';
+    if (!NAME_REGEX.test(leaderName || '')) errs['leader.name'] = 'Invalid name.';
+    if (!DEPT_REGEX.test(leaderDepartment || '')) errs['leader.department'] = 'Invalid dept.';
+    if (!COLLEGE_REGEX.test(leaderCollege || '')) errs['leader.college'] = 'Invalid college.';
+    if (!EMAIL_REGEX.test(leaderEmail || '')) errs['leader.email'] = 'Invalid email.';
+    if (!PHONE_REGEX.test(leaderPhone || '')) errs['leader.phone'] = 'Invalid phone.';
 
-    // Validate participants based on count
-    const count = parseInt(formData.participantCount);
     for (let i = 0; i < count; i++) {
-      if (!NAME_REGEX.test(formData.participants[i].name)) errs[`p${i}.name`] = 'Invalid name.';
-      if (!DEPT_REGEX.test(formData.participants[i].department)) errs[`p${i}.department`] = 'Invalid dept.';
-      if (!COLLEGE_REGEX.test(formData.participants[i].college)) errs[`p${i}.college`] = 'Invalid college.';
-      if (!EMAIL_REGEX.test(formData.participants[i].email)) errs[`p${i}.email`] = 'Invalid email.';
-      if (!PHONE_REGEX.test(formData.participants[i].phone)) errs[`p${i}.phone`] = 'Invalid phone.';
+      if (!NAME_REGEX.test(parts[i].name || '')) errs[`p${i}.name`] = 'Invalid name.';
+      if (!DEPT_REGEX.test(parts[i].department || '')) errs[`p${i}.department`] = 'Invalid dept.';
+      if (!COLLEGE_REGEX.test(parts[i].college || '')) errs[`p${i}.college`] = 'Invalid college.';
+      if (!EMAIL_REGEX.test(parts[i].email || '')) errs[`p${i}.email`] = 'Invalid email.';
+      if (!PHONE_REGEX.test(parts[i].phone || '')) errs[`p${i}.phone`] = 'Invalid phone.';
     }
 
     setErrors(errs);
     if (Object.keys(errs).length > 0) {
       toast.error("Please fix the highlighted errors.");
-      return false;
+      return;
     }
-    return true;
-  };
-
-  const handleSubmit = async () => {
-    if (!validate() || !file) return;
 
     setIsSubmitting(true);
     try {
-      // Step 1 - Upload file
-      const ext = file.name.split('.').pop();
+      const ext = file!.name.split('.').pop();
       const filename = `${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`;
       
       const { error: uploadErr } = await supabase.storage
         .from('payment-screenshots')
-        .upload(filename, file);
+        .upload(filename, file!);
         
       if (uploadErr) throw uploadErr;
 
@@ -815,33 +978,31 @@ function RegistrationSection() {
         .getPublicUrl(filename);
       const publicUrl = publicUrlData.publicUrl;
 
-      // Step 2 - Insert to Supabase DB
-      const count = parseInt(formData.participantCount);
       const insertData = {
-        team_name: formData.teamName,
-        leader_name: formData.leader.name,
-        leader_email: formData.leader.email,
-        leader_phone: formData.leader.phone,
-        leader_department: formData.leader.department,
-        leader_college: formData.leader.college,
+        team_name: teamName,
+        leader_name: leaderName,
+        leader_email: leaderEmail,
+        leader_phone: leaderPhone,
+        leader_department: leaderDepartment,
+        leader_college: leaderCollege,
         technical_event: tab === 'tech' ? formData.event : null,
         non_technical_event: tab === 'nontech' ? formData.event : null,
         payment_screenshot_url: publicUrl,
-        participant1_name: count >= 1 ? formData.participants[0].name : null,
-        participant1_department: count >= 1 ? formData.participants[0].department : null,
-        participant1_college: count >= 1 ? formData.participants[0].college : null,
-        participant1_email: count >= 1 ? formData.participants[0].email : null,
-        participant1_phone: count >= 1 ? formData.participants[0].phone : null,
-        participant2_name: count >= 2 ? formData.participants[1].name : null,
-        participant2_department: count >= 2 ? formData.participants[1].department : null,
-        participant2_college: count >= 2 ? formData.participants[1].college : null,
-        participant2_email: count >= 2 ? formData.participants[1].email : null,
-        participant2_phone: count >= 2 ? formData.participants[1].phone : null,
-        participant3_name: count == 3 ? formData.participants[2].name : null,
-        participant3_department: count == 3 ? formData.participants[2].department : null,
-        participant3_college: count == 3 ? formData.participants[2].college : null,
-        participant3_email: count == 3 ? formData.participants[2].email : null,
-        participant3_phone: count == 3 ? formData.participants[2].phone : null,
+        participant1_name: count >= 1 ? parts[0].name : null,
+        participant1_department: count >= 1 ? parts[0].department : null,
+        participant1_college: count >= 1 ? parts[0].college : null,
+        participant1_email: count >= 1 ? parts[0].email : null,
+        participant1_phone: count >= 1 ? parts[0].phone : null,
+        participant2_name: count >= 2 ? parts[1].name : null,
+        participant2_department: count >= 2 ? parts[1].department : null,
+        participant2_college: count >= 2 ? parts[1].college : null,
+        participant2_email: count >= 2 ? parts[1].email : null,
+        participant2_phone: count >= 2 ? parts[1].phone : null,
+        participant3_name: count == 3 ? parts[2].name : null,
+        participant3_department: count == 3 ? parts[2].department : null,
+        participant3_college: count == 3 ? parts[2].college : null,
+        participant3_email: count == 3 ? parts[2].email : null,
+        participant3_phone: count == 3 ? parts[2].phone : null,
       };
 
       const { error: insertErr } = await supabase
@@ -850,12 +1011,10 @@ function RegistrationSection() {
 
       if (insertErr) throw insertErr;
 
-      // Step 3 - Sync to Sheets (fire & forget)
       supabase.functions.invoke('sync-to-sheets', {
         body: { registration: insertData },
       }).catch((err) => console.error("Sheets sync failed:", err));
 
-      // Step 4 - Success
       setIsSuccess(true);
       
     } catch (err) {
@@ -865,39 +1024,6 @@ function RegistrationSection() {
       setIsSubmitting(false);
     }
   };
-
-  // UI rendering
-  const Label = ({ children }: { children: React.ReactNode }) => (
-    <label className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.14em] text-[#9A9AB8] mb-2.5 block">{children}</label>
-  );
-
-  const Input = ({ err, ...props }: any) => (
-    <div className="mb-5 sm:mb-6 last:mb-0">
-      <input
-        className="w-full bg-[#0D0D14] border sm:border-[var(--stroke)] border-[rgba(255,255,255,0.45)] outline-none font-mono text-[15px] sm:text-base px-4 py-3.5 text-[#EEEEF5] transition-all duration-300 placeholder:text-[#4A4A62] hover:bg-[#12121A] rounded-[8px] sm:rounded-none"
-        style={err ? { borderColor: 'var(--danger)' } : {}}
-        onFocus={(e) => {
-          e.target.style.borderColor = accent;
-          if (window.innerWidth < 640) {
-            e.target.style.boxShadow = `0 0 20px ${accent}40`;
-            e.target.style.transform = 'translateY(-2px)';
-          } else {
-            e.target.style.boxShadow = 'inset 0 1px 2px rgba(0,0,0,0.2)';
-            e.target.style.transform = 'translateY(0)';
-          }
-          e.target.style.background = '#12121A';
-        }}
-        onBlur={(e) => {
-          e.target.style.borderColor = err ? 'var(--danger)' : '';
-          e.target.style.boxShadow = window.innerWidth < 640 ? 'none' : 'inset 0 1px 2px rgba(0,0,0,0.2)';
-          e.target.style.transform = 'translateY(0)';
-          e.target.style.background = '#0D0D14';
-        }}
-        {...props}
-      />
-      {err && <div className="text-[var(--danger)] text-[11px] mt-2 font-mono tracking-wide">{err}</div>}
-    </div>
-  );
 
   return (
     <section id="register" className="section-padding" style={{ background: 'var(--bg)' }}>
@@ -923,110 +1049,114 @@ function RegistrationSection() {
               <p className="font-mono text-base text-[#8888A8]">Registration confirmed. Check your email for details.</p>
             </div>
           ) : (
-            <div>
-              {/* Tab Switcher */}
-              <div className="mb-8 sm:mb-12" style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', borderBottom: '1px solid var(--stroke)' }}>
-                <button
-                  onClick={() => setTab('tech')}
-                  className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] bg-transparent border-none cursor-pointer flex-1 sm:flex-none"
-                  style={{ 
-                    padding: '1.25rem 2rem', 
-                    color: tab === 'tech' ? 'var(--accent)' : 'var(--text-muted)',
-                    borderBottom: tab === 'tech' ? '2px solid var(--accent)' : '2px solid transparent',
-                    transition: 'all 0.3s ease',
-                    marginBottom: '-1px'
-                  }}
-                >
-                  Technical
-                </button>
-                <button
-                  onClick={() => setTab('nontech')}
-                  className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] bg-transparent border-none cursor-pointer flex-1 sm:flex-none"
-                  style={{ 
-                    padding: '1.25rem 2rem', 
-                    color: tab === 'nontech' ? 'var(--danger)' : 'var(--text-muted)',
-                    borderBottom: tab === 'nontech' ? '2px solid var(--danger)' : '2px solid transparent',
-                    transition: 'all 0.3s ease',
-                    marginBottom: '-1px'
-                  }}
-                >
-                  Non-Technical
-                </button>
+            <form onSubmit={handleSubmit} ref={formRef}>
+              <div className="mb-0 sm:mb-12 w-full bg-[#08080C] flex relative items-center">
+                <div className="absolute left-4 font-mono text-[#4A4A62] text-xl hidden sm:block">[</div>
+                <div className="flex-1 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setTab('tech')}
+                    className="font-display font-bold uppercase tracking-widest bg-transparent cursor-pointer"
+                    style={{ 
+                      padding: '1.25rem 2rem', 
+                      fontSize: '16px',
+                      color: tab === 'tech' ? '#C8FA64' : '#8888A8',
+                      borderBottom: tab === 'tech' ? '2px solid #C8FA64' : '2px solid transparent',
+                      transition: 'all 0.3s ease',
+                    }}
+                  >
+                    Technical
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTab('nontech')}
+                    className="font-display font-bold uppercase tracking-widest bg-transparent cursor-pointer"
+                    style={{ 
+                      padding: '1.25rem 2rem', 
+                      fontSize: '16px',
+                      color: tab === 'nontech' ? '#C8FA64' : '#8888A8',
+                      borderBottom: tab === 'nontech' ? '2px solid #C8FA64' : '2px solid transparent',
+                      transition: 'all 0.3s ease',
+                    }}
+                  >
+                    Non-Technical
+                  </button>
+                </div>
+                <div className="absolute right-4 font-mono text-[#4A4A62] text-xl hidden sm:block">]</div>
               </div>
 
-              {/* Form body */}
-              <div className="flex flex-col gap-12 sm:gap-16">
+              <div className="flex flex-col gap-12 sm:gap-16 pt-8 sm:pt-0">
                 
-                {/* SECTION 1: EVENT DETAILS */}
                 <div className="space-y-4 sm:space-y-5" style={{ marginTop: '0.5rem' }}>
-                  <h4 className="font-display text-xl mb-5 sm:mb-6 flex items-center gap-2" style={{ color: accent }}>
-                    <span>EVENT</span>
-                    <span>DIRECTIVE</span>
+                  <h4 className="font-display font-bold text-xl mb-5 sm:mb-6 uppercase" style={{ color: '#C8FA64' }}>
+                    EVENT DIRECTIVE
                   </h4>
-                  <Label>{tab === 'tech' ? 'Technical Event' : 'Non-Technical Event'} ({dateLabel})</Label>
+                  <FormLabel>Event ({dateLabel})</FormLabel>
                 <div className="mb-2 sm:mb-3">
                   <select
                     value={formData.event}
                     onChange={(e) => setFormData(p => ({ ...p, event: e.target.value }))}
-                    className="w-full bg-[#0D0D14] border sm:border-[var(--stroke)] border-[rgba(255,255,255,0.45)] outline-none font-mono text-[15px] sm:text-base px-4 py-3.5 text-[#EEEEF5] transition-all duration-300 hover:bg-[#12121A] appearance-none rounded-[8px] sm:rounded-none"
+                    className="w-full bg-[#0D0D14] border outline-none font-mono text-[15px] sm:text-base px-4 py-3.5 text-[#EEEEF5] transition-all duration-300 hover:bg-[#12121A] appearance-none"
                     style={{ 
-                      ...(errors.event ? { borderColor: 'var(--danger)' } : {}),
+                      borderColor: errors.event ? '#FF4D6D' : '#1E1E2E',
+                      borderRadius: '0',
                       backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23FFFFFF\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")',
                       backgroundRepeat: 'no-repeat',
                       backgroundPosition: 'right 1rem center',
                       backgroundSize: '1.2em'
                     }}
                   >
-                    <option value="">-- Choose Target —-</option>
+                    <option value="">-- Choose Target --</option>
                     {eventsList.map(ev => <option key={ev} value={ev}>{ev}</option>)}
                   </select>
-                  </div> {/* Close event combo wrapper */}
+                  </div>
 
-                  <Label>Team Name</Label>
-                  <Input value={formData.teamName} onChange={(e: any) => setFormData(p => ({ ...p, teamName: e.target.value }))} err={errors.teamName} placeholder="Enter Team Name" />
-                </div> {/* Close SECTION 1 Wrapper */}
+                  <FormLabel>Team Name</FormLabel>
+                  <InputField name="teamName" placeholder="e.g. Team Zyphoria" err={errors.teamName} />
+                </div>
 
-                {/* SECTION 2: TEAM LEADER */}
                 <div>
-                  <h4 className="font-display text-xl mt-4 mb-5 sm:mt-2 sm:mb-6 flex items-center gap-2" style={{ color: accent }}>
-                    <span>TEAM</span>
-                    <span>LEADER</span>
+                  <h4 className="font-display font-bold text-xl mt-4 mb-5 sm:mt-2 sm:mb-6 uppercase" style={{ color: '#C8FA64' }}>
+                    TEAM LEADER
                   </h4>
-                  <div className="p-6 pt-8 sm:p-8 sm:pt-9 border relative overflow-hidden" style={{ borderColor: 'var(--stroke)', background: 'rgba(25, 25, 35, 0.3)' }}>
-                    <div className="absolute top-0 right-0 p-2 font-mono text-[9px] text-[#3A3A4A] tracking-widest">COMMANDER // 01</div>
+                  <div className="p-6 pt-8 sm:p-8 sm:pt-9 border relative overflow-hidden" style={{ borderColor: '#1E1E2E', background: 'rgba(25, 25, 35, 0.3)' }}>
+                    <div className="absolute top-0 right-0 p-2 font-mono text-[9px] text-[#8888A8] tracking-widest text-right">COMMANDER // 01</div>
                     <div className="grid grid-cols-1 gap-y-5">
                     <div>
-                      <Label>Full Name</Label>
-                      <Input value={formData.leader.name} onChange={(e: any) => handleLeaderChange('name', e.target.value)} err={errors['leader.name']} placeholder="John Doe" />
+                      <FormLabel>Full Name</FormLabel>
+                      <InputField name="leader.name" placeholder="Enter full name" err={errors['leader.name']} />
                     </div>
                     <div>
-                      <Label>Department</Label>
-                      <Input value={formData.leader.department} onChange={(e: any) => handleLeaderChange('department', e.target.value)} err={errors['leader.department']} placeholder="Computer Science" />
+                      <FormLabel>Department</FormLabel>
+                      <InputField name="leader.department" placeholder="e.g. CSE, ECE, IT..." err={errors['leader.department']} />
                     </div>
                     <div>
-                      <Label>College</Label>
-                      <Input value={formData.leader.college} onChange={(e: any) => handleLeaderChange('college', e.target.value)} err={errors['leader.college']} placeholder="RIT" />
+                      <FormLabel>College</FormLabel>
+                      <InputField name="leader.college" placeholder="Enter college name" err={errors['leader.college']} />
                     </div>
                     <div>
-                      <Label>Email Address</Label>
-                      <Input value={formData.leader.email} onChange={(e: any) => handleLeaderChange('email', e.target.value)} err={errors['leader.email']} placeholder="john@example.com" />
+                      <FormLabel>Email</FormLabel>
+                      <InputField name="leader.email" placeholder="Enter email address" err={errors['leader.email']} />
                     </div>
                     <div>
-                      <Label>Phone Connection</Label>
-                      <Input value={formData.leader.phone} onChange={(e: any) => handleLeaderChange('phone', e.target.value)} err={errors['leader.phone']} placeholder="9876543210" />
+                      <FormLabel>Phone</FormLabel>
+                      <InputField name="leader.phone" placeholder="Enter 10-digit mobile number" err={errors['leader.phone']} />
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-2 sm:pt-3">
-                <Label>Squad Capacity (excluding leader)</Label>
-                <div className="mb-8 sm:mb-10">
+                <div className="pt-8 sm:pt-10">
+                <h4 className="font-display font-bold text-[18px] mb-5 uppercase" style={{ color: '#C8FA64' }}>
+                    SQUAD CAPACITY (EXCLUDING LEADER)
+                </h4>
+                <div className="mb-0 sm:mb-10">
                   <select
                     value={formData.participantCount}
                     onChange={(e) => setFormData(p => ({ ...p, participantCount: e.target.value }))}
-                    className="w-full bg-[#0D0D14] border sm:border-[var(--stroke)] border-[rgba(255,255,255,0.45)] outline-none font-mono text-[15px] sm:text-base px-4 py-3.5 text-[#EEEEF5] transition-all duration-300 hover:bg-[#12121A] appearance-none rounded-[8px] sm:rounded-none"
+                    className="w-full bg-[#0D0D14] border outline-none font-mono text-[15px] sm:text-base px-4 py-3.5 text-[#EEEEF5] transition-all duration-300 hover:bg-[#12121A] appearance-none"
                     style={{ 
-                      ...(errors.participantCount ? { borderColor: 'var(--danger)' } : {}),
+                      borderColor: errors.participantCount ? '#FF4D6D' : '#1E1E2E',
+                      borderRadius: '0',
                       backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23FFFFFF\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")',
                       backgroundRepeat: 'no-repeat',
                       backgroundPosition: 'right 1rem center',
@@ -1034,54 +1164,49 @@ function RegistrationSection() {
                     }}
                   >
                     <option value="0">0 (Solo Operative)</option>
-                    <option value="1">1 Member</option>
-                    <option value="2">2 Members</option>
-                    <option value="3">3 Members</option>
+                    <option value="1">1 Operative</option>
+                    <option value="2">2 Operatives</option>
+                    <option value="3">3 Operatives</option>
                   </select>
-                  {errors.participantCount && <div className="text-[var(--danger)] text-[11px] mt-2 font-mono">{errors.participantCount}</div>}
+                  {errors.participantCount && <div className="text-[#FF4D6D] text-[11px] mt-2 font-mono">{errors.participantCount}</div>}
                 </div>
                 </div>
 
                 {Array.from({ length: parseInt(formData.participantCount) }).map((_, idx) => (
-                  <div key={idx} className="mt-10 sm:mt-12">
-                    <h4 className="font-display text-lg mb-5 sm:mb-6 text-[#EEEEF5] flex items-center gap-2">
-                       Participant {idx + 1}
-                    </h4>
-                    <div className="p-6 pt-8 sm:p-8 sm:pt-9 border relative overflow-hidden" style={{ borderColor: 'var(--stroke)', background: 'rgba(25, 25, 35, 0.3)' }}>
-                      <div className="absolute top-0 right-0 p-2 font-mono text-[9px] text-[#3A3A4A] tracking-widest">MEMBER // {idx + 1}</div>
+                  <div key={idx} className="mt-8 sm:mt-6">
+                    <div className="p-6 pt-8 sm:p-8 sm:pt-9 border relative overflow-hidden" style={{ borderColor: '#1E1E2E', background: 'rgba(25, 25, 35, 0.3)' }}>
+                      <div className="absolute top-0 right-0 p-2 font-mono text-[9px] text-[#8888A8] tracking-widest text-right">OPERATIVE // 0{idx + 2}</div>
                       <div className="grid grid-cols-1 gap-y-5">
                       <div>
-                        <Label>Full Name</Label>
-                        <Input value={formData.participants[idx].name} onChange={(e: any) => handleParticipantChange(idx, 'name', e.target.value)} err={errors[`p${idx}.name`]} placeholder="Jane Doe" />
+                        <FormLabel>Full Name</FormLabel>
+                        <InputField name={`p${idx}.name`} placeholder="Enter full name" err={errors[`p${idx}.name`]} />
                       </div>
                       <div>
-                        <Label>Department</Label>
-                        <Input value={formData.participants[idx].department} onChange={(e: any) => handleParticipantChange(idx, 'department', e.target.value)} err={errors[`p${idx}.department`]} placeholder="Information Tech" />
+                        <FormLabel>Department</FormLabel>
+                        <InputField name={`p${idx}.department`} placeholder="e.g. CSE, ECE, IT..." err={errors[`p${idx}.department`]} />
                       </div>
                       <div>
-                        <Label>College</Label>
-                        <Input value={formData.participants[idx].college} onChange={(e: any) => handleParticipantChange(idx, 'college', e.target.value)} err={errors[`p${idx}.college`]} placeholder="RIT" />
+                        <FormLabel>College</FormLabel>
+                        <InputField name={`p${idx}.college`} placeholder="Enter college name" err={errors[`p${idx}.college`]} />
                       </div>
                       <div>
-                        <Label>Email</Label>
-                        <Input value={formData.participants[idx].email} onChange={(e: any) => handleParticipantChange(idx, 'email', e.target.value)} err={errors[`p${idx}.email`]} placeholder="jane@example.com" />
+                        <FormLabel>Email</FormLabel>
+                        <InputField name={`p${idx}.email`} placeholder="Enter email address" err={errors[`p${idx}.email`]} />
                       </div>
                       <div>
-                        <Label>Phone</Label>
-                        <Input value={formData.participants[idx].phone} onChange={(e: any) => handleParticipantChange(idx, 'phone', e.target.value)} err={errors[`p${idx}.phone`]} placeholder="9123456780" />
+                        <FormLabel>Phone</FormLabel>
+                        <InputField name={`p${idx}.phone`} placeholder="Enter 10-digit mobile number" err={errors[`p${idx}.phone`]} />
                       </div>
                       </div>
                     </div>
                   </div>
                 ))}
 
-                </div> {/* Close SECTION 2 Wrapper */}
+                </div>
 
-                {/* SECTION 3: PAYMENT PROTOCOL */}
                 <div className="pt-10 sm:pt-12 border-t" style={{ borderColor: 'var(--stroke)' }}>
-                  <h4 className="font-display text-xl mt-4 mb-6 sm:mt-0 sm:mb-4 flex items-center gap-2" style={{ color: accent }}>
-                    <span>PAYMENT</span>
-                    <span>PROTOCOL</span>
+                  <h4 className="font-display font-bold text-xl mb-6 uppercase" style={{ color: '#C8FA64' }}>
+                    PAYMENT PROTOCOL
                   </h4>
                   <p className="font-mono text-sm sm:text-base text-[#8888A8] mb-10 leading-relaxed max-w-[680px]">
                     Initialize payment of ₹300 per team for the event via our secure uplink. Upload your confirmation receipt below for verification.
@@ -1094,41 +1219,40 @@ function RegistrationSection() {
                       rel="noreferrer" 
                       className="inline-flex items-center gap-3 px-8 py-4 border font-mono text-sm uppercase tracking-widest transition-all duration-300" 
                       style={{ 
-                        borderColor: accent, 
-                        color: accent,
+                        borderColor: '#C8FA64', 
+                        color: '#C8FA64',
                         background: 'rgba(200, 250, 100, 0.05)'
                       }} 
                       onMouseEnter={(e) => { 
-                        e.currentTarget.style.backgroundColor = accent; 
-                        e.currentTarget.style.color = 'var(--bg)'; 
-                        e.currentTarget.style.boxShadow = `0 0 25px ${accent}40`; 
+                        e.currentTarget.style.backgroundColor = '#C8FA64'; 
+                        e.currentTarget.style.color = '#08080C'; 
+                        e.currentTarget.style.boxShadow = `0 0 25px rgba(200, 250, 100, 0.4)`; 
                       }} 
                       onMouseLeave={(e) => { 
                         e.currentTarget.style.backgroundColor = 'rgba(200, 250, 100, 0.05)'; 
-                        e.currentTarget.style.color = accent; 
+                        e.currentTarget.style.color = '#C8FA64'; 
                         e.currentTarget.style.boxShadow = 'none'; 
                       }}
                     >
-                      ↗ Access Payment Portal
+                      ↗ ACCESS PAYMENT PORTAL
                     </a>
-                    <div className="font-mono text-[10px] text-[#555575] uppercase tracking-widest">
+                    <div className="font-mono text-[10px] text-[#8888A8] uppercase tracking-widest">
                       ID // SYMP-2026-PAY
                     </div>
                   </div>
 
                      <div className="group relative border-2 border-dashed p-10 sm:p-12 text-center flex flex-col items-center justify-center cursor-pointer transition-all duration-300 hover:bg-[#12121A] overflow-hidden" 
-                       style={{ borderColor: errors.file ? 'var(--danger)' : 'var(--stroke)', background: 'rgba(13, 13, 20, 0.6)' }}>
+                       style={{ borderColor: errors.file ? '#FF4D6D' : '#1E1E2E', background: '#0D0D14' }}>
                     <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
                     
-                    {/* Hover effect background */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/0 to-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
 
                     {filePreview ? (
                       <div className="flex flex-col items-center relative z-20">
                         <div className="relative mb-4">
-                          <img src={filePreview} alt="Preview" className="h-32 w-32 object-cover border-2 shadow-2xl" style={{ borderColor: accent }} />
-                          <div className="absolute -top-2 -right-2 bg-green-500 rounded-full p-1 shadow-lg">
-                            <CheckCircle size={16} color="white" />
+                          <img src={filePreview} alt="Preview" className="h-32 w-32 object-cover border-2 shadow-2xl" style={{ borderColor: '#C8FA64' }} />
+                          <div className="absolute -top-2 -right-2 bg-[#C8FA64] rounded-full p-1 shadow-lg">
+                            <CheckCircle size={16} color="#08080C" />
                           </div>
                         </div>
                         <span className="font-mono text-sm text-[#EEEEF5] font-bold mb-1">{file?.name}</span>
@@ -1137,23 +1261,23 @@ function RegistrationSection() {
                     ) : (
                       <>
                         <div className="mb-4 p-4 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
-                          <Upload size={32} style={{ color: accent }} />
+                          <Upload size={32} style={{ color: '#EEEEF5' }} />
                         </div>
                         <p className="font-mono text-base text-[#EEEEF5] mb-2 font-medium tracking-wide">Upload Transmission Receipt</p>
-                        <p className="font-mono text-xs text-[#8888A8] opacity-70">PNG, JPG or WEBP (Max 5MB)</p>
+                        <p className="font-mono text-xs text-[#8888A8] opacity-70">PNG, JPG or WEBP · Max 5MB</p>
                       </>
                     )}
                   </div>
-                  {errors.file && <div className="text-[var(--danger)] text-xs mt-3 font-mono text-center tracking-wide">{errors.file}</div>}
+                  {errors.file && <div className="text-[#FF4D6D] text-xs mt-3 font-mono text-center tracking-wide">{errors.file}</div>}
                 </div>
 
                 <button 
-                  onClick={handleSubmit} 
+                  type="submit"
                   disabled={isSubmitting}
-                  className="w-full font-mono font-bold text-base sm:text-lg uppercase tracking-[0.18em] py-6 sm:py-7 flex items-center justify-center gap-3 transition-all duration-300 relative overflow-hidden group shadow-xl"
+                  className="w-full font-display font-bold text-base sm:text-lg uppercase tracking-[0.18em] py-6 sm:py-7 flex items-center justify-center gap-3 transition-all duration-300 relative overflow-hidden group shadow-xl"
                   style={{ 
-                    backgroundColor: isSubmitting ? 'var(--stroke)' : accent, 
-                    color: isSubmitting ? 'var(--text-muted)' : 'var(--bg)',
+                    backgroundColor: isSubmitting ? 'var(--stroke)' : '#C8FA64', 
+                    color: isSubmitting ? 'var(--text-muted)' : '#08080C',
                     border: 'none',
                     cursor: isSubmitting ? 'not-allowed' : 'pointer',
                     marginTop: '2rem'
@@ -1161,13 +1285,13 @@ function RegistrationSection() {
                   onMouseEnter={(e) => {
                     if (!isSubmitting) {
                       e.currentTarget.style.backgroundColor = 'white';
-                      e.currentTarget.style.boxShadow = `0 0 30px ${accent}60`;
+                      e.currentTarget.style.boxShadow = `0 0 30px rgba(200, 250, 100, 0.6)`;
                       e.currentTarget.style.transform = 'translateY(-2px)';
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!isSubmitting) {
-                      e.currentTarget.style.backgroundColor = accent;
+                      e.currentTarget.style.backgroundColor = '#C8FA64';
                       e.currentTarget.style.boxShadow = 'none';
                       e.currentTarget.style.transform = 'translateY(0)';
                     }
@@ -1180,14 +1304,13 @@ function RegistrationSection() {
                   )}
                 </button>
               </div>
-            </div>
+            </form>
           )}
         </div>
       </div>
     </section>
-  )
+  );
 }
-
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
 function Footer() {
@@ -1235,15 +1358,20 @@ function Footer() {
           {/* Col 3 — social + contact */}
           <div>
             <p className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Contact</p>
-            <a
-              href="mailto:zyphoria@rit.ac.in"
-              className="font-mono"
-              style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'none', marginBottom: '1rem' }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--accent)')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
-            >
-              zyphoria@rit.ac.in
-            </a>
+            <div className="flex flex-col gap-2 mb-6">
+              {[
+                { name: 'Divyadarshini K', phone: '8056120505', display: '+91 80561 20505' },
+                { name: 'Gajalakshmi C', phone: '9994335576', display: '+91 99943 35576' },
+                { name: 'M. S. Sathish', phone: '9384579988', display: '+91 93845 79988' },
+                { name: 'S. Sanjit Kumar', phone: '8667509464', display: '+91 86675 09464' }
+              ].map(c => (
+                <div key={c.name} className="flex justify-between items-center text-[#8888A8]" style={{ gap: '1rem' }}>
+                  <span className="font-mono text-[12px] break-keep">{c.name}</span>
+                  <a href={`tel:+91${c.phone}`} className="font-mono text-[12px] whitespace-nowrap hover:text-[var(--accent)] transition-colors">{c.display}</a>
+                </div>
+              ))}
+            </div>
+            
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
               {['IG', 'LI', 'TW'].map((social) => (
                 <a
@@ -1339,7 +1467,9 @@ function ZyphoriaHome() {
         <Navbar />
         <main>
           <Hero />
+          <AboutSection />
           <EventsSection />
+          <OrganizersSection />
           <RegistrationSection />
         </main>
         <Footer />
