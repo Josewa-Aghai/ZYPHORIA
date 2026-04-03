@@ -105,8 +105,9 @@ function LogoScreen({
   const lowerSrc = imageSrc?.toLowerCase() ?? ''
   const isZyphoria = lowerSrc.includes('zyphoria')
   const isZyphoria1 = lowerSrc.includes('zyphoria1')
+  const isZyphoria2 = lowerSrc.includes('zyphoria2')
   const isZyphoriaMain = lowerSrc.includes('zyphoria.png') && !isZyphoria1
-  const isZyphoriaWordmark = isZyphoria1 || isZyphoriaMain
+  const isZyphoriaWordmark = isZyphoria1 || isZyphoria2 || isZyphoriaMain
   const isIdatamind = lowerSrc.includes('idatamind')
   const isRit = lowerSrc.includes('ritlogo')
 
@@ -196,7 +197,7 @@ function LogoScreen({
                   isIdatamind || isRit
                     ? 'drop-shadow(0 0 8px rgba(255,255,255,0.9)) drop-shadow(0 0 22px rgba(255,255,255,0.6))'
                     : isZyphoriaWordmark
-                      ? 'saturate(1.03) contrast(1.03)'
+                      ? 'brightness(1.08) saturate(1.08) contrast(1.06) drop-shadow(0 0 14px rgba(200,250,100,0.35))'
                       : undefined,
                 imageRendering: (isRit ? 'high-quality' : 'auto') as any,
               }}
