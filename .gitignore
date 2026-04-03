@@ -2,3 +2,19 @@ node_modules
 
 # Local Netlify folder
 .netlify
+
+# Build outputs
+dist
+
+# TanStack temporary/generated local artifacts
+.tanstack
+
+# Local environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Keep committed example env
+!.env.example
