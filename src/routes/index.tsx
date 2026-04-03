@@ -1103,10 +1103,10 @@ function OrganizersSection() {
               ))}
             </div>
           </div>
-          
+
           {/* Faculty */}
           <div>
-            <p className="font-mono" style={sectionLabelStyle}>FACULTY COORDINATORS</p>
+            <p className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', letterSpacing: '0.15em', marginBottom: '1rem' }}>FACULTY COORDINATORS</p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
               {[
                 { name: 'Ms. J. Sindhuja', role: 'AP / CSE' },
@@ -1127,40 +1127,26 @@ function OrganizersSection() {
 
           {/* Student Coordinators */}
           <div>
-            <p className="font-mono" style={sectionLabelStyle}>STUDENT COORDINATORS</p>
+            <p className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', letterSpacing: '0.15em', marginBottom: '1rem' }}>STUDENT COORDINATORS</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
                 { name: 'Divyadarshini K', phone: '8056120505' },
-                { name: 'Gajalakshmi C', phone: '9994335576' },
-                { name: 'M. S. Sathish', phone: '9384579988' },
-                { name: 'S. Sanjit Kumar', phone: '8667509464' }
-              ].map(p => (
-                <div key={p.name} className="flex items-center gap-4 p-4 group" style={{ background: '#101018', border: '1px solid #1E1E2E', transition: 'all 0.3s ease' }} onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'} onMouseLeave={e => e.currentTarget.style.borderColor = '#1E1E2E'}>
-                  <div className="w-10 h-10 flex items-center justify-center shrink-0 transition-colors" style={{ background: 'rgba(200,250,100,0.05)', border: '1px solid var(--accent)' }}>
-                    <User size={16} color="var(--accent)" />
-                  </div>
-                  <div style={{ overflow: 'hidden', minWidth: 0 }}>
-                    <div className="student-coordinator-name font-display font-bold text-[18px] text-[#EEEEF5]">
-                      {p.name}
-                    </div>
-                    <a href={`tel:+91${p.phone}`} className="font-mono text-[11px] text-[#8888A8] hover:text-[var(--accent)] flex items-center gap-1 mt-1 truncate" style={{ transition: 'color 0.2s' }}>
-                      <Phone size={10} /> {p.phone}
-                    </a>
-                  </div>
+                { name: 'Shree Suriya', phone: '9360572003' },
+                { name: 'Naveen Kumar', phone: '7904769905' },
+                { name: 'Joshua Ewrain', phone: '8838523009' },
+              ].map(s => (
+                <div key={s.name} className="p-4" style={{ background: '#101018', border: '1px solid #1E1E2E' }}>
+                  <div className="font-display student-coordinator-name font-bold text-[16px] text-[#EEEEF5] mb-1">{s.name}</div>
+                  <div className="font-mono text-[11px] text-[#8888A8]">{s.phone}</div>
                 </div>
               ))}
             </div>
           </div>
-
         </div>
       </div>
     </section>
   )
 }
-
-// ─── Registration ─────────────────────────────────────────────────────────────
-
-
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
@@ -1184,7 +1170,7 @@ function Footer() {
               ZYPH<span style={{ color: 'var(--accent)' }}>ORIA</span>
               <span className="font-mono" style={{ fontSize: '12px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400 }}>'26</span>
             </div>
-            <div className="footer-divider" />
+            <div style={{ width: '100%', height: '1px', background: '#1E1E2E', margin: '10px 0' }} />
             <p className="footer-tagline-main">
               The annual CSE Symposium of<br />
               Rajalakshmi Institute of Technology
@@ -1194,13 +1180,14 @@ function Footer() {
             </p>
           </div>
 
-
           {/* Col 3 — social only (mobile) */}
           <div className="social-mobile-only" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
               {[
                 { label: 'IG', href: 'https://www.instagram.com/zyphoria_26_rit?igsh=MXNrMGtuc2ppbGUwcw==', icon: '/insta1.png' },
                 { label: 'LI', href: 'mailto:zyphoria26.cse@gmail.com', icon: '/gmail.png' },
+              ].map((social) => (
+                { label: 'GM', href: 'mailto:zyphoria26.cse@gmail.com', icon: '/gmail.png' },
               ].map((social) => (
                 <a
                   key={social.label}
@@ -1209,8 +1196,8 @@ function Footer() {
                   target={social.href.startsWith('http') ? '_blank' : undefined}
                   rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   style={{
-                    width: social.icon ? '38px' : '32px',
-                    height: social.icon ? '38px' : '32px',
+                    width: '38px',
+                    height: '38px',
                     border: '1px solid var(--stroke)',
                     display: 'flex',
                     alignItems: 'center',
@@ -1229,16 +1216,12 @@ function Footer() {
                     e.currentTarget.style.color = 'var(--text-muted)'
                   }}
                 >
-                  {social.icon ? (
-                    <img
-                      src={social.icon}
-                      alt={`${social.label} icon`}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      draggable={false}
-                    />
-                  ) : (
-                    social.label
-                  )}
+                  <img
+                    src={social.icon}
+                    alt={`${social.label} icon`}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    draggable={false}
+                  />
                 </a>
               ))}
             </div>
@@ -1316,16 +1299,6 @@ function Footer() {
       </div>
 
       <style>{`
-        .social-desktop-only { display: flex; }
-        .social-mobile-only { display: flex; }
-
-        .footer-divider {
-          width: 100%;
-          height: 1px;
-          background: #1E1E2E;
-          margin: 10px 0;
-        }
-
         .footer-tagline-main {
           font-family: 'JetBrains Mono', monospace;
           color: #8888A8;
@@ -1343,7 +1316,6 @@ function Footer() {
 
         @media (max-width: 768px) {
           .footer-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
-          .social-desktop-only { display: none !important; }
           .student-coordinator-name {
             font-size: 14px !important;
             white-space: nowrap !important;
@@ -1357,10 +1329,6 @@ function Footer() {
             letter-spacing: 0.01em !important;
             word-spacing: 0.14em !important;
           }
-        }
-
-        @media (min-width: 769px) {
-          .social-mobile-only { display: none !important; }
         }
       `}</style>
     </footer>
