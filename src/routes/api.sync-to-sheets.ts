@@ -1,4 +1,4 @@
-import { createAPIFileRoute } from '@tanstack/react-start/api';
+import { createFileRoute } from '@tanstack/react-router';
 import crypto from 'node:crypto';
 
 /**
@@ -45,75 +45,79 @@ async function getGoogleToken(clientEmail: string, privateKey: string) {
   return data.access_token;
 }
 
-export const Route = createAPIFileRoute('/api/sync-to-sheets')({
-  POST: async ({ request }: { request: Request }) => {
-    try {
-      const body = await request.json();
-      const { registration } = body;
+export const Route = createFileRoute('/api/sync-to-sheets')({
+  server: {
+    handlers: {
+      POST: async ({ request }: { request: Request }) => {
+        try {
+          const body = await request.json();
+          const { registration } = body;
 
-      if (!registration) {
-        return new Response(JSON.stringify({ error: 'Missing registration data' }), { status: 400 });
-      }
+          if (!registration) {
+            return new Response(JSON.stringify({ error: 'Missing registration data' }), { status: 400 });
+          }
 
-      // 1. Load Google Credentials from Env
-      const sheetId = process.env.GOOGLE_SHEET_ID;
-      const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
-      const privateKey = process.env.GOOGLE_PRIVATE_KEY;
+          // 1. Load Google Credentials from Env
+          const sheetId = process.env.GOOGLE_SHEET_ID;
+          const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
+          const privateKey = process.env.GOOGLE_PRIVATE_KEY;
 
-      if (!sheetId || !clientEmail || !privateKey) {
-        console.warn("Google Sheets Sync aborted: Missing Google env variables.");
-        return new Response(JSON.stringify({ error: 'Google integrations not configured' }), { status: 500 });
-      }
+          if (!sheetId || !clientEmail || !privateKey) {
+            console.warn("Google Sheets Sync aborted: Missing Google env variables.");
+            return new Response(JSON.stringify({ error: 'Google integrations not configured' }), { status: 500 });
+          }
 
-      // 2. Get Access Token
-      const token = await getGoogleToken(clientEmail, privateKey);
+          // 2. Get Access Token
+          const token = await getGoogleToken(clientEmail, privateKey);
 
-      // 3. Format Registration Data into an array of values (row)
-      // Match the order of these to match your columns in Google Sheets.
-      const rowData = [
-        new Date().toISOString(), // Timestamp
-        registration.team_name || 'Individual',
-        registration.leader_name || '',
-        registration.leader_email || '',
-        registration.leader_phone || '',
-        registration.leader_department || '',
-        registration.leader_college || '',
-        registration.technical_event || '',
-        registration.non_technical_event || '',
-        registration.payment_screenshot_url || '',
-        // Participants if any
-        registration.participant1_name || '',
-        registration.participant2_name || '',
-        registration.participant3_name || '',
-      ];
+          // 3. Format Registration Data into an array of values (row)
+          // Match the order of these to match your columns in Google Sheets.
+          const rowData = [
+            new Date().toISOString(), // Timestamp
+            registration.team_name || 'Individual',
+            registration.leader_name || '',
+            registration.leader_email || '',
+            registration.leader_phone || '',
+            registration.leader_department || '',
+            registration.leader_college || '',
+            registration.technical_event || '',
+            registration.non_technical_event || '',
+            registration.payment_screenshot_url || '',
+            // Participants if any
+            registration.participant1_name || '',
+            registration.participant2_name || '',
+            registration.participant3_name || '',
+          ];
 
-      // 4. Append to Google Sheets
-      const range = process.env.GOOGLE_SHEETS_RANGE || 'Sheet1!A:Z';
-      const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}:append?valueInputOption=USER_ENTERED`;
+          // 4. Append to Google Sheets
+          const range = process.env.GOOGLE_SHEETS_RANGE || 'Sheet1!A:Z';
+          const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}:append?valueInputOption=USER_ENTERED`;
 
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          values: [rowData]
-        })
-      });
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              values: [rowData]
+            })
+          });
 
-      const result = await response.json();
-      
-      if (!response.ok) {
-        console.error("Failed to append to Google Sheets:", result);
-        return new Response(JSON.stringify({ error: 'Failed to sync with sheets' }), { status: 500 });
-      }
+          const result = await response.json();
+          
+          if (!response.ok) {
+            console.error("Failed to append to Google Sheets:", result);
+            return new Response(JSON.stringify({ error: 'Failed to sync with sheets' }), { status: 500 });
+          }
 
-      return new Response(JSON.stringify({ success: true, message: 'Synced to Google Sheets' }), { status: 200 });
+          return new Response(JSON.stringify({ success: true, message: 'Synced to Google Sheets' }), { status: 200 });
 
-    } catch (err: any) {
-      console.error("Error in sync-to-sheets API:", err);
-      return new Response(JSON.stringify({ error: err.message || 'Internal error' }), { status: 500 });
-    }
+        } catch (err: any) {
+          console.error("Error in sync-to-sheets API:", err);
+          return new Response(JSON.stringify({ error: err.message || 'Internal error' }), { status: 500 });
+        }
+      },
+    },
   },
 });
