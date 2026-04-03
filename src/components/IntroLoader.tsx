@@ -24,10 +24,10 @@ type Star = {
 }
 
 const INTRO_TIMINGS = {
-  screenOne: 2200,
-  screenTwo: 2200,
-  screenThree: 2600,
-  exit: 800,
+  screenOne: 2600,
+  screenTwo: 2600,
+  screenThree: 3200,
+  exit: 900,
 } as const
 
 const shellVariants: Variants = {
@@ -102,13 +102,13 @@ function LogoScreen({ imageSrc, imageAlt, accent = 'lime', reveal = false }: Log
       exit="exit"
       className="relative z-10 flex min-h-screen items-center justify-center px-4 py-8 sm:px-8"
     >
-      <div className={`absolute inset-x-0 top-1/2 mx-auto h-[42rem] w-[min(90vw,70rem)] -translate-y-1/2 rounded-full blur-3xl ${glowClass}`} />
+      <div className={`absolute inset-x-0 top-1/2 mx-auto h-192 w-[min(94vw,78rem)] -translate-y-1/2 rounded-full blur-3xl ${glowClass}`} />
 
       <div className="relative flex w-full items-center justify-center">
         {imageSrc ? (
           <motion.div
             variants={logoVariants}
-            className="relative w-[min(82vw,38rem)] sm:w-[min(70vw,44rem)]"
+            className="relative w-[min(90vw,46rem)] sm:w-[min(78vw,54rem)]"
             animate={reveal ? { scale: [1, 1.04, 1], filter: ['drop-shadow(0 0 0 rgba(0,0,0,0))', 'drop-shadow(0 0 36px rgba(200,250,100,0.48))', 'drop-shadow(0 0 70px rgba(200,250,100,0.78))'] } : undefined}
             transition={{ duration: 2.8, repeat: reveal ? Number.POSITIVE_INFINITY : 0, repeatType: 'mirror' }}
           >
@@ -189,7 +189,7 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
         initial="hidden"
         animate={closing ? 'exit' : 'visible'}
         exit="exit"
-        className="fixed inset-0 z-[1000] overflow-hidden bg-[#050508] text-white"
+        className="fixed inset-0 z-1000 overflow-hidden bg-[#050508] text-white"
       >
         <ParticleField />
 
