@@ -75,7 +75,7 @@ function ParticleField() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,250,100,0.12),transparent_32%),radial-gradient(circle_at_top,rgba(255,255,255,0.04),transparent_42%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,4,6,0.82),rgba(8,8,12,0.98))]" />
       {particles.map((particle, index) => (
-        <motion.span
+        <span
           key={index}
           className="absolute rounded-full bg-white"
           style={{
@@ -83,10 +83,8 @@ function ParticleField() {
             top: `${particle.top}%`,
             width: `${particle.size}px`,
             height: `${particle.size}px`,
-            opacity: particle.opacity,
+            opacity: particle.opacity * 0.55,
           }}
-          animate={{ opacity: [particle.opacity * 0.25, particle.opacity, particle.opacity * 0.45] }}
-          transition={{ duration: particle.duration, delay: particle.delay, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
         />
       ))}
     </div>
@@ -106,8 +104,9 @@ function LogoScreen({
   const isZyphoria = lowerSrc.includes('zyphoria')
   const isZyphoria1 = lowerSrc.includes('zyphoria1')
   const isZyphoria2 = lowerSrc.includes('zyphoria2')
+  const isZyphoria3 = lowerSrc.includes('zyphoria3')
   const isZyphoriaMain = lowerSrc.includes('zyphoria.png') && !isZyphoria1
-  const isZyphoriaWordmark = isZyphoria1 || isZyphoria2 || isZyphoriaMain
+  const isZyphoriaWordmark = isZyphoria1 || isZyphoria2 || isZyphoria3 || isZyphoriaMain
   const isIdatamind = lowerSrc.includes('idatamind')
   const isRit = lowerSrc.includes('ritlogo')
 
@@ -163,28 +162,16 @@ function LogoScreen({
             className={`relative flex items-center justify-center sm:mx-auto ${
               isRit
                 ? 'w-[min(80vw,28rem)] sm:w-[min(70vw,32rem)] lg:w-[min(55vw,36rem)]'
+                : isZyphoria1
+                ? 'w-[min(92vw,44rem)] sm:w-[min(84vw,52rem)] lg:w-[min(72vw,58rem)]'
+                : isZyphoria3
+                ? 'w-[min(95vw,48rem)] sm:w-[min(88vw,58rem)] lg:w-[min(78vw,64rem)]'
                 : imageSrc?.toLowerCase().includes('idatamind')
                 ? 'w-[75vw] sm:w-[65vw] lg:w-[50vw] max-w-[44rem]'
                 : 'w-[min(90vw,36rem)] sm:w-[min(80vw,44rem)] lg:w-[min(70vw,52rem)]'
             }`}
-            animate={
-              reveal
-                ? {
-                    scale: [1, 1.04, 1],
-                    filter: [
-                      'drop-shadow(0 0 0 rgba(0,0,0,0))',
-                      'drop-shadow(0 0 26px rgba(200,250,100,0.42))',
-                      'drop-shadow(0 0 46px rgba(200,250,100,0.75))',
-                    ],
-                    opacity: 1,
-                  }
-                : 'visible'
-            }
-            transition={
-              reveal
-                ? { duration: 1.2, ease: 'easeOut' }
-                : { duration: 0.65, ease: 'easeOut' }
-            }
+            animate="visible"
+            transition={{ duration: 0.5, ease: 'easeOut' }}
           >
             <img
               src={imageSrc}
@@ -192,18 +179,24 @@ function LogoScreen({
               className={`h-auto w-full max-w-full object-contain ${
                 trimBorder
                   ? '[clip-path:inset(2%_1.5%_2%_1.5%)]'
+                  : isZyphoria1
+                  ? '[clip-path:inset(32%_11%_34%_11%)]'
                   : isZyphoriaMain
                   ? '[clip-path:inset(32%_11%_34%_11%)]'
                   : ''
               }`}
               style={{
-                mixBlendMode: undefined,
                 filter:
                   isIdatamind || isRit
                     ? 'drop-shadow(0 0 7px rgba(255,255,255,0.65)) drop-shadow(0 0 14px rgba(255,255,255,0.35))'
+                    : isZyphoria3
+                      ? 'brightness(1.03) saturate(1.03) contrast(1.02) drop-shadow(0 0 7px rgba(200,250,100,0.2))'
+                    : isZyphoria1
+                      ? 'brightness(1.03) saturate(1.02) contrast(1.02) drop-shadow(0 0 7px rgba(200,250,100,0.2))'
                     : isZyphoriaWordmark
                       ? 'brightness(1.05) saturate(1.05) contrast(1.04) drop-shadow(0 0 10px rgba(200,250,100,0.28))'
                       : undefined,
+                mixBlendMode: isZyphoria1 ? 'screen' : undefined,
                 imageRendering: (isRit ? 'high-quality' : 'auto') as any,
               }}
               draggable={false}
@@ -212,7 +205,12 @@ function LogoScreen({
         ) : null}
 
         {subtitle ? (
-          <p className="font-mono text-center text-xs uppercase tracking-[0.22em] text-white/65 sm:text-sm">
+          <p
+            className={`font-mono text-center text-xs uppercase tracking-[0.22em] sm:text-sm ${
+              isZyphoria1 ? 'text-lime-200/90' : 'text-white/65'
+            }`}
+            style={{ marginTop: isZyphoria1 ? '-0.35rem' : undefined }}
+          >
             {subtitle}
           </p>
         ) : null}
@@ -326,11 +324,10 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
           {screen === 3 ? (
             <LogoScreen
               key="screen-three"
-              imageSrc="/zyphoria2.png"
+              imageSrc="/zyphoria1.png"
               imageAlt="Zyphoria '26"
-              label="Department of Computer Science and Engineering"
+              subtitle="Department of Engineering"
               accent="lime"
-              reveal
             />
           ) : null}
         </AnimatePresence>

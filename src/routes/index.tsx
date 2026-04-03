@@ -1065,14 +1065,20 @@ function Footer() {
           {/* Col 3 — social only (mobile) */}
           <div className="social-mobile-only" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
-              {['IG', 'LI', 'TW'].map((social) => (
+              {[
+                { label: 'IG', href: 'https://www.instagram.com/zyphoria_26_rit?igsh=MXNrMGtuc2ppbGUwcw==', icon: '/insta1.png' },
+                { label: 'LI', href: '#', icon: null },
+                { label: 'TW', href: '#', icon: null },
+              ].map((social) => (
                 <a
-                  key={social}
-                  href="#"
+                  key={social.label}
+                  href={social.href}
                   className="font-mono"
+                  target={social.href.startsWith('http') ? '_blank' : undefined}
+                  rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   style={{
-                    width: '32px',
-                    height: '32px',
+                    width: social.label === 'IG' ? '38px' : '32px',
+                    height: social.label === 'IG' ? '38px' : '32px',
                     border: '1px solid var(--stroke)',
                     display: 'flex',
                     alignItems: 'center',
@@ -1091,7 +1097,16 @@ function Footer() {
                     e.currentTarget.style.color = 'var(--text-muted)'
                   }}
                 >
-                  {social}
+                  {social.icon ? (
+                    <img
+                      src={social.icon}
+                      alt={`${social.label} icon`}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      draggable={false}
+                    />
+                  ) : (
+                    social.label
+                  )}
                 </a>
               ))}
             </div>
@@ -1108,14 +1123,20 @@ function Footer() {
             padding: '1rem 0 0.5rem',
           }}
         >
-          {['IG', 'LI', 'TW'].map((social) => (
+          {[
+            { label: 'IG', href: 'https://www.instagram.com/zyphoria_26_rit?igsh=MXNrMGtuc2ppbGUwcw==', icon: '/insta1.png' },
+            { label: 'LI', href: '#', icon: null },
+            { label: 'TW', href: '#', icon: null },
+          ].map((social) => (
             <a
-              key={`desktop-${social}`}
-              href="#"
+              key={`desktop-${social.label}`}
+              href={social.href}
               className="font-mono"
+              target={social.href.startsWith('http') ? '_blank' : undefined}
+              rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
               style={{
-                width: '32px',
-                height: '32px',
+                    width: social.label === 'IG' ? '38px' : '32px',
+                    height: social.label === 'IG' ? '38px' : '32px',
                 border: '1px solid var(--stroke)',
                 display: 'flex',
                 alignItems: 'center',
@@ -1134,7 +1155,16 @@ function Footer() {
                 e.currentTarget.style.color = 'var(--text-muted)'
               }}
             >
-              {social}
+              {social.icon ? (
+                <img
+                  src={social.icon}
+                  alt={`${social.label} icon`}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  draggable={false}
+                />
+              ) : (
+                social.label
+              )}
             </a>
           ))}
         </div>

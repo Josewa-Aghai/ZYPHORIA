@@ -5,9 +5,10 @@ import { Upload, Loader2, ArrowLeft } from 'lucide-react'
 import toast, { Toaster } from 'react-hot-toast'
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder'
-const supabase = createClient(supabaseUrl, supabaseKey)
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const hasSupabaseConfig = Boolean(supabaseUrl && supabaseKey)
+const supabase = hasSupabaseConfig ? createClient(supabaseUrl, supabaseKey) : null
 
 export const Route = createFileRoute('/register')({
   component: RegisterPage,
@@ -234,7 +235,15 @@ function RegisterPage() {
     }
 
     setErrors(errs)
-    if (Object.keys(errs).length > 0) { toast.error('Please fix the highlighted errors.'); return }
+    if (Object.keys(errs).length > 0) {
+      toast.error('Please fix the highlighted errors.')
+      return
+    }
+
+    if (!hasSupabaseConfig || !supabase) {
+      toast.error('Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.')
+      return
+    }
 
     setIsSubmitting(true)
     try {
@@ -276,17 +285,40 @@ function RegisterPage() {
       const { error: insertErr } = await supabase.from('registrations').insert([insertData])
       if (insertErr) throw insertErr
 
-      fetch('/api/sync-to-sheets', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ registration: insertData }),
-      }).catch((err) => console.error('Sheets sync failed:', err))
+      try {
+        const sheetsRes = await fetch('/api/sync-to-sheets', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ registration: insertData }),
+        })
+
+        const sheetsJson = await sheetsRes.json().catch(() => null)
+
+        if (!sheetsRes.ok) {
+          console.error('Sheets sync failed:', sheetsRes.status, sheetsJson)
+          toast.error(
+            `Google Sheets sync failed (${sheetsRes.status}). Check server env + sharing.`,
+          )
+        } else {
+          console.log('Sheets sync ok:', sheetsJson)
+        }
+      } catch (err) {
+        console.error('Sheets sync failed:', err)
+        toast.error('Google Sheets sync failed. Please contact the team.')
+      }
 
       setIsSuccess(true)
       window.scrollTo(0, 0)
-    } catch (err) {
+
+    } catch (err: any) {
       console.error(err)
-      toast.error('Registration failed. Please try again.')
+      const details =
+        err?.message ||
+        err?.error_description ||
+        err?.details ||
+        err?.hint ||
+        err?.code
+      toast.error(`Registration failed: ${details ?? 'Please try again.'}`)
     } finally {
       setIsSubmitting(false)
     }

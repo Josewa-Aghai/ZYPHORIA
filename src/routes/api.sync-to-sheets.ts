@@ -26,8 +26,12 @@ async function getGoogleToken(clientEmail: string, privateKey: string) {
   const sign = crypto.createSign('RSA-SHA256');
   sign.update(signInput);
   
-  // Replace escaped newlines if they exist in the env variable
-  const formattedKey = privateKey.replace(/\\n/g, '\n');
+  // Accept raw PEM, escaped PEM, or a pasted JSON snippet containing "private_key"
+  const normalized = privateKey
+    .trim()
+    .replace(/^"?\s*private_key"?\s*:\s*"/i, '')
+    .replace(/",?\s*$/, '')
+  const formattedKey = normalized.replace(/\\n/g, '\n');
   const signature = sign.sign(formattedKey, 'base64').replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
   
   const jwt = `${signInput}.${signature}`;
@@ -35,7 +39,10 @@ async function getGoogleToken(clientEmail: string, privateKey: string) {
   const res = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: `grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${jwt}`,
+    body: new URLSearchParams({
+      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion: jwt,
+    }).toString(),
   });
   
   const data = await res.json();
@@ -54,17 +61,31 @@ export const Route = createFileRoute('/api/sync-to-sheets')({
           const { registration } = body
 
           if (!registration) {
-            return new Response(JSON.stringify({ error: 'Missing registration data' }), { status: 400 })
+            return new Response(JSON.stringify({ error: 'Missing registration data' }), {
+              status: 400,
+              headers: { 'Content-Type': 'application/json' },
+            })
           }
 
           // 1. Load Google Credentials from Env
           const sheetId = process.env.GOOGLE_SHEET_ID
-          const clientEmail = process.env.GOOGLE_CLIENT_EMAIL
+          const clientEmail = process.env.GOOGLE_CLIENT_EMAIL || process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL
           const privateKey = process.env.GOOGLE_PRIVATE_KEY
 
           if (!sheetId || !clientEmail || !privateKey) {
-            console.warn('Google Sheets Sync aborted: Missing Google env variables.')
-            return new Response(JSON.stringify({ error: 'Google integrations not configured' }), { status: 500 })
+            const missing = [
+              !sheetId ? 'GOOGLE_SHEET_ID' : null,
+              !clientEmail ? 'GOOGLE_CLIENT_EMAIL/GOOGLE_SERVICE_ACCOUNT_EMAIL' : null,
+              !privateKey ? 'GOOGLE_PRIVATE_KEY' : null,
+            ].filter(Boolean)
+            console.warn('Google Sheets Sync aborted: Missing env variables:', missing)
+            return new Response(
+              JSON.stringify({
+                error: 'Google integrations not configured',
+                missing,
+              }),
+              { status: 500, headers: { 'Content-Type': 'application/json' } },
+            )
           }
 
           // 2. Get Access Token
@@ -91,7 +112,8 @@ export const Route = createFileRoute('/api/sync-to-sheets')({
 
           // 4. Append to Google Sheets
           const range = process.env.GOOGLE_SHEETS_RANGE || 'Sheet1!A:Z'
-          const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}:append?valueInputOption=USER_ENTERED`
+          const encodedRange = encodeURIComponent(range)
+          const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodedRange}:append?valueInputOption=USER_ENTERED`
 
           const response = await fetch(url, {
             method: 'POST',
@@ -106,13 +128,25 @@ export const Route = createFileRoute('/api/sync-to-sheets')({
 
           if (!response.ok) {
             console.error('Failed to append to Google Sheets:', result)
-            return new Response(JSON.stringify({ error: 'Failed to sync with sheets' }), { status: 500 })
+            return new Response(
+              JSON.stringify({
+                error: 'Failed to append to Google Sheets',
+                details: result,
+              }),
+              { status: 502, headers: { 'Content-Type': 'application/json' } },
+            )
           }
 
-          return new Response(JSON.stringify({ success: true, message: 'Synced to Google Sheets' }), { status: 200 })
+          return new Response(
+            JSON.stringify({ success: true, message: 'Synced to Google Sheets', details: result }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } },
+          )
         } catch (err: any) {
           console.error('Error in sync-to-sheets API:', err)
-          return new Response(JSON.stringify({ error: err?.message || 'Internal error' }), { status: 500 })
+          return new Response(JSON.stringify({ error: err?.message || 'Internal error' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' },
+          })
         }
       },
     },
