@@ -50,6 +50,12 @@ const logoVariants: Variants = {
   visible: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 1, ease: 'easeOut' } },
 }
 
+const labelVariants: Variants = {
+  hidden: { opacity: 0, y: 10, scale: 0.99 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 1, ease: 'easeOut' } },
+  exit: { opacity: 0, y: -8, scale: 1.01, transition: { duration: 0.35, ease: 'easeInOut' } },
+}
+
 function buildStars(count: number): Star[] {
   return Array.from({ length: count }, (_, index) => ({
     left: Math.random() * 100,
@@ -99,6 +105,8 @@ function LogoScreen({
   const lowerSrc = imageSrc?.toLowerCase() ?? ''
   const isZyphoria = lowerSrc.includes('zyphoria')
   const isZyphoria1 = lowerSrc.includes('zyphoria1')
+  const isZyphoriaMain = lowerSrc.includes('zyphoria.png') && !isZyphoria1
+  const isZyphoriaWordmark = isZyphoria1 || isZyphoriaMain
   const isIdatamind = lowerSrc.includes('idatamind')
   const isRit = lowerSrc.includes('ritlogo')
 
@@ -118,30 +126,34 @@ function LogoScreen({
 
       <div
         className="relative flex w-full flex-col items-center justify-center gap-6"
-        style={isZyphoria1 ? { paddingTop: '4vh' } : undefined}
+        style={undefined}
       >
         {label ? (
-          <p
+          <motion.p
+            variants={labelVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
             className={`font-mono text-center uppercase tracking-[0.2em] relative z-30 ${
-              isZyphoria1
-                ? 'text-xs sm:text-sm md:text-base font-semibold'
+              isZyphoriaWordmark
+                ? 'text-xs sm:text-sm'
                 : isZyphoria
                 ? 'text-sm sm:text-lg md:text-xl font-bold'
                 : 'text-xs sm:text-sm'
             }`}
             style={{
-              // For Zyphoria (screen 3), keep the department text
-              // in the middle area, just above the logo.
-              marginBottom: isZyphoria1 ? '0.25rem' : isZyphoria ? '-5.5rem' : '0',
-              color: isZyphoria1 || isZyphoria ? '#C8FA64' : 'rgba(255,255,255,0.8)',
+              marginBottom: isZyphoriaWordmark ? '12px' : isZyphoria ? '-5.5rem' : '0',
+              color: isZyphoriaWordmark ? 'rgba(255,255,255,0.8)' : isZyphoria ? '#C8FA64' : 'rgba(255,255,255,0.8)',
               textShadow:
-                isZyphoria1 || isZyphoria
+                isZyphoriaWordmark
+                  ? '0 0 16px rgba(255,255,255,0.4)'
+                  : isZyphoria
                   ? '0 0 16px rgba(200,250,100,0.55)'
                   : '0 0 16px rgba(255,255,255,0.4)',
             }}
           >
             {label}
-          </p>
+          </motion.p>
         ) : null}
 
         {imageSrc ? (
@@ -171,15 +183,19 @@ function LogoScreen({
             <img
               src={imageSrc}
               alt={imageAlt ?? 'Logo'}
-              className={`h-auto w-full max-w-full object-contain ${trimBorder ? '[clip-path:inset(2%_1.5%_2%_1.5%)]' : ''}`}
+              className={`h-auto w-full max-w-full object-contain ${
+                trimBorder
+                  ? '[clip-path:inset(2%_1.5%_2%_1.5%)]'
+                  : isZyphoriaMain
+                  ? '[clip-path:inset(32%_11%_34%_11%)]'
+                  : ''
+              }`}
               style={{
-                // Zyphoria asset already contains neon/highlight in the file.
-                // Avoid extra blending/glow so it doesn't look like a "light box".
-                mixBlendMode: undefined,
+                mixBlendMode: isZyphoriaWordmark ? 'lighten' : undefined,
                 filter:
                   isIdatamind || isRit
                     ? 'drop-shadow(0 0 8px rgba(255,255,255,0.9)) drop-shadow(0 0 22px rgba(255,255,255,0.6))'
-                    : isZyphoria1
+                    : isZyphoriaWordmark
                       ? 'saturate(1.03) contrast(1.03)'
                       : undefined,
                 imageRendering: (isRit ? 'high-quality' : 'auto') as any,
@@ -304,7 +320,7 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
           {screen === 3 ? (
             <LogoScreen
               key="screen-three"
-              imageSrc="/zyphoria1.png"
+              imageSrc="/zyphoria2.png"
               imageAlt="Zyphoria '26"
               label="Department of Computer Science and Engineering"
               accent="lime"
