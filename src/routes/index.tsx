@@ -868,13 +868,13 @@ function RegistrationSection() {
 
   // UI rendering
   const Label = ({ children }: { children: React.ReactNode }) => (
-    <label className="font-mono text-xs sm:text-[10px] uppercase tracking-[0.2em] text-white sm:text-[#8888A8] font-medium sm:font-normal mb-2 sm:mb-2.5 block sm:opacity-80">{children}</label>
+    <label className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.14em] text-[#9A9AB8] mb-2.5 block">{children}</label>
   );
 
   const Input = ({ err, ...props }: any) => (
-    <div className="mb-3 sm:mb-5 last:mb-0">
+    <div className="mb-5 sm:mb-6 last:mb-0">
       <input
-        className="w-full bg-[#0D0D14] border-2 sm:border sm:border-[var(--stroke)] border-[rgba(255,255,255,0.6)] outline-none font-mono text-sm sm:text-base pl-9 pr-7 py-5 sm:px-4 sm:py-3.5 text-[#EEEEF5] transition-all duration-300 placeholder:text-[#3A3A4A] hover:bg-[#12121A] rounded-[8px] sm:rounded-none"
+        className="w-full bg-[#0D0D14] border sm:border-[var(--stroke)] border-[rgba(255,255,255,0.45)] outline-none font-mono text-[15px] sm:text-base px-4 py-3.5 text-[#EEEEF5] transition-all duration-300 placeholder:text-[#4A4A62] hover:bg-[#12121A] rounded-[8px] sm:rounded-none"
         style={err ? { borderColor: 'var(--danger)' } : {}}
         onFocus={(e) => {
           e.target.style.borderColor = accent;
@@ -895,13 +895,13 @@ function RegistrationSection() {
         }}
         {...props}
       />
-      {err && <div className="text-[var(--danger)] text-[10px] mt-2 font-mono tracking-wide">{err}</div>}
+      {err && <div className="text-[var(--danger)] text-[11px] mt-2 font-mono tracking-wide">{err}</div>}
     </div>
   );
 
   return (
     <section id="register" className="section-padding" style={{ background: 'var(--bg)' }}>
-      <div className="container" style={{ maxWidth: '850px', margin: '0 auto' }}>
+      <div className="container" style={{ maxWidth: '920px', margin: '0 auto' }}>
         <div style={{ marginBottom: '4rem', textAlign: 'center' }}>
           <p className="section-label" style={{ color: 'var(--text-muted)', fontSize: '12px' }}>[ 04 — REGISTER ]</p>
           <h2 className="font-display" style={{ fontSize: 'clamp(36px, 5vw, 64px)', color: 'var(--text-primary)', lineHeight: 1.1 }}>
@@ -910,7 +910,7 @@ function RegistrationSection() {
           <p className="font-mono text-sm sm:text-base text-[#8888A8] mt-4 max-w-[500px] mx-auto opacity-80">"Choose your path, gather your team, and prepare for the ultimate technical showdown."</p>
         </div>
 
-        <div className="registration-card p-6 sm:p-10 md:p-16" style={{ position: 'relative', background: 'rgba(16, 16, 24, 0.4)', backdropFilter: 'blur(10px)', border: '1px solid var(--stroke)' }}>
+        <div className="registration-card p-6 sm:p-10 md:p-14" style={{ position: 'relative', background: 'rgba(16, 16, 24, 0.4)', backdropFilter: 'blur(10px)', border: '1px solid var(--stroke)' }}>
           <span className="ascii-corner tl" style={{ color: accent }}>┌</span>
           <span className="ascii-corner bl" style={{ color: accent }}>└</span>
           <span className="ascii-corner tr" style={{ color: accent }}>┐</span>
@@ -925,7 +925,7 @@ function RegistrationSection() {
           ) : (
             <div>
               {/* Tab Switcher */}
-              <div className="mb-8 sm:mb-16" style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', borderBottom: '1px solid var(--stroke)' }}>
+              <div className="mb-8 sm:mb-12" style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', borderBottom: '1px solid var(--stroke)' }}>
                 <button
                   onClick={() => setTab('tech')}
                   className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] bg-transparent border-none cursor-pointer flex-1 sm:flex-none"
@@ -955,20 +955,20 @@ function RegistrationSection() {
               </div>
 
               {/* Form body */}
-              <div className="flex flex-col gap-8 sm:gap-12">
+              <div className="flex flex-col gap-10 sm:gap-14">
                 
                 {/* SECTION 1: EVENT DETAILS */}
-                <div style={{ marginTop: '1rem' }}>
-                  <h4 className="font-display text-xl mb-6 sm:mb-6 flex items-center gap-2" style={{ color: accent }}>
+                <div style={{ marginTop: '0.5rem' }}>
+                  <h4 className="font-display text-xl mb-5 sm:mb-6 flex items-center gap-2" style={{ color: accent }}>
                     <span>EVENT</span>
                     <span>DIRECTIVE</span>
                   </h4>
                   <Label>{tab === 'tech' ? 'Technical Event' : 'Non-Technical Event'} ({dateLabel})</Label>
-                <div className="mb-8">
+                <div className="mb-6 sm:mb-8">
                   <select
                     value={formData.event}
                     onChange={(e) => setFormData(p => ({ ...p, event: e.target.value }))}
-                    className="w-full bg-[#0D0D14] border-2 sm:border sm:border-[var(--stroke)] border-[rgba(255,255,255,0.6)] outline-none font-mono text-sm sm:text-base pl-9 pr-7 py-5 sm:p-4 text-[#EEEEF5] transition-all duration-300 hover:bg-[#12121A] appearance-none rounded-[8px] sm:rounded-none"
+                    className="w-full bg-[#0D0D14] border sm:border-[var(--stroke)] border-[rgba(255,255,255,0.45)] outline-none font-mono text-[15px] sm:text-base px-4 py-3.5 text-[#EEEEF5] transition-all duration-300 hover:bg-[#12121A] appearance-none rounded-[8px] sm:rounded-none"
                     style={{ 
                       ...(errors.event ? { borderColor: 'var(--danger)' } : {}),
                       backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23FFFFFF\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")',
@@ -988,13 +988,13 @@ function RegistrationSection() {
 
                 {/* SECTION 2: TEAM LEADER */}
                 <div>
-                  <h4 className="font-display text-xl mt-12 mb-6 sm:mt-8 sm:mb-6 flex items-center gap-2" style={{ color: accent }}>
+                  <h4 className="font-display text-xl mt-4 mb-5 sm:mt-2 sm:mb-6 flex items-center gap-2" style={{ color: accent }}>
                     <span>TEAM</span>
                     <span>LEADER</span>
                   </h4>
-                  <div className="p-6 sm:p-8 border relative overflow-hidden" style={{ borderColor: 'var(--stroke)', background: 'rgba(25, 25, 35, 0.3)' }}>
+                  <div className="p-6 pt-8 sm:p-8 sm:pt-9 border relative overflow-hidden" style={{ borderColor: 'var(--stroke)', background: 'rgba(25, 25, 35, 0.3)' }}>
                     <div className="absolute top-0 right-0 p-2 font-mono text-[9px] text-[#3A3A4A] tracking-widest">COMMANDER // 01</div>
-                    <div className="gap-4 sm:gap-[0_1.5rem]" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
+                    <div className="grid gap-5 sm:gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
                     <div>
                       <Label>Full Name</Label>
                       <Input value={formData.leader.name} onChange={(e: any) => handleLeaderChange('name', e.target.value)} err={errors['leader.name']} placeholder="John Doe" />
@@ -1019,11 +1019,11 @@ function RegistrationSection() {
                 </div>
 
                 <Label>Squad Capacity (excluding leader)</Label>
-                <div className="mb-8">
+                <div className="mb-8 sm:mb-10">
                   <select
                     value={formData.participantCount}
                     onChange={(e) => setFormData(p => ({ ...p, participantCount: e.target.value }))}
-                    className="w-full bg-[#0D0D14] border-2 sm:border sm:border-[var(--stroke)] border-[rgba(255,255,255,0.6)] outline-none font-mono text-sm sm:text-base pl-9 pr-7 py-5 sm:p-4 text-[#EEEEF5] transition-all duration-300 hover:bg-[#12121A] appearance-none rounded-[8px] sm:rounded-none"
+                    className="w-full bg-[#0D0D14] border sm:border-[var(--stroke)] border-[rgba(255,255,255,0.45)] outline-none font-mono text-[15px] sm:text-base px-4 py-3.5 text-[#EEEEF5] transition-all duration-300 hover:bg-[#12121A] appearance-none rounded-[8px] sm:rounded-none"
                     style={{ 
                       ...(errors.participantCount ? { borderColor: 'var(--danger)' } : {}),
                       backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23FFFFFF\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")',
@@ -1041,13 +1041,13 @@ function RegistrationSection() {
                 </div>
 
                 {Array.from({ length: parseInt(formData.participantCount) }).map((_, idx) => (
-                  <div key={idx} className="mt-8">
-                    <h4 className="font-display text-lg mb-6 sm:mb-6 text-[#EEEEF5] flex items-center gap-2">
+                  <div key={idx} className="mt-8 sm:mt-10">
+                    <h4 className="font-display text-lg mb-5 sm:mb-6 text-[#EEEEF5] flex items-center gap-2">
                        Participant {idx + 1}
                     </h4>
-                    <div className="p-6 sm:p-8 border relative overflow-hidden" style={{ borderColor: 'var(--stroke)', background: 'rgba(25, 25, 35, 0.3)' }}>
+                    <div className="p-6 pt-8 sm:p-8 sm:pt-9 border relative overflow-hidden" style={{ borderColor: 'var(--stroke)', background: 'rgba(25, 25, 35, 0.3)' }}>
                       <div className="absolute top-0 right-0 p-2 font-mono text-[9px] text-[#3A3A4A] tracking-widest">MEMBER // {idx + 1}</div>
-                      <div className="gap-4 sm:gap-[0_1.5rem]" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
+                      <div className="grid gap-5 sm:gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
                       <div>
                         <Label>Full Name</Label>
                         <Input value={formData.participants[idx].name} onChange={(e: any) => handleParticipantChange(idx, 'name', e.target.value)} err={errors[`p${idx}.name`]} placeholder="Jane Doe" />
@@ -1081,7 +1081,7 @@ function RegistrationSection() {
                     <span>PAYMENT</span>
                     <span>PROTOCOL</span>
                   </h4>
-                  <p className="font-mono text-sm text-[#8888A8] mb-8 leading-relaxed max-w-[600px]">
+                  <p className="font-mono text-sm sm:text-base text-[#8888A8] mb-8 leading-relaxed max-w-[640px]">
                     Initialize payment of ₹300 per team for the event via our secure uplink. Upload your confirmation receipt below for verification.
                   </p>
                   
