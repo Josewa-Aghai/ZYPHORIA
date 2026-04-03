@@ -10,8 +10,11 @@ type IntroLoaderProps = {
 type LogoScreenProps = {
   imageSrc?: string
   imageAlt?: string
+  label?: string
+  subtitle?: string
   accent?: 'lime' | 'warm'
   reveal?: boolean
+  trimBorder?: boolean
 }
 
 type Star = {
@@ -46,11 +49,6 @@ const logoVariants: Variants = {
   hidden: { opacity: 0, scale: 0.82, filter: 'blur(10px)' },
   visible: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 1, ease: 'easeOut' } },
 }
-
-const sponsorList = [
-  { src: '/idatamind.png', alt: 'iDataMind' },
-  { src: '/rit.png', alt: 'Rajalakshmi Institute of Technology' },
-]
 
 function buildStars(count: number): Star[] {
   return Array.from({ length: count }, (_, index) => ({
@@ -89,7 +87,15 @@ function ParticleField() {
   )
 }
 
-function LogoScreen({ imageSrc, imageAlt, accent = 'lime', reveal = false }: LogoScreenProps) {
+function LogoScreen({
+  imageSrc,
+  imageAlt,
+  label,
+  subtitle,
+  accent = 'lime',
+  reveal = false,
+  trimBorder = false,
+}: LogoScreenProps) {
   const glowClass = accent === 'lime'
     ? 'bg-[radial-gradient(circle,rgba(200,250,100,0.22),transparent_60%)]'
     : 'bg-[radial-gradient(circle,rgba(251,146,60,0.22),transparent_60%)]'
@@ -104,7 +110,13 @@ function LogoScreen({ imageSrc, imageAlt, accent = 'lime', reveal = false }: Log
     >
       <div className={`absolute inset-x-0 top-1/2 mx-auto h-192 w-[min(94vw,78rem)] -translate-y-1/2 rounded-full blur-3xl ${glowClass}`} />
 
-      <div className="relative flex w-full items-center justify-center">
+      <div className="relative flex w-full flex-col items-center justify-center gap-6">
+        {label ? (
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-white/70 sm:text-sm">
+            {label}
+          </p>
+        ) : null}
+
         {imageSrc ? (
           <motion.div
             variants={logoVariants}
@@ -112,8 +124,19 @@ function LogoScreen({ imageSrc, imageAlt, accent = 'lime', reveal = false }: Log
             animate={reveal ? { scale: [1, 1.04, 1], filter: ['drop-shadow(0 0 0 rgba(0,0,0,0))', 'drop-shadow(0 0 36px rgba(200,250,100,0.48))', 'drop-shadow(0 0 70px rgba(200,250,100,0.78))'] } : undefined}
             transition={{ duration: 2.8, repeat: reveal ? Number.POSITIVE_INFINITY : 0, repeatType: 'mirror' }}
           >
-            <img src={imageSrc} alt={imageAlt ?? 'Logo'} className="h-auto w-full object-contain" draggable={false} />
+            <img
+              src={imageSrc}
+              alt={imageAlt ?? 'Logo'}
+              className={`h-auto w-full object-contain ${trimBorder ? '[clip-path:inset(2%_1.5%_2%_1.5%)]' : ''}`}
+              draggable={false}
+            />
           </motion.div>
+        ) : null}
+
+        {subtitle ? (
+          <p className="font-mono text-center text-xs uppercase tracking-[0.22em] text-white/65 sm:text-sm">
+            {subtitle}
+          </p>
         ) : null}
       </div>
     </motion.section>
@@ -208,6 +231,8 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
               key="screen-one"
               imageSrc="/rit.png"
               imageAlt="Rajalakshmi Institute of Technology"
+              label="Presented by"
+              trimBorder
             />
           ) : null}
 
@@ -216,6 +241,7 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
               key="screen-two"
               imageSrc="/idatamind.png"
               imageAlt="iDataMind"
+              label="Associated with"
               accent="warm"
             />
           ) : null}
@@ -225,6 +251,7 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
               key="screen-three"
               imageSrc="/Zyphoria.png"
               imageAlt="Zyphoria '26"
+              subtitle="Department of Computer Science and Engineering"
               accent="lime"
               reveal
             />
