@@ -699,7 +699,15 @@ function EventModal({ event, onClose }: { event: EventItem; onClose: () => void 
             </span>
           </div>
           
-          <h2 className="font-display" style={{ fontSize: '32px', color: 'var(--text-primary)', marginBottom: '0.5rem', lineHeight: 1.1 }}>
+          <h2
+            className="font-display"
+            style={{
+              fontSize: 'clamp(28px, 4vw, 36px)',
+              color: 'var(--text-primary)',
+              marginBottom: '0.5rem',
+              lineHeight: 1.1,
+            }}
+          >
             {event.name}
           </h2>
           <p className="font-mono" style={{ fontSize: '15px', color: 'var(--text-muted)', lineHeight: 1.5 }}>
@@ -980,8 +988,13 @@ function OrganizersSection() {
                   <div className="w-10 h-10 flex items-center justify-center shrink-0 transition-colors" style={{ background: 'rgba(200,250,100,0.05)', border: '1px solid var(--accent)' }}>
                     <User size={16} color="var(--accent)" />
                   </div>
-                  <div style={{ overflow: 'hidden' }}>
-                    <div className="font-display font-bold text-[14px] text-[#EEEEF5]">{p.name}</div>
+                  <div style={{ overflow: 'hidden', minWidth: 0 }}>
+                    <div
+                      className="font-display font-bold text-[14px] text-[#EEEEF5]"
+                      style={{ textTransform: 'none', letterSpacing: 'normal', whiteSpace: 'normal', wordSpacing: 'normal' }}
+                    >
+                      {p.name}
+                    </div>
                     <a href={`tel:+91${p.phone}`} className="font-mono text-[11px] text-[#8888A8] hover:text-[var(--accent)] flex items-center gap-1 mt-1 truncate" style={{ transition: 'color 0.2s' }}>
                       <Phone size={10} /> {p.phone}
                     </a>
@@ -1158,12 +1171,11 @@ function Footer() {
         @media (max-width: 768px) {
           .footer-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
           .social-desktop-only { display: none !important; }
-          .event-name {
+          .event-card .event-name {
             white-space: nowrap !important;
             overflow: hidden !important;
             text-overflow: ellipsis !important;
-            letter-spacing: 0 !important;
-            word-spacing: 0 !important;
+            letter-spacing: -0.04em !important;
           }
         }
 
