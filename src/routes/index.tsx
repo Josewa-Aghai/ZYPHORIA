@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, User, Phone } from 'lucide-react'
 import { Toaster } from 'react-hot-toast'
 import { IntroLoader } from '../components/IntroLoader'
@@ -312,67 +312,214 @@ function Hero() {
             </div>
           </div>
 
-          {/* Right — countdown terminal */}
+          {/* Right — countdown terminal HUD */}
           <div
+            className="countdown-block group"
             style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--stroke)',
-              padding: '2rem',
-              minWidth: '280px',
+              background: 'rgba(12, 12, 18, 0.4)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(200, 250, 100, 0.15)',
+              padding: '2.5rem 2rem',
+              minWidth: '320px',
               position: 'relative',
+              boxShadow: '0 0 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(200, 250, 100, 0.05)',
+              overflow: 'hidden',
+              transition: 'all 0.3s ease'
             }}
-            className="countdown-block"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(200, 250, 100, 0.4)';
+              e.currentTarget.style.boxShadow = '0 0 50px rgba(0,0,0,0.5), inset 0 0 30px rgba(200, 250, 100, 0.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(200, 250, 100, 0.15)';
+              e.currentTarget.style.boxShadow = '0 0 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(200, 250, 100, 0.05)';
+            }}
           >
-            {/* Terminal header bar */}
-            <div
-              className="font-mono"
-              style={{
-                fontSize: '10px',
-                color: 'var(--text-muted)',
-                letterSpacing: '0.1em',
-                borderBottom: '1px solid var(--stroke)',
-                paddingBottom: '0.75rem',
-                marginBottom: '1.5rem',
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}
-            >
-              <span>COUNTDOWN.SYS</span>
-              <span style={{ color: 'var(--accent)' }}>● LIVE</span>
-            </div>
+            {/* ASCII Corners */}
+            <span className="ascii-corner tl" style={{ color: 'var(--accent)' }}>┌</span>
+            <span className="ascii-corner bl" style={{ color: 'var(--accent)' }}>└</span>
+            <span className="ascii-corner tr" style={{ color: 'var(--accent)' }}>┐</span>
+            <span className="ascii-corner br" style={{ color: 'var(--accent)' }}>┘</span>
 
-            {/* Digits */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-              {[
-                { label: 'DAYS', value: pad(days) },
-                { label: 'HRS', value: pad(hours) },
-                { label: 'MIN', value: pad(mins) },
-                { label: 'SEC', value: pad(secs) },
-              ].map(({ label, value }) => (
-                <div key={label} style={{ textAlign: 'center' }}>
-                  <div className="countdown-digit">{value}</div>
-                  <div
-                    className="font-mono"
-                    style={{ fontSize: '9px', color: 'var(--text-muted)', letterSpacing: '0.15em', marginTop: '4px' }}
-                  >
-                    {label}
-                  </div>
+            {/* Sweep Animations — multiple lines at different angles/speeds */}
+            <motion.div 
+              animate={{ top: ['-10%', '110%'] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+              style={{
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                height: '2px',
+                background: 'linear-gradient(90deg, transparent, var(--accent), transparent)',
+                opacity: 0.3,
+                zIndex: 0
+              }}
+            />
+            <motion.div 
+              animate={{ top: ['110%', '-10%'] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'linear', delay: 1.5 }}
+              style={{
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                height: '1px',
+                background: 'linear-gradient(90deg, transparent, rgba(200, 250, 100, 0.6), transparent)',
+                opacity: 0.2,
+                zIndex: 0
+              }}
+            />
+            <motion.div 
+              animate={{ left: ['-10%', '110%'] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'linear', delay: 0.8 }}
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                width: '1px',
+                background: 'linear-gradient(180deg, transparent, var(--accent), transparent)',
+                opacity: 0.15,
+                zIndex: 0
+              }}
+            />
+            <motion.div 
+              animate={{ top: ['-10%', '110%'] }}
+              transition={{ duration: 7, repeat: Infinity, ease: 'linear', delay: 3 }}
+              style={{
+                position: 'absolute',
+                left: '20%',
+                right: '20%',
+                height: '1px',
+                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                opacity: 0.15,
+                transform: 'rotate(15deg)',
+                zIndex: 0
+              }}
+            />
+            <motion.div 
+              animate={{ left: ['110%', '-10%'] }}
+              transition={{ duration: 8, repeat: Infinity, ease: 'linear', delay: 2 }}
+              style={{
+                position: 'absolute',
+                top: '30%',
+                bottom: '30%',
+                width: '1px',
+                background: 'linear-gradient(180deg, transparent, rgba(200, 250, 100, 0.5), transparent)',
+                opacity: 0.12,
+                zIndex: 0
+              }}
+            />
+
+            {/* Background glowing grid */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              opacity: 0.05,
+              backgroundImage: 'radial-gradient(var(--accent) 1px, transparent 1px)',
+              backgroundSize: '16px 16px',
+              zIndex: 0
+            }} />
+
+            {/* Content Container */}
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              {/* Terminal header bar */}
+              <div
+                className="font-mono flex items-center justify-between"
+                style={{
+                  fontSize: '10px',
+                  color: 'var(--text-muted)',
+                  letterSpacing: '0.15em',
+                  borderBottom: '1px solid rgba(255,255,255,0.1)',
+                  paddingBottom: '1rem',
+                  marginBottom: '2rem',
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <motion.div 
+                    animate={{ opacity: [1, 0, 1] }} 
+                    transition={{ duration: 2, repeat: Infinity }}
+                    style={{ width: '6px', height: '6px', background: 'var(--accent)' }} 
+                  />
+                  <span>COUNTDOWN</span>
                 </div>
-              ))}
-            </div>
+                <div className="flex items-center gap-2" style={{ color: 'var(--accent)' }}>
+                  <motion.div 
+                    animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} 
+                    transition={{ duration: 1, repeat: Infinity }}
+                    style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'var(--accent)', boxShadow: '0 0 8px var(--accent)' }} 
+                  />
+                  <span>ACTIVE</span>
+                </div>
+              </div>
 
-            <div
-              className="font-mono"
-              style={{
-                fontSize: '10px',
-                color: 'var(--text-muted)',
-                letterSpacing: '0.08em',
-                borderTop: '1px solid var(--stroke)',
-                paddingTop: '0.75rem',
-                textAlign: 'center',
-              }}
-            >
-              UNTIL ZYPHORIA '26
+              {/* Digits Grid */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
+                {[
+                  { label: 'DAYS', value: pad(days) },
+                  { label: 'HOURS', value: pad(hours) },
+                  { label: 'MINUTES', value: pad(mins) },
+                  { label: 'SECONDS', value: pad(secs) },
+                ].map(({ label, value }) => (
+                  <div key={label} style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div 
+                      className="font-display" 
+                      style={{ 
+                        position: 'relative', 
+                        height: '1.2em', 
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        fontSize: 'clamp(32px, 6vw, 48px)',
+                        color: '#fff',
+                        perspective: '800px',
+                        transformStyle: 'preserve-3d'
+                      }}
+                    >
+                      <AnimatePresence mode="popLayout">
+                        <motion.div
+                          key={value}
+                          initial={{ rotateX: -90, z: -100, opacity: 0, filter: "blur(8px)" }}
+                          animate={{ rotateX: 0, z: 0, opacity: 1, filter: "blur(0px)" }}
+                          exit={{ rotateX: 90, z: 100, opacity: 0, filter: "blur(8px)", position: 'absolute' }}
+                          transition={{ 
+                            type: "spring", 
+                            stiffness: 150, 
+                            damping: 12, 
+                            mass: 1.2
+                          }}
+                          style={{ transformOrigin: "center center", textShadow: '0 0 20px rgba(200,250,100,0.6)' }}
+                        >
+                          {value}
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
+                    <div
+                      className="font-mono flex items-center justify-center gap-2 transition-all duration-300 group-hover:text-[var(--accent)]"
+                      style={{ fontSize: '9px', color: 'var(--text-muted)', letterSpacing: '0.2em', marginTop: '8px' }}
+                    >
+                      <span style={{ opacity: 0.3 }}>[</span>
+                      {label}
+                      <span style={{ opacity: 0.3 }}>]</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Footer status bar */}
+              <div
+                className="font-mono flex justify-between items-center"
+                style={{
+                  fontSize: '9px',
+                  color: 'var(--text-muted)',
+                  letterSpacing: '0.1em',
+                  borderTop: '1px solid rgba(255,255,255,0.1)',
+                  paddingTop: '1rem',
+                  textTransform: 'uppercase'
+                }}
+              >
+                <span>TARGET // ZYPHORIA '26</span>
+                <span style={{ color: 'var(--accent)', opacity: 0.7 }}>AWAITING PROTOCOL</span>
+              </div>
             </div>
           </div>
         </div>
