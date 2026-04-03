@@ -112,7 +112,7 @@ function LogoScreen({
 
       <div className="relative flex w-full flex-col items-center justify-center gap-6">
         {label ? (
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-white/70 sm:text-sm">
+          <p className="font-mono text-center text-xs uppercase tracking-[0.3em] text-white/70 sm:text-sm">
             {label}
           </p>
         ) : null}
@@ -120,7 +120,7 @@ function LogoScreen({
         {imageSrc ? (
           <motion.div
             variants={logoVariants}
-            className="relative w-[min(90vw,46rem)] sm:w-[min(78vw,54rem)]"
+            className="relative w-[min(90vw,36rem)] sm:w-[min(80vw,44rem)] lg:w-[min(70vw,52rem)] flex items-center justify-center sm:mx-auto"
             animate={reveal ? { scale: [1, 1.04, 1], filter: ['drop-shadow(0 0 0 rgba(0,0,0,0))', 'drop-shadow(0 0 36px rgba(200,250,100,0.48))', 'drop-shadow(0 0 70px rgba(200,250,100,0.78))'] } : undefined}
             transition={{ duration: 2.8, repeat: reveal ? Number.POSITIVE_INFINITY : 0, repeatType: 'mirror' }}
           >
@@ -128,6 +128,9 @@ function LogoScreen({
               src={imageSrc}
               alt={imageAlt ?? 'Logo'}
               className={`h-auto w-full object-contain ${trimBorder ? '[clip-path:inset(2%_1.5%_2%_1.5%)]' : ''}`}
+              style={{
+                filter: (imageSrc.includes('idatamind') || imageSrc.includes('rit')) ? 'drop-shadow(0 0 8px rgba(255,255,255,0.95)) drop-shadow(0 0 24px rgba(255,255,255,0.7))' : undefined
+              }}
               draggable={false}
             />
           </motion.div>
@@ -251,7 +254,7 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
               key="screen-three"
               imageSrc="/Zyphoria.png"
               imageAlt="Zyphoria '26"
-              subtitle="Department of Computer Science and Engineering"
+              label="Department of Computer Science and Engineering"
               accent="lime"
               reveal
             />
