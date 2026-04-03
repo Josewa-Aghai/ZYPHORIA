@@ -4,7 +4,6 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev --port 3000",
-    "dev:open": "vite dev --port 3000 --open",
     "build": "vite build",
     "preview": "vite preview --port 4173"
   },
