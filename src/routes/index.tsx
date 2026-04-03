@@ -971,8 +971,8 @@ function OrganizersSection() {
             <p className="font-mono" style={sectionLabelStyle}>STUDENT COORDINATORS</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { name: 'Divyadarshini  K', phone: '8056120505' },
-                { name: 'Gajalakshmi  C', phone: '9994335576' },
+                { name: 'Divyadarshini K', phone: '8056120505' },
+                { name: 'Gajalakshmi C', phone: '9994335576' },
                 { name: 'M. S. Sathish', phone: '9384579988' },
                 { name: 'S. Sanjit Kumar', phone: '8667509464' }
               ].map(p => (
@@ -981,7 +981,7 @@ function OrganizersSection() {
                     <User size={16} color="var(--accent)" />
                   </div>
                   <div style={{ overflow: 'hidden' }}>
-                    <div className="font-display font-bold text-[14px] text-[#EEEEF5] truncate">{p.name}</div>
+                    <div className="font-display font-bold text-[14px] text-[#EEEEF5]">{p.name}</div>
                     <a href={`tel:+91${p.phone}`} className="font-mono text-[11px] text-[#8888A8] hover:text-[var(--accent)] flex items-center gap-1 mt-1 truncate" style={{ transition: 'color 0.2s' }}>
                       <Phone size={10} /> {p.phone}
                     </a>
@@ -1158,6 +1158,13 @@ function Footer() {
         @media (max-width: 768px) {
           .footer-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
           .social-desktop-only { display: none !important; }
+          .event-name {
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            letter-spacing: 0 !important;
+            word-spacing: 0 !important;
+          }
         }
 
         @media (min-width: 769px) {
