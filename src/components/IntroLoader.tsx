@@ -27,33 +27,33 @@ type Star = {
 }
 
 const INTRO_TIMINGS = {
-  screenOne: 2600,
-  screenTwo: 2600,
-  screenThree: 3200,
-  exit: 900,
+  screenOne: 2000,
+  screenTwo: 2000,
+  screenThree: 2300,
+  exit: 420,
 } as const
 
 const shellVariants: Variants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.45, ease: 'easeOut' } },
-  exit: { opacity: 0, scale: 1.01, transition: { duration: 0.7, ease: 'easeInOut' } },
+  visible: { opacity: 1, transition: { duration: 0.3, ease: 'easeOut' } },
+  exit: { opacity: 0, scale: 1.005, transition: { duration: 0.45, ease: 'easeInOut' } },
 }
 
 const contentVariants: Variants = {
   hidden: { opacity: 0, y: 20, scale: 0.96 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.75, ease: 'easeOut' } },
-  exit: { opacity: 0, y: -10, scale: 1.02, transition: { duration: 0.35, ease: 'easeInOut' } },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: 'easeOut' } },
+  exit: { opacity: 0, y: -8, scale: 1.01, transition: { duration: 0.24, ease: 'easeInOut' } },
 }
 
 const logoVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.82, filter: 'blur(10px)' },
-  visible: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 1, ease: 'easeOut' } },
+  hidden: { opacity: 0, scale: 0.9, filter: 'blur(4px)' },
+  visible: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 0.55, ease: 'easeOut' } },
 }
 
 const labelVariants: Variants = {
   hidden: { opacity: 0, y: 10, scale: 0.99 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 1, ease: 'easeOut' } },
-  exit: { opacity: 0, y: -8, scale: 1.01, transition: { duration: 0.35, ease: 'easeInOut' } },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.68, ease: 'easeOut' } },
+  exit: { opacity: 0, y: -7, scale: 1.01, transition: { duration: 0.24, ease: 'easeInOut' } },
 }
 
 function buildStars(count: number): Star[] {
@@ -68,11 +68,11 @@ function buildStars(count: number): Star[] {
 }
 
 function ParticleField() {
-  const particles = useMemo(() => buildStars(80), [])
+  const particles = useMemo(() => buildStars(18), [])
 
   return (
     <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,250,100,0.16),transparent_30%),radial-gradient(circle_at_top,rgba(255,255,255,0.05),transparent_40%),radial-gradient(circle_at_bottom,rgba(200,250,100,0.08),transparent_55%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,250,100,0.12),transparent_32%),radial-gradient(circle_at_top,rgba(255,255,255,0.04),transparent_42%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,4,6,0.82),rgba(8,8,12,0.98))]" />
       {particles.map((particle, index) => (
         <motion.span
@@ -123,7 +123,7 @@ function LogoScreen({
       exit="exit"
       className="relative z-10 flex min-h-screen items-center justify-center px-4 py-8 sm:px-8"
     >
-      <div className={`absolute inset-x-0 top-1/2 mx-auto h-192 w-[min(94vw,78rem)] -translate-y-1/2 rounded-full blur-3xl ${glowClass}`} />
+      <div className={`absolute inset-x-0 top-1/2 mx-auto h-144 w-[min(90vw,68rem)] -translate-y-1/2 rounded-full blur-2xl ${glowClass}`} />
 
       <div
         className="relative flex w-full flex-col items-center justify-center gap-6"
@@ -182,8 +182,8 @@ function LogoScreen({
             }
             transition={
               reveal
-                ? { duration: 2.8, repeat: Number.POSITIVE_INFINITY, repeatType: 'mirror' }
-                : { duration: 1, ease: 'easeOut' }
+                ? { duration: 1.2, ease: 'easeOut' }
+                : { duration: 0.65, ease: 'easeOut' }
             }
           >
             <img
@@ -197,12 +197,12 @@ function LogoScreen({
                   : ''
               }`}
               style={{
-                mixBlendMode: isZyphoriaWordmark ? 'lighten' : undefined,
+                mixBlendMode: undefined,
                 filter:
                   isIdatamind || isRit
-                    ? 'drop-shadow(0 0 8px rgba(255,255,255,0.9)) drop-shadow(0 0 22px rgba(255,255,255,0.6))'
+                    ? 'drop-shadow(0 0 7px rgba(255,255,255,0.65)) drop-shadow(0 0 14px rgba(255,255,255,0.35))'
                     : isZyphoriaWordmark
-                      ? 'brightness(1.08) saturate(1.08) contrast(1.06) drop-shadow(0 0 14px rgba(200,250,100,0.35))'
+                      ? 'brightness(1.05) saturate(1.05) contrast(1.04) drop-shadow(0 0 10px rgba(200,250,100,0.28))'
                       : undefined,
                 imageRendering: (isRit ? 'high-quality' : 'auto') as any,
               }}

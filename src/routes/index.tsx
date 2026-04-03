@@ -121,7 +121,7 @@ function Navbar() {
             <img
               src="/favicon1.ico"
               alt="Zyphoria icon"
-              style={{ width: '26px', height: '26px', objectFit: 'contain' }}
+              style={{ width: '34px', height: '34px', objectFit: 'contain' }}
               draggable={false}
             />
             <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
@@ -555,24 +555,18 @@ function EventCard({ event, onClick }: { event: EventItem; onClick: () => void }
   const pillText = isTech ? 'Technical' : 'Non-Tech'
   
   const accentColor = isTech ? 'var(--accent)' : 'var(--danger)'
+  const accentGlow = isTech ? 'var(--accent-glow)' : 'rgba(255, 77, 109, 0.15)'
   
   return (
     <div 
-      className="event-card group" 
+      className={`event-card group ${isTech ? 'event-tech' : 'event-nontech'}`}
       onClick={onClick}
-      style={{ cursor: 'pointer', ['--card-accent' as string]: accentColor } as any}
+      style={{
+        cursor: 'pointer',
+        ['--card-accent' as string]: accentColor,
+        ['--card-accent-glow' as string]: accentGlow,
+      } as any}
     >
-      <style>{`
-        .event-card.group:hover {
-          box-shadow: 0 0 20px ${isTech ? 'var(--accent-glow)' : 'rgba(255, 77, 109, 0.15)'}, 0 0 40px ${isTech ? 'var(--accent-glow)' : 'rgba(255, 77, 109, 0.15)'};
-        }
-        .event-card.group::before {
-          background: ${accentColor};
-        }
-        .event-card.group:active {
-          transform: scale(0.98);
-        }
-      `}</style>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
         <span className={pillClass}>
           {pillText}
@@ -841,7 +835,7 @@ function EventsSection() {
         {/* Non-Technical Section */}
         <div>
           <div style={{ marginBottom: '3rem' }}>
-            <p className="font-mono font-bold" style={{ color: 'var(--accent)', fontSize: 'clamp(18px, 3vw, 24px)', letterSpacing: '0.15em', textTransform: 'uppercase', textShadow: '0 0 20px rgba(200,250,100,0.5)' }}>[ NON-TECHNICAL ] — 16TH APRIL</p>
+            <p className="font-mono font-bold" style={{ color: 'var(--danger)', fontSize: 'clamp(18px, 3vw, 24px)', letterSpacing: '0.15em', textTransform: 'uppercase', textShadow: '0 0 20px rgba(255,77,109,0.45)' }}>[ NON-TECHNICAL ] — 16TH APRIL</p>
             <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)' }}>
               Unleash the Chaos.
             </h2>
