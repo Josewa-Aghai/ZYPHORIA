@@ -135,7 +135,7 @@ function Navbar() {
           ].map((link) => (
             <a
               key={link.label}
-              href={link.target === 'register' ? '/register' : `#${link.target}`}
+              href={link.target === 'register' ? '/register.html' : `#${link.target}`}
               className="font-mono"
               style={{
                 fontSize: '12px',
@@ -155,7 +155,7 @@ function Navbar() {
 
         {/* Register pill */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <a href="/register" className="btn-lime-pill">Register</a>
+          <a href="/register.html" className="btn-lime-pill">Register</a>
           {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -179,7 +179,7 @@ function Navbar() {
           ].map((link) => (
             <a
               key={link.label}
-              href={link.target === 'register' ? '/register' : `#${link.target}`}
+              href={link.target === 'register' ? '/register.html' : `#${link.target}`}
               className="font-mono"
               onClick={() => setMenuOpen(false)}
               style={{
@@ -283,7 +283,7 @@ function Hero() {
 
             {/* CTAs */}
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <a href="/register" className="btn-filled" style={{ fontSize: '12px', background: 'transparent', border: '1px solid var(--accent)', color: 'var(--accent)', marginRight: '1rem' }}>REGISTER NOW</a>
+              <a href="/register.html" className="btn-filled" style={{ fontSize: '12px', background: 'transparent', border: '1px solid var(--accent)', color: 'var(--accent)', marginRight: '1rem' }}>REGISTER NOW</a>
               <a href="#events" className="btn-filled" style={{ fontSize: '12px' }}>
                 Explore Events
               </a>
@@ -594,7 +594,7 @@ function EventModal({ event, onClose }: { event: EventItem; onClose: () => void 
               e.currentTarget.style.boxShadow = 'none';
             }}
             onClick={() => {
-              window.location.href = '/register?event=' + encodeURIComponent(event.name);
+              window.location.href = '/register.html?event=' + encodeURIComponent(event.name);
               handleClose();
             }}
           >
@@ -716,7 +716,7 @@ const nonTechDropdownEvents = [
   "Marketing a Useless Product"
 ]
 
-const PAYMENT_LINK = "https://edu.easebuzz.in/register/RAJALAKSHMIbw5w4/ZYPHORIA_2026_SYMPOSIUM"
+const PAYMENT_LINK = "https://edu.easebuzz.in/register.html/RAJALAKSHMIbw5w4/ZYPHORIA_2026_SYMPOSIUM"
 
 const NAME_REGEX = /^[A-Za-z\s.'-]{2,100}$/
 const PHONE_REGEX = /^(\+91[\s-]?)?[6-9]\d{9}$/
@@ -888,7 +888,7 @@ function Footer() {
             {['Events', 'Register', 'Contact'].map((item) => (
               <a
                 key={item}
-                href={item === 'Register' ? '/register' : `#${item.toLowerCase()}`}
+                href={item === 'Register' ? '/register.html' : `#${item.toLowerCase()}`}
                 className="font-mono"
                 style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'none', marginBottom: '0.75rem', transition: 'color 0.15s' }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
@@ -989,7 +989,7 @@ function CtaBanner() {
           ₹300 per team per event · April 15–16, 2026 · Rajalakshmi Institute of Technology
         </p>
         <a 
-          href="/register" 
+          href="/register.html" 
           className="btn-lime-pill" 
           style={{ padding: '1rem 3rem', fontSize: '14px', display: 'inline-block', background: 'var(--accent)', color: '#08080C', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 'bold' }}
         >
