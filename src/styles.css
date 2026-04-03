@@ -147,9 +147,17 @@ body::after {
   transition: transform 0.2s ease;
 }
 
+.event-card.event-tech::before {
+  background: var(--accent);
+}
+
+.event-card.event-nontech::before {
+  background: var(--danger);
+}
+
 .event-card:hover {
   background: var(--elevated);
-  box-shadow: 0 0 20px var(--accent-glow), 0 0 40px var(--accent-glow);
+  box-shadow: 0 0 20px var(--card-accent-glow, var(--accent-glow)), 0 0 40px var(--card-accent-glow, var(--accent-glow));
   border-color: var(--stroke);
 }
 
@@ -159,6 +167,10 @@ body::after {
 
 .event-card:hover .event-name {
   color: var(--text-primary);
+}
+
+.event-card:active {
+  transform: scale(0.98);
 }
 
 /* Team card */

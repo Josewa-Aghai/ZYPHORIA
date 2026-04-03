@@ -27,27 +27,33 @@ type Star = {
 }
 
 const INTRO_TIMINGS = {
-  screenOne: 2600,
-  screenTwo: 2600,
-  screenThree: 3200,
-  exit: 900,
+  screenOne: 2000,
+  screenTwo: 2000,
+  screenThree: 2300,
+  exit: 420,
 } as const
 
 const shellVariants: Variants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.45, ease: 'easeOut' } },
-  exit: { opacity: 0, scale: 1.01, transition: { duration: 0.7, ease: 'easeInOut' } },
+  visible: { opacity: 1, transition: { duration: 0.3, ease: 'easeOut' } },
+  exit: { opacity: 0, scale: 1.005, transition: { duration: 0.45, ease: 'easeInOut' } },
 }
 
 const contentVariants: Variants = {
   hidden: { opacity: 0, y: 20, scale: 0.96 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.75, ease: 'easeOut' } },
-  exit: { opacity: 0, y: -10, scale: 1.02, transition: { duration: 0.35, ease: 'easeInOut' } },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: 'easeOut' } },
+  exit: { opacity: 0, y: -8, scale: 1.01, transition: { duration: 0.24, ease: 'easeInOut' } },
 }
 
 const logoVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.82, filter: 'blur(10px)' },
-  visible: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 1, ease: 'easeOut' } },
+  hidden: { opacity: 0, scale: 0.9, filter: 'blur(4px)' },
+  visible: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 0.55, ease: 'easeOut' } },
+}
+
+const labelVariants: Variants = {
+  hidden: { opacity: 0, y: 10, scale: 0.99 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.68, ease: 'easeOut' } },
+  exit: { opacity: 0, y: -7, scale: 1.01, transition: { duration: 0.24, ease: 'easeInOut' } },
 }
 
 function buildStars(count: number): Star[] {
@@ -62,11 +68,11 @@ function buildStars(count: number): Star[] {
 }
 
 function ParticleField() {
-  const particles = useMemo(() => buildStars(80), [])
+  const particles = useMemo(() => buildStars(18), [])
 
   return (
     <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,250,100,0.16),transparent_30%),radial-gradient(circle_at_top,rgba(255,255,255,0.05),transparent_40%),radial-gradient(circle_at_bottom,rgba(200,250,100,0.08),transparent_55%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,250,100,0.12),transparent_32%),radial-gradient(circle_at_top,rgba(255,255,255,0.04),transparent_42%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,4,6,0.82),rgba(8,8,12,0.98))]" />
       {particles.map((particle, index) => (
         <motion.span
@@ -96,6 +102,15 @@ function LogoScreen({
   reveal = false,
   trimBorder = false,
 }: LogoScreenProps) {
+  const lowerSrc = imageSrc?.toLowerCase() ?? ''
+  const isZyphoria = lowerSrc.includes('zyphoria')
+  const isZyphoria1 = lowerSrc.includes('zyphoria1')
+  const isZyphoria2 = lowerSrc.includes('zyphoria2')
+  const isZyphoriaMain = lowerSrc.includes('zyphoria.png') && !isZyphoria1
+  const isZyphoriaWordmark = isZyphoria1 || isZyphoria2 || isZyphoriaMain
+  const isIdatamind = lowerSrc.includes('idatamind')
+  const isRit = lowerSrc.includes('ritlogo')
+
   const glowClass = accent === 'lime'
     ? 'bg-[radial-gradient(circle,rgba(200,250,100,0.22),transparent_60%)]'
     : 'bg-[radial-gradient(circle,rgba(251,146,60,0.22),transparent_60%)]'
@@ -108,28 +123,88 @@ function LogoScreen({
       exit="exit"
       className="relative z-10 flex min-h-screen items-center justify-center px-4 py-8 sm:px-8"
     >
-      <div className={`absolute inset-x-0 top-1/2 mx-auto h-192 w-[min(94vw,78rem)] -translate-y-1/2 rounded-full blur-3xl ${glowClass}`} />
+      <div className={`absolute inset-x-0 top-1/2 mx-auto h-144 w-[min(90vw,68rem)] -translate-y-1/2 rounded-full blur-2xl ${glowClass}`} />
 
-      <div className="relative flex w-full flex-col items-center justify-center gap-6">
+      <div
+        className="relative flex w-full flex-col items-center justify-center gap-6"
+        style={undefined}
+      >
         {label ? (
-          <p className="font-mono text-center text-xs uppercase tracking-[0.3em] text-white/70 sm:text-sm">
+          <motion.p
+            variants={labelVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className={`font-mono text-center uppercase tracking-[0.2em] relative z-30 ${
+              isZyphoriaWordmark
+                ? 'text-xs sm:text-sm'
+                : isZyphoria
+                ? 'text-sm sm:text-lg md:text-xl font-bold'
+                : 'text-xs sm:text-sm'
+            }`}
+            style={{
+              marginBottom: isZyphoriaWordmark ? '12px' : isZyphoria ? '-5.5rem' : '0',
+              color: isZyphoriaWordmark ? 'rgba(255,255,255,0.8)' : isZyphoria ? '#C8FA64' : 'rgba(255,255,255,0.8)',
+              textShadow:
+                isZyphoriaWordmark
+                  ? '0 0 16px rgba(255,255,255,0.4)'
+                  : isZyphoria
+                  ? '0 0 16px rgba(200,250,100,0.55)'
+                  : '0 0 16px rgba(255,255,255,0.4)',
+            }}
+          >
             {label}
-          </p>
+          </motion.p>
         ) : null}
 
         {imageSrc ? (
           <motion.div
             variants={logoVariants}
-            className="relative w-[min(90vw,36rem)] sm:w-[min(80vw,44rem)] lg:w-[min(70vw,52rem)] flex items-center justify-center sm:mx-auto"
-            animate={reveal ? { scale: [1, 1.04, 1], filter: ['drop-shadow(0 0 0 rgba(0,0,0,0))', 'drop-shadow(0 0 36px rgba(200,250,100,0.48))', 'drop-shadow(0 0 70px rgba(200,250,100,0.78))'] } : undefined}
-            transition={{ duration: 2.8, repeat: reveal ? Number.POSITIVE_INFINITY : 0, repeatType: 'mirror' }}
+            className={`relative flex items-center justify-center sm:mx-auto ${
+              isRit
+                ? 'w-[min(80vw,28rem)] sm:w-[min(70vw,32rem)] lg:w-[min(55vw,36rem)]'
+                : imageSrc?.toLowerCase().includes('idatamind')
+                ? 'w-[75vw] sm:w-[65vw] lg:w-[50vw] max-w-[44rem]'
+                : 'w-[min(90vw,36rem)] sm:w-[min(80vw,44rem)] lg:w-[min(70vw,52rem)]'
+            }`}
+            animate={
+              reveal
+                ? {
+                    scale: [1, 1.04, 1],
+                    filter: [
+                      'drop-shadow(0 0 0 rgba(0,0,0,0))',
+                      'drop-shadow(0 0 26px rgba(200,250,100,0.42))',
+                      'drop-shadow(0 0 46px rgba(200,250,100,0.75))',
+                    ],
+                    opacity: 1,
+                  }
+                : 'visible'
+            }
+            transition={
+              reveal
+                ? { duration: 1.2, ease: 'easeOut' }
+                : { duration: 0.65, ease: 'easeOut' }
+            }
           >
             <img
               src={imageSrc}
               alt={imageAlt ?? 'Logo'}
-              className={`h-auto w-full object-contain ${trimBorder ? '[clip-path:inset(2%_1.5%_2%_1.5%)]' : ''}`}
+              className={`h-auto w-full max-w-full object-contain ${
+                trimBorder
+                  ? '[clip-path:inset(2%_1.5%_2%_1.5%)]'
+                  : isZyphoriaMain
+                  ? '[clip-path:inset(32%_11%_34%_11%)]'
+                  : ''
+              }`}
               style={{
-                filter: (imageSrc.includes('idatamind') || imageSrc.includes('rit')) ? 'drop-shadow(0 0 8px rgba(255,255,255,0.95)) drop-shadow(0 0 24px rgba(255,255,255,0.7))' : undefined
+                mixBlendMode: undefined,
+                filter:
+                  isIdatamind || isRit
+                    ? 'drop-shadow(0 0 7px rgba(255,255,255,0.65)) drop-shadow(0 0 14px rgba(255,255,255,0.35))'
+                    : isZyphoriaWordmark
+                      ? 'brightness(1.05) saturate(1.05) contrast(1.04) drop-shadow(0 0 10px rgba(200,250,100,0.28))'
+                      : undefined,
+                imageRendering: (isRit ? 'high-quality' : 'auto') as any,
               }}
               draggable={false}
             />
@@ -232,10 +307,9 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
           {screen === 1 ? (
             <LogoScreen
               key="screen-one"
-              imageSrc="/rit.png"
+              imageSrc="/ritlogo.png"
               imageAlt="Rajalakshmi Institute of Technology"
               label="Presented by"
-              trimBorder
             />
           ) : null}
 
@@ -252,7 +326,7 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
           {screen === 3 ? (
             <LogoScreen
               key="screen-three"
-              imageSrc="/Zyphoria.png"
+              imageSrc="/zyphoria2.png"
               imageAlt="Zyphoria '26"
               label="Department of Computer Science and Engineering"
               accent="lime"

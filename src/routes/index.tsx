@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, User, Phone } from 'lucide-react'
 import { Toaster } from 'react-hot-toast'
 import { IntroLoader } from '../components/IntroLoader'
@@ -117,9 +117,17 @@ function Navbar() {
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
         {/* Logo */}
         <a href="#" style={{ textDecoration: 'none' }}>
-          <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
-            ZYPH<span style={{ color: 'var(--accent)' }}>ORIA</span>
-            <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
+            <img
+              src="/favicon1.ico"
+              alt="Zyphoria icon"
+              style={{ width: '34px', height: '34px', objectFit: 'contain' }}
+              draggable={false}
+            />
+            <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
+              ZYPH<span style={{ color: 'var(--accent)' }}>ORIA</span>
+              <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
+            </span>
           </span>
         </a>
 
@@ -151,9 +159,9 @@ function Navbar() {
           ))}
         </div>
 
-        {/* Register pill */}
+        {/* Register button */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Link to="/register" className="btn-lime-pill">Register</Link>
+          <Link to="/register" className="btn-lime-pill" style={{ borderRadius: '0' }}>Register</Link>
           {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -312,67 +320,214 @@ function Hero() {
             </div>
           </div>
 
-          {/* Right — countdown terminal */}
+          {/* Right — countdown terminal HUD */}
           <div
+            className="countdown-block group"
             style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--stroke)',
-              padding: '2rem',
-              minWidth: '280px',
+              background: 'rgba(12, 12, 18, 0.4)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(200, 250, 100, 0.15)',
+              padding: '2.5rem 2rem',
+              minWidth: '320px',
               position: 'relative',
+              boxShadow: '0 0 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(200, 250, 100, 0.05)',
+              overflow: 'hidden',
+              transition: 'all 0.3s ease'
             }}
-            className="countdown-block"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(200, 250, 100, 0.4)';
+              e.currentTarget.style.boxShadow = '0 0 50px rgba(0,0,0,0.5), inset 0 0 30px rgba(200, 250, 100, 0.1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(200, 250, 100, 0.15)';
+              e.currentTarget.style.boxShadow = '0 0 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(200, 250, 100, 0.05)';
+            }}
           >
-            {/* Terminal header bar */}
-            <div
-              className="font-mono"
-              style={{
-                fontSize: '10px',
-                color: 'var(--text-muted)',
-                letterSpacing: '0.1em',
-                borderBottom: '1px solid var(--stroke)',
-                paddingBottom: '0.75rem',
-                marginBottom: '1.5rem',
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}
-            >
-              <span>COUNTDOWN.SYS</span>
-              <span style={{ color: 'var(--accent)' }}>● LIVE</span>
-            </div>
+            {/* ASCII Corners */}
+            <span className="ascii-corner tl" style={{ color: 'var(--accent)' }}>┌</span>
+            <span className="ascii-corner bl" style={{ color: 'var(--accent)' }}>└</span>
+            <span className="ascii-corner tr" style={{ color: 'var(--accent)' }}>┐</span>
+            <span className="ascii-corner br" style={{ color: 'var(--accent)' }}>┘</span>
 
-            {/* Digits */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-              {[
-                { label: 'DAYS', value: pad(days) },
-                { label: 'HRS', value: pad(hours) },
-                { label: 'MIN', value: pad(mins) },
-                { label: 'SEC', value: pad(secs) },
-              ].map(({ label, value }) => (
-                <div key={label} style={{ textAlign: 'center' }}>
-                  <div className="countdown-digit">{value}</div>
-                  <div
-                    className="font-mono"
-                    style={{ fontSize: '9px', color: 'var(--text-muted)', letterSpacing: '0.15em', marginTop: '4px' }}
-                  >
-                    {label}
-                  </div>
+            {/* Sweep Animations — multiple lines at different angles/speeds */}
+            <motion.div 
+              animate={{ top: ['-10%', '110%'] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+              style={{
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                height: '2px',
+                background: 'linear-gradient(90deg, transparent, var(--accent), transparent)',
+                opacity: 0.3,
+                zIndex: 0
+              }}
+            />
+            <motion.div 
+              animate={{ top: ['110%', '-10%'] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'linear', delay: 1.5 }}
+              style={{
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                height: '1px',
+                background: 'linear-gradient(90deg, transparent, rgba(200, 250, 100, 0.6), transparent)',
+                opacity: 0.2,
+                zIndex: 0
+              }}
+            />
+            <motion.div 
+              animate={{ left: ['-10%', '110%'] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'linear', delay: 0.8 }}
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                width: '1px',
+                background: 'linear-gradient(180deg, transparent, var(--accent), transparent)',
+                opacity: 0.15,
+                zIndex: 0
+              }}
+            />
+            <motion.div 
+              animate={{ top: ['-10%', '110%'] }}
+              transition={{ duration: 7, repeat: Infinity, ease: 'linear', delay: 3 }}
+              style={{
+                position: 'absolute',
+                left: '20%',
+                right: '20%',
+                height: '1px',
+                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                opacity: 0.15,
+                transform: 'rotate(15deg)',
+                zIndex: 0
+              }}
+            />
+            <motion.div 
+              animate={{ left: ['110%', '-10%'] }}
+              transition={{ duration: 8, repeat: Infinity, ease: 'linear', delay: 2 }}
+              style={{
+                position: 'absolute',
+                top: '30%',
+                bottom: '30%',
+                width: '1px',
+                background: 'linear-gradient(180deg, transparent, rgba(200, 250, 100, 0.5), transparent)',
+                opacity: 0.12,
+                zIndex: 0
+              }}
+            />
+
+            {/* Background glowing grid */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              opacity: 0.05,
+              backgroundImage: 'radial-gradient(var(--accent) 1px, transparent 1px)',
+              backgroundSize: '16px 16px',
+              zIndex: 0
+            }} />
+
+            {/* Content Container */}
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              {/* Terminal header bar */}
+              <div
+                className="font-mono flex items-center justify-between"
+                style={{
+                  fontSize: '10px',
+                  color: 'var(--text-muted)',
+                  letterSpacing: '0.15em',
+                  borderBottom: '1px solid rgba(255,255,255,0.1)',
+                  paddingBottom: '1rem',
+                  marginBottom: '2rem',
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <motion.div 
+                    animate={{ opacity: [1, 0, 1] }} 
+                    transition={{ duration: 2, repeat: Infinity }}
+                    style={{ width: '6px', height: '6px', background: 'var(--accent)' }} 
+                  />
+                  <span>COUNTDOWN</span>
                 </div>
-              ))}
-            </div>
+                <div className="flex items-center gap-2" style={{ color: 'var(--accent)' }}>
+                  <motion.div 
+                    animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} 
+                    transition={{ duration: 1, repeat: Infinity }}
+                    style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'var(--accent)', boxShadow: '0 0 8px var(--accent)' }} 
+                  />
+                  <span>ACTIVE</span>
+                </div>
+              </div>
 
-            <div
-              className="font-mono"
-              style={{
-                fontSize: '10px',
-                color: 'var(--text-muted)',
-                letterSpacing: '0.08em',
-                borderTop: '1px solid var(--stroke)',
-                paddingTop: '0.75rem',
-                textAlign: 'center',
-              }}
-            >
-              UNTIL ZYPHORIA '26
+              {/* Digits Grid */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
+                {[
+                  { label: 'DAYS', value: pad(days) },
+                  { label: 'HOURS', value: pad(hours) },
+                  { label: 'MINUTES', value: pad(mins) },
+                  { label: 'SECONDS', value: pad(secs) },
+                ].map(({ label, value }) => (
+                  <div key={label} style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div 
+                      className="font-display" 
+                      style={{ 
+                        position: 'relative', 
+                        height: '1.2em', 
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        fontSize: 'clamp(32px, 6vw, 48px)',
+                        color: '#fff',
+                        perspective: '800px',
+                        transformStyle: 'preserve-3d'
+                      }}
+                    >
+                      <AnimatePresence mode="popLayout">
+                        <motion.div
+                          key={value}
+                          initial={{ rotateX: -90, z: -100, opacity: 0, filter: "blur(8px)" }}
+                          animate={{ rotateX: 0, z: 0, opacity: 1, filter: "blur(0px)" }}
+                          exit={{ rotateX: 90, z: 100, opacity: 0, filter: "blur(8px)", position: 'absolute' }}
+                          transition={{ 
+                            type: "spring", 
+                            stiffness: 150, 
+                            damping: 12, 
+                            mass: 1.2
+                          }}
+                          style={{ transformOrigin: "center center", textShadow: '0 0 20px rgba(200,250,100,0.6)' }}
+                        >
+                          {value}
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
+                    <div
+                      className="font-mono flex items-center justify-center gap-2 transition-all duration-300 group-hover:text-[var(--accent)]"
+                      style={{ fontSize: '9px', color: 'var(--text-muted)', letterSpacing: '0.2em', marginTop: '8px' }}
+                    >
+                      <span style={{ opacity: 0.3 }}>[</span>
+                      {label}
+                      <span style={{ opacity: 0.3 }}>]</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Footer status bar */}
+              <div
+                className="font-mono flex justify-between items-center"
+                style={{
+                  fontSize: '9px',
+                  color: 'var(--text-muted)',
+                  letterSpacing: '0.1em',
+                  borderTop: '1px solid rgba(255,255,255,0.1)',
+                  paddingTop: '1rem',
+                  textTransform: 'uppercase'
+                }}
+              >
+                <span>TARGET // ZYPHORIA '26</span>
+                <span style={{ color: 'var(--accent)', opacity: 0.7 }}>AWAITING PROTOCOL</span>
+              </div>
             </div>
           </div>
         </div>
@@ -400,24 +555,18 @@ function EventCard({ event, onClick }: { event: EventItem; onClick: () => void }
   const pillText = isTech ? 'Technical' : 'Non-Tech'
   
   const accentColor = isTech ? 'var(--accent)' : 'var(--danger)'
+  const accentGlow = isTech ? 'var(--accent-glow)' : 'rgba(255, 77, 109, 0.15)'
   
   return (
     <div 
-      className="event-card group" 
+      className={`event-card group ${isTech ? 'event-tech' : 'event-nontech'}`}
       onClick={onClick}
-      style={{ cursor: 'pointer', ['--card-accent' as string]: accentColor } as any}
+      style={{
+        cursor: 'pointer',
+        ['--card-accent' as string]: accentColor,
+        ['--card-accent-glow' as string]: accentGlow,
+      } as any}
     >
-      <style>{`
-        .event-card.group:hover {
-          box-shadow: 0 0 20px ${isTech ? 'var(--accent-glow)' : 'rgba(255, 77, 109, 0.15)'}, 0 0 40px ${isTech ? 'var(--accent-glow)' : 'rgba(255, 77, 109, 0.15)'};
-        }
-        .event-card.group::before {
-          background: ${accentColor};
-        }
-        .event-card.group:active {
-          transform: scale(0.98);
-        }
-      `}</style>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
         <span className={pillClass}>
           {pillText}
@@ -544,7 +693,15 @@ function EventModal({ event, onClose }: { event: EventItem; onClose: () => void 
             </span>
           </div>
           
-          <h2 className="font-display" style={{ fontSize: '32px', color: 'var(--text-primary)', marginBottom: '0.5rem', lineHeight: 1.1 }}>
+          <h2
+            className="font-display"
+            style={{
+              fontSize: 'clamp(28px, 4vw, 36px)',
+              color: 'var(--text-primary)',
+              marginBottom: '0.5rem',
+              lineHeight: 1.1,
+            }}
+          >
             {event.name}
           </h2>
           <p className="font-mono" style={{ fontSize: '15px', color: 'var(--text-muted)', lineHeight: 1.5 }}>
@@ -651,7 +808,7 @@ function EventsSection() {
         {/* Technical Section */}
         <div>
           <div style={{ marginBottom: '3rem' }}>
-            <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ 02 — TECHNICAL ]</p>
+            <p className="font-mono font-bold" style={{ color: 'var(--accent)', fontSize: 'clamp(18px, 3vw, 24px)', letterSpacing: '0.15em', textTransform: 'uppercase', textShadow: '0 0 20px rgba(200,250,100,0.5)' }}>[ TECHNICAL ] — 15TH APRIL</p>
             <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)' }}>
               Prove Your Skill.
             </h2>
@@ -678,7 +835,7 @@ function EventsSection() {
         {/* Non-Technical Section */}
         <div>
           <div style={{ marginBottom: '3rem' }}>
-            <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ 03 — NON-TECHNICAL ]</p>
+            <p className="font-mono font-bold" style={{ color: 'var(--danger)', fontSize: 'clamp(18px, 3vw, 24px)', letterSpacing: '0.15em', textTransform: 'uppercase', textShadow: '0 0 20px rgba(255,77,109,0.45)' }}>[ NON-TECHNICAL ] — 16TH APRIL</p>
             <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)' }}>
               Unleash the Chaos.
             </h2>
@@ -723,7 +880,7 @@ function AboutSection() {
     <section id="about" className="section-padding" style={{ background: 'var(--bg)' }}>
       <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
         <div style={{ textAlign: 'left' }}>
-          <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ 01 — ABOUT ]</p>
+          <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ ABOUT ]</p>
           <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)', marginBottom: '2rem' }}>
             The Future, Compiled.
           </h2>
@@ -762,7 +919,7 @@ function OrganizersSection() {
     <section id="organizers" className="section-padding" style={{ background: 'var(--bg)' }}>
       <div className="container">
         <div style={{ marginBottom: '4rem' }}>
-          <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ 05 — TEAM ]</p>
+          <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ TEAM ]</p>
           <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)' }}>
             Organizers & Coordinators.
           </h2>
@@ -825,8 +982,10 @@ function OrganizersSection() {
                   <div className="w-10 h-10 flex items-center justify-center shrink-0 transition-colors" style={{ background: 'rgba(200,250,100,0.05)', border: '1px solid var(--accent)' }}>
                     <User size={16} color="var(--accent)" />
                   </div>
-                  <div style={{ overflow: 'hidden' }}>
-                    <div className="font-display font-bold text-[14px] text-[#EEEEF5] truncate">{p.name}</div>
+                  <div style={{ overflow: 'hidden', minWidth: 0 }}>
+                    <div className="student-coordinator-name font-display font-bold text-[18px] text-[#EEEEF5]">
+                      {p.name}
+                    </div>
                     <a href={`tel:+91${p.phone}`} className="font-mono text-[11px] text-[#8888A8] hover:text-[var(--accent)] flex items-center gap-1 mt-1 truncate" style={{ transition: 'color 0.2s' }}>
                       <Phone size={10} /> {p.phone}
                     </a>
@@ -835,6 +994,7 @@ function OrganizersSection() {
               ))}
             </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -875,7 +1035,7 @@ function Footer() {
           {/* Col 2 — nav */}
           <div>
             <p className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Navigation</p>
-            {['Events', 'Register', 'Contact'].map((item) => (
+            {['Events', 'Register'].map((item) => (
               item === 'Register' ? (
                 <Link
                   key={item}
@@ -902,23 +1062,8 @@ function Footer() {
             ))}
           </div>
 
-          {/* Col 3 — social + contact */}
-          <div>
-            <p className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Contact</p>
-            <div className="flex flex-col gap-2 mb-6">
-              {[
-                { name: 'Divyadarshini K', phone: '8056120505', display: '+91 80561 20505' },
-                { name: 'Gajalakshmi C', phone: '9994335576', display: '+91 99943 35576' },
-                { name: 'M. S. Sathish', phone: '9384579988', display: '+91 93845 79988' },
-                { name: 'S. Sanjit Kumar', phone: '8667509464', display: '+91 86675 09464' }
-              ].map(c => (
-                <div key={c.name} className="flex justify-between items-center text-[#8888A8]" style={{ gap: '1rem' }}>
-                  <span className="font-mono text-[12px] break-keep">{c.name}</span>
-                  <a href={`tel:+91${c.phone}`} className="font-mono text-[12px] whitespace-nowrap hover:text-[var(--accent)] transition-colors">{c.display}</a>
-                </div>
-              ))}
-            </div>
-            
+          {/* Col 3 — social only (mobile) */}
+          <div className="social-mobile-only" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
               {['IG', 'LI', 'TW'].map((social) => (
                 <a
@@ -953,6 +1098,47 @@ function Footer() {
           </div>
         </div>
 
+        {/* Desktop social row */}
+        <div
+          className="social-desktop-only"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '0.75rem',
+            padding: '1rem 0 0.5rem',
+          }}
+        >
+          {['IG', 'LI', 'TW'].map((social) => (
+            <a
+              key={`desktop-${social}`}
+              href="#"
+              className="font-mono"
+              style={{
+                width: '32px',
+                height: '32px',
+                border: '1px solid var(--stroke)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '10px',
+                color: 'var(--text-muted)',
+                textDecoration: 'none',
+                transition: 'all 0.15s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--accent)'
+                e.currentTarget.style.color = 'var(--accent)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--stroke)'
+                e.currentTarget.style.color = 'var(--text-muted)'
+              }}
+            >
+              {social}
+            </a>
+          ))}
+        </div>
+
         {/* Bottom strip */}
         <div
           className="font-mono"
@@ -970,8 +1156,29 @@ function Footer() {
       </div>
 
       <style>{`
+        .social-desktop-only { display: flex; }
+        .social-mobile-only { display: flex; }
+
         @media (max-width: 768px) {
           .footer-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+          .social-desktop-only { display: none !important; }
+          .student-coordinator-name {
+            font-size: 14px !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+          }
+          .event-card .event-name {
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            letter-spacing: 0.01em !important;
+            word-spacing: 0.14em !important;
+          }
+        }
+
+        @media (min-width: 769px) {
+          .social-mobile-only { display: none !important; }
         }
       `}</style>
     </footer>
@@ -993,8 +1200,8 @@ function CtaBanner() {
         </p>
         <Link 
           to="/register" 
-          className="btn-lime-pill" 
-          style={{ padding: '1rem 3rem', fontSize: '14px', display: 'inline-block', background: 'var(--accent)', color: '#08080C', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 'bold' }}
+          className="btn-lime-pill hover:opacity-90 transition-opacity" 
+          style={{ padding: '1rem 3rem', fontSize: '14px', display: 'inline-block', background: 'var(--accent)', color: '#08080C', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 'bold', borderRadius: '0px' }}
         >
           REGISTER NOW
         </Link>

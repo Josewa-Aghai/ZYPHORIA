@@ -55,7 +55,10 @@ function Navbar() {
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} style={{ background: scrolled ? undefined : 'transparent' }}>
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
         <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <img src="/logo.png" alt="Logo" style={{ height: '32px' }} />
+          <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
+            ZYPH<span style={{ color: '#C8FA64' }}>ORIA</span>
+            <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
+          </span>
         </Link>
         <Link 
           to="/" 
@@ -128,7 +131,8 @@ function RegisterPage() {
     window.scrollTo(0, 0);
   }, []);
 
-  const accent = '#C8FA64';
+  const accent = tab === 'tech' ? '#C8FA64' : '#FF4D6D';
+  const accentSoft = tab === 'tech' ? 'rgba(200, 250, 100, 0.05)' : 'rgba(255, 77, 109, 0.08)';
   const eventsList = tab === 'tech' ? techDropdownEvents : nonTechDropdownEvents;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -324,8 +328,8 @@ function RegisterPage() {
               style={{ 
                 padding: '1.25rem 1.5rem', 
                 fontSize: '13px',
-                color: tab === 'nontech' ? '#C8FA64' : '#8888A8',
-                borderBottom: tab === 'nontech' ? '2px solid #C8FA64' : '2px solid transparent',
+                color: tab === 'nontech' ? '#FF4D6D' : '#8888A8',
+                borderBottom: tab === 'nontech' ? '2px solid #FF4D6D' : '2px solid transparent',
                 transition: 'all 0.3s ease',
               }}
             >
@@ -343,13 +347,13 @@ function RegisterPage() {
               {/* Event & Team */}
               <div className="flex flex-col" style={{ gap: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h4 className="font-display font-bold text-[13px] uppercase tracking-[0.1em]" style={{ color: '#C8FA64', margin: 0 }}>
+                  <h4 className="font-display font-bold text-[13px] uppercase tracking-[0.1em]" style={{ color: accent, margin: 0 }}>
                     EVENT DIRECTIVE
                   </h4>
                 </div>
                 
                 <div>
-                  <FormLabel>Technical/Non-Technical Event (15 Apr / 16 Apr)</FormLabel>
+                  <FormLabel>{tab === 'tech' ? 'Technical Event (15 Apr)' : 'Non-Technical Event (16 Apr)'}</FormLabel>
                   <select
                     value={formData.event}
                     onChange={(e) => setFormData(p => ({ ...p, event: e.target.value }))}
@@ -382,7 +386,7 @@ function RegisterPage() {
               {/* Team Leader */}
               <div className="flex flex-col" style={{ gap: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h4 className="font-display font-bold text-[13px] uppercase tracking-[0.1em]" style={{ color: '#C8FA64', margin: 0 }}>
+                  <h4 className="font-display font-bold text-[13px] uppercase tracking-[0.1em]" style={{ color: accent, margin: 0 }}>
                     TEAM LEADER
                   </h4>
                   <div className="font-mono text-[9px] text-[#4A4A62] tracking-widest uppercase">COMMANDER // 01</div>
@@ -419,7 +423,7 @@ function RegisterPage() {
               {/* Participant Count */}
               <div className="flex flex-col" style={{ gap: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h4 className="font-display font-bold text-[13px] uppercase tracking-[0.1em]" style={{ color: '#C8FA64', margin: 0 }}>
+                  <h4 className="font-display font-bold text-[13px] uppercase tracking-[0.1em]" style={{ color: accent, margin: 0 }}>
                     SQUAD CAPACITY (EXCLUDING LEADER)
                   </h4>
                 </div>
@@ -451,7 +455,7 @@ function RegisterPage() {
                   <div style={{ height: '1px', background: '#1E1E2E', margin: '24px 0' }} />
                   <div className="flex flex-col" style={{ gap: '20px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <h4 className="font-display font-bold text-[13px] uppercase tracking-[0.1em]" style={{ color: '#C8FA64', margin: 0 }}>
+                      <h4 className="font-display font-bold text-[13px] uppercase tracking-[0.1em]" style={{ color: accent, margin: 0 }}>
                         {`OPERATIVE // 0${idx + 2}`}
                       </h4>
                       <div className="font-mono text-[9px] text-[#4A4A62] tracking-widest uppercase">
@@ -496,7 +500,7 @@ function RegisterPage() {
               {/* Payment */}
               <div className="flex flex-col" style={{ gap: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h4 className="font-display font-bold text-[13px] uppercase tracking-[0.1em]" style={{ color: '#C8FA64', margin: 0 }}>
+                  <h4 className="font-display font-bold text-[13px] uppercase tracking-[0.1em]" style={{ color: accent, margin: 0 }}>
                     PAYMENT PROTOCOL
                   </h4>
                 </div>
@@ -510,15 +514,12 @@ function RegisterPage() {
                     target="_blank" 
                     rel="noreferrer" 
                     className="inline-flex items-center gap-3 border font-mono text-[11px] uppercase tracking-widest transition-all duration-300" 
-                    style={{ borderColor: '#C8FA64', color: '#C8FA64', background: 'rgba(200, 250, 100, 0.05)', height: '44px', padding: '0 24px' }} 
-                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#C8FA64'; e.currentTarget.style.color = '#08080C'; }} 
-                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(200, 250, 100, 0.05)'; e.currentTarget.style.color = '#C8FA64'; }}
+                    style={{ borderColor: accent, color: accent, background: accentSoft, height: '44px', padding: '0 24px' }} 
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; e.currentTarget.style.color = '#08080C'; }} 
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = accentSoft; e.currentTarget.style.color = accent; }}
                   >
                     ↗ ACCESS PAYMENT PORTAL
                   </a>
-                  <div className="font-mono text-[10px] text-[#4A4A62] uppercase tracking-[0.2em]">
-                    ID // SYMP-2026-PAY
-                  </div>
                 </div>
 
                 <div 
@@ -529,7 +530,7 @@ function RegisterPage() {
                   
                   {filePreview ? (
                     <div className="flex flex-col items-center">
-                      <img src={filePreview} alt="Preview" className="h-20 w-20 object-cover border mb-3" style={{ borderColor: '#C8FA64' }} />
+                      <img src={filePreview} alt="Preview" className="h-20 w-20 object-cover border mb-3" style={{ borderColor: accent }} />
                       <span className="font-mono text-xs text-[#EEEEF5]">{file?.name}</span>
                     </div>
                   ) : (
@@ -548,7 +549,7 @@ function RegisterPage() {
                 disabled={isSubmitting}
                 className="w-full font-display font-bold text-[14px] uppercase tracking-[0.15em] py-5 flex items-center justify-center gap-3 transition-all duration-300 group mt-4 shadow-[0_0_20px_rgba(0,0,0,0.3)]"
                 style={{ 
-                  backgroundColor: isSubmitting ? '#1E1E2E' : '#C8FA64', 
+                  backgroundColor: isSubmitting ? '#1E1E2E' : accent,
                   color: isSubmitting ? '#4A4A62' : '#08080C',
                   border: 'none',
                   cursor: isSubmitting ? 'not-allowed' : 'pointer',

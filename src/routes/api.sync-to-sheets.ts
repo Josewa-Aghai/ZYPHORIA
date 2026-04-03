@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router'
 import crypto from 'node:crypto';
 
 /**
@@ -48,27 +48,27 @@ async function getGoogleToken(clientEmail: string, privateKey: string) {
 export const Route = createFileRoute('/api/sync-to-sheets')({
   server: {
     handlers: {
-      POST: async ({ request }: { request: Request }) => {
+      POST: async ({ request }) => {
         try {
-          const body = await request.json();
-          const { registration } = body;
+          const body = await request.json()
+          const { registration } = body
 
           if (!registration) {
-            return new Response(JSON.stringify({ error: 'Missing registration data' }), { status: 400 });
+            return new Response(JSON.stringify({ error: 'Missing registration data' }), { status: 400 })
           }
 
           // 1. Load Google Credentials from Env
-          const sheetId = process.env.GOOGLE_SHEET_ID;
-          const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
-          const privateKey = process.env.GOOGLE_PRIVATE_KEY;
+          const sheetId = process.env.GOOGLE_SHEET_ID
+          const clientEmail = process.env.GOOGLE_CLIENT_EMAIL
+          const privateKey = process.env.GOOGLE_PRIVATE_KEY
 
           if (!sheetId || !clientEmail || !privateKey) {
-            console.warn("Google Sheets Sync aborted: Missing Google env variables.");
-            return new Response(JSON.stringify({ error: 'Google integrations not configured' }), { status: 500 });
+            console.warn('Google Sheets Sync aborted: Missing Google env variables.')
+            return new Response(JSON.stringify({ error: 'Google integrations not configured' }), { status: 500 })
           }
 
           // 2. Get Access Token
-          const token = await getGoogleToken(clientEmail, privateKey);
+          const token = await getGoogleToken(clientEmail, privateKey)
 
           // 3. Format Registration Data into an array of values (row)
           // Match the order of these to match your columns in Google Sheets.
@@ -87,37 +87,41 @@ export const Route = createFileRoute('/api/sync-to-sheets')({
             registration.participant1_name || '',
             registration.participant2_name || '',
             registration.participant3_name || '',
+<<<<<<< HEAD
           ];
 
           // 4. Append to Google Sheets
           const range = process.env.GOOGLE_SHEETS_RANGE || 'Sheet1!A:Z';
           const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}:append?valueInputOption=USER_ENTERED`;
+=======
+          ]
+
+          // 4. Append to Google Sheets
+          const range = process.env.GOOGLE_SHEETS_RANGE || 'Sheet1!A:Z'
+          const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}:append?valueInputOption=USER_ENTERED`
 
           const response = await fetch(url, {
             method: 'POST',
             headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              values: [rowData]
-            })
-          });
+            body: JSON.stringify({ values: [rowData] }),
+          })
 
-          const result = await response.json();
-          
+          const result = await response.json()
+
           if (!response.ok) {
-            console.error("Failed to append to Google Sheets:", result);
-            return new Response(JSON.stringify({ error: 'Failed to sync with sheets' }), { status: 500 });
+            console.error('Failed to append to Google Sheets:', result)
+            return new Response(JSON.stringify({ error: 'Failed to sync with sheets' }), { status: 500 })
           }
 
-          return new Response(JSON.stringify({ success: true, message: 'Synced to Google Sheets' }), { status: 200 });
-
+          return new Response(JSON.stringify({ success: true, message: 'Synced to Google Sheets' }), { status: 200 })
         } catch (err: any) {
-          console.error("Error in sync-to-sheets API:", err);
-          return new Response(JSON.stringify({ error: err.message || 'Internal error' }), { status: 500 });
+          console.error('Error in sync-to-sheets API:', err)
+          return new Response(JSON.stringify({ error: err?.message || 'Internal error' }), { status: 500 })
         }
       },
     },
   },
-});
+})

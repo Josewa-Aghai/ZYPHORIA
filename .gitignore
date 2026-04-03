@@ -9,6 +9,9 @@ dist
 # TanStack temporary/generated local artifacts
 .tanstack
 
+# Vercel build output (generated)
+.vercel
+
 # Local environment files
 .env
 .env.local
