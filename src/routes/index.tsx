@@ -651,7 +651,7 @@ function EventsSection() {
         {/* Technical Section */}
         <div>
           <div style={{ marginBottom: '3rem' }}>
-            <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ 02 — TECHNICAL ]</p>
+            <p className="font-mono font-bold" style={{ color: 'var(--accent)', fontSize: 'clamp(18px, 3vw, 24px)', letterSpacing: '0.15em', textTransform: 'uppercase', textShadow: '0 0 20px rgba(200,250,100,0.5)' }}>[ TECHNICAL ] — 15TH APRIL</p>
             <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)' }}>
               Prove Your Skill.
             </h2>
@@ -678,7 +678,7 @@ function EventsSection() {
         {/* Non-Technical Section */}
         <div>
           <div style={{ marginBottom: '3rem' }}>
-            <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ 03 — NON-TECHNICAL ]</p>
+            <p className="font-mono font-bold" style={{ color: 'var(--accent)', fontSize: 'clamp(18px, 3vw, 24px)', letterSpacing: '0.15em', textTransform: 'uppercase', textShadow: '0 0 20px rgba(200,250,100,0.5)' }}>[ NON-TECHNICAL ] — 16TH APRIL</p>
             <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)' }}>
               Unleash the Chaos.
             </h2>
@@ -723,7 +723,7 @@ function AboutSection() {
     <section id="about" className="section-padding" style={{ background: 'var(--bg)' }}>
       <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
         <div style={{ textAlign: 'left' }}>
-          <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ 01 — ABOUT ]</p>
+          <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ ABOUT ]</p>
           <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)', marginBottom: '2rem' }}>
             The Future, Compiled.
           </h2>
@@ -762,7 +762,7 @@ function OrganizersSection() {
     <section id="organizers" className="section-padding" style={{ background: 'var(--bg)' }}>
       <div className="container">
         <div style={{ marginBottom: '4rem' }}>
-          <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ 05 — TEAM ]</p>
+          <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ TEAM ]</p>
           <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)' }}>
             Organizers & Coordinators.
           </h2>
@@ -993,8 +993,8 @@ function CtaBanner() {
         </p>
         <Link 
           to="/register" 
-          className="btn-lime-pill" 
-          style={{ padding: '1rem 3rem', fontSize: '14px', display: 'inline-block', background: 'var(--accent)', color: '#08080C', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 'bold' }}
+          className="btn-lime-pill hover:opacity-90 transition-opacity" 
+          style={{ padding: '1rem 3rem', fontSize: '14px', display: 'inline-block', background: 'var(--accent)', color: '#08080C', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 'bold', borderRadius: '0px' }}
         >
           REGISTER NOW
         </Link>

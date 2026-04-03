@@ -55,7 +55,10 @@ function Navbar() {
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} style={{ background: scrolled ? undefined : 'transparent' }}>
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
         <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <img src="/logo.png" alt="Logo" style={{ height: '32px' }} />
+          <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
+            ZYPH<span style={{ color: '#C8FA64' }}>ORIA</span>
+            <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
+          </span>
         </Link>
         <Link 
           to="/" 
@@ -349,7 +352,7 @@ function RegisterPage() {
                 </div>
                 
                 <div>
-                  <FormLabel>Technical/Non-Technical Event (15 Apr / 16 Apr)</FormLabel>
+                  <FormLabel>{tab === 'tech' ? 'Technical Event (15 Apr)' : 'Non-Technical Event (16 Apr)'}</FormLabel>
                   <select
                     value={formData.event}
                     onChange={(e) => setFormData(p => ({ ...p, event: e.target.value }))}
@@ -516,9 +519,6 @@ function RegisterPage() {
                   >
                     ↗ ACCESS PAYMENT PORTAL
                   </a>
-                  <div className="font-mono text-[10px] text-[#4A4A62] uppercase tracking-[0.2em]">
-                    ID // SYMP-2026-PAY
-                  </div>
                 </div>
 
                 <div 
