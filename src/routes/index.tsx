@@ -131,8 +131,7 @@ function Navbar() {
           {[
             { label: 'ABOUT', target: 'about' },
             { label: 'EVENTS', target: 'events' },
-            { label: 'TEAM', target: 'organizers' },
-            { label: 'REGISTER', target: 'register' }
+            { label: 'TEAM', target: 'organizers' }
           ].map((link) => (
             <a
               key={link.label}
@@ -175,8 +174,7 @@ function Navbar() {
           {[
             { label: 'ABOUT', target: 'about' },
             { label: 'EVENTS', target: 'events' },
-            { label: 'TEAM', target: 'organizers' },
-            { label: 'REGISTER', target: 'register' }
+            { label: 'TEAM', target: 'organizers' }
           ].map((link) => {
             if (link.target === 'register') {
               return (

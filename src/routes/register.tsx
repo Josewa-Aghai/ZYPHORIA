@@ -111,7 +111,7 @@ const InputField = ({ name, placeholder, err, optional = false, ...props }: any)
 )
 
 const FormLabel = ({ children, optional = false }: { children: React.ReactNode; optional?: boolean }) => (
-  <label className="font-mono text-[10px] tracking-[0.15em] uppercase block" style={{ marginBottom: '8px', color: optional ? '#5A5A7A' : '#8888A8' }}>
+  <label className="font-mono text-[10px] tracking-[0.15em] uppercase block" style={{ marginBottom: '10px', color: optional ? '#5A5A7A' : '#8888A8' }}>
     {children}
     {optional && <span style={{ color: '#3A3A5A', marginLeft: '6px', fontSize: '9px' }}>(optional)</span>}
   </label>
@@ -396,7 +396,7 @@ function RegisterPage() {
         </div>
 
         {/* Form Card */}
-        <div style={{ background: '#101018', border: '1px solid #1E1E2E' }} className="p-4 sm:p-8">
+        <div style={{ background: '#101018', border: '1px solid #1E1E2E', padding: '48px' }}>
           <form onSubmit={handleSubmit} ref={formRef}>
             <div className="flex flex-col" style={{ gap: '28px' }}>
 
@@ -478,7 +478,7 @@ function RegisterPage() {
                 </div>
               </div>
 
-              <div style={{ height: '1px', background: '#1E1E2E' }} />
+              <div style={{ height: '1px', background: '#1E1E2E', margin: '32px 0' }} />
 
               {/* ── TEAM LEADER (mandatory) ────────────────────────────── */}
               <div className="flex flex-col" style={{ gap: '20px' }}>
@@ -489,7 +489,7 @@ function RegisterPage() {
                   <div className="font-mono text-[9px] text-[#4A4A62] tracking-widest uppercase">COMMANDER // 01</div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: '20px' }}>
                   <div>
                     <FormLabel>Full Name</FormLabel>
                     <InputField name="leader.name" placeholder="Enter full name" err={errors['leader.name']} />
@@ -499,7 +499,7 @@ function RegisterPage() {
                     <InputField name="leader.department" placeholder="e.g. CSE, ECE, IT…" err={errors['leader.department']} />
                   </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: '20px' }}>
                   <div>
                     <FormLabel>College</FormLabel>
                     <InputField name="leader.college" placeholder="Enter college name" err={errors['leader.college']} />
@@ -518,8 +518,8 @@ function RegisterPage() {
               {/* ── OPTIONAL TEAM MEMBERS (dynamic) ───────────────────── */}
               {formData.memberCount > 0 && Array.from({ length: formData.memberCount }).map((_, idx) => (
                 <div key={idx}>
-                  <div style={{ height: '1px', background: '#1E1E2E' }} />
-                  <div className="flex flex-col" style={{ gap: '20px', marginTop: '28px' }}>
+                  <div style={{ height: '1px', background: '#1E1E2E', margin: '32px 0' }} />
+                  <div className="flex flex-col" style={{ gap: '20px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <h4 className="font-display font-bold text-[13px] uppercase tracking-[0.1em]" style={{ color: accent, margin: 0 }}>
                         {`MEMBER // 0${idx + 2}`}
@@ -527,7 +527,7 @@ function RegisterPage() {
                       <div className="font-mono text-[9px] tracking-widest uppercase" style={{ color: '#3A3A5A' }}>OPTIONAL</div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: '20px' }}>
                       <div>
                         <FormLabel optional>Full Name</FormLabel>
                         <InputField name={`p${idx}.name`} placeholder="Enter full name" err={errors[`p${idx}.name`]} optional />
@@ -537,7 +537,7 @@ function RegisterPage() {
                         <InputField name={`p${idx}.department`} placeholder="e.g. CSE, ECE, IT…" err={errors[`p${idx}.department`]} optional />
                       </div>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: '20px' }}>
                       <div>
                         <FormLabel optional>College</FormLabel>
                         <InputField name={`p${idx}.college`} placeholder="Enter college name" err={errors[`p${idx}.college`]} optional />
@@ -555,7 +555,7 @@ function RegisterPage() {
                 </div>
               ))}
 
-              <div style={{ height: '1px', background: '#1E1E2E' }} />
+              <div style={{ height: '1px', background: '#1E1E2E', margin: '32px 0' }} />
 
               {/* ── PAYMENT PROTOCOL ──────────────────────────────────── */}
               <div className="flex flex-col" style={{ gap: '20px' }}>

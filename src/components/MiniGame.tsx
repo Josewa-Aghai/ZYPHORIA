@@ -152,19 +152,19 @@ function WinCredits({ onClose }: { onClose: () => void }) {
       direction: 'top' as const
     },
     {
-      name: 'Jegadesh N',
+      name: 'Jxck',
       handle: '@_._._jxck_._._',
       link: 'https://www.instagram.com/_._._.jxck._._._?igsh=Y3hxZXo2dWhhODF5',
       direction: 'right' as const
     },
     {
-      name: 'Jeevesh R',
+      name: 'Zenitsuuu',
       handle: '@jexxsh_jfj',
       link: 'https://www.instagram.com/jexxsh_jfj?igsh=MThkcjE2aHYwcG1pag==',
       direction: 'left' as const
     },
     {
-      name: 'Jebin Rufus',
+      name: 'Jebin Rufuz',
       handle: '@_rufuzz._',
       link: 'https://www.instagram.com/_rufuzz._?igsh=aGxvOTVwbWpxdjMw',
       direction: 'bottom' as const
