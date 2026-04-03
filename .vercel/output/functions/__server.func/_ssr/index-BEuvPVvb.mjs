@@ -39,6 +39,11 @@ const logoVariants = {
   hidden: { opacity: 0, scale: 0.82, filter: "blur(10px)" },
   visible: { opacity: 1, scale: 1, filter: "blur(0px)", transition: { duration: 1, ease: "easeOut" } }
 };
+const labelVariants = {
+  hidden: { opacity: 0, y: 10, scale: 0.99 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 1, ease: "easeOut" } },
+  exit: { opacity: 0, y: -8, scale: 1.01, transition: { duration: 0.35, ease: "easeInOut" } }
+};
 function buildStars(count) {
   return Array.from({ length: count }, (_, index) => ({
     left: Math.random() * 100,
@@ -84,6 +89,9 @@ function LogoScreen({
   const lowerSrc = imageSrc?.toLowerCase() ?? "";
   const isZyphoria = lowerSrc.includes("zyphoria");
   const isZyphoria1 = lowerSrc.includes("zyphoria1");
+  const isZyphoria2 = lowerSrc.includes("zyphoria2");
+  const isZyphoriaMain = lowerSrc.includes("zyphoria.png") && !isZyphoria1;
+  const isZyphoriaWordmark = isZyphoria1 || isZyphoria2 || isZyphoriaMain;
   const isIdatamind = lowerSrc.includes("idatamind");
   const isRit = lowerSrc.includes("ritlogo");
   const glowClass = accent === "lime" ? "bg-[radial-gradient(circle,rgba(200,250,100,0.22),transparent_60%)]" : "bg-[radial-gradient(circle,rgba(251,146,60,0.22),transparent_60%)]";
@@ -101,18 +109,20 @@ function LogoScreen({
           "div",
           {
             className: "relative flex w-full flex-col items-center justify-center gap-6",
-            style: isZyphoria1 ? { paddingTop: "4vh" } : void 0,
+            style: void 0,
             children: [
               label ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "p",
+                motion.p,
                 {
-                  className: `font-mono text-center uppercase tracking-[0.2em] relative z-30 ${isZyphoria1 ? "text-xs sm:text-sm md:text-base font-semibold" : isZyphoria ? "text-sm sm:text-lg md:text-xl font-bold" : "text-xs sm:text-sm"}`,
+                  variants: labelVariants,
+                  initial: "hidden",
+                  animate: "visible",
+                  exit: "exit",
+                  className: `font-mono text-center uppercase tracking-[0.2em] relative z-30 ${isZyphoriaWordmark ? "text-xs sm:text-sm" : isZyphoria ? "text-sm sm:text-lg md:text-xl font-bold" : "text-xs sm:text-sm"}`,
                   style: {
-                    // For Zyphoria (screen 3), keep the department text
-                    // in the middle area, just above the logo.
-                    marginBottom: isZyphoria1 ? "0.25rem" : isZyphoria ? "-5.5rem" : "0",
-                    color: isZyphoria1 || isZyphoria ? "#C8FA64" : "rgba(255,255,255,0.8)",
-                    textShadow: isZyphoria1 || isZyphoria ? "0 0 16px rgba(200,250,100,0.55)" : "0 0 16px rgba(255,255,255,0.4)"
+                    marginBottom: isZyphoriaWordmark ? "12px" : isZyphoria ? "-5.5rem" : "0",
+                    color: isZyphoriaWordmark ? "rgba(255,255,255,0.8)" : isZyphoria ? "#C8FA64" : "rgba(255,255,255,0.8)",
+                    textShadow: isZyphoriaWordmark ? "0 0 16px rgba(255,255,255,0.4)" : isZyphoria ? "0 0 16px rgba(200,250,100,0.55)" : "0 0 16px rgba(255,255,255,0.4)"
                   },
                   children: label
                 }
@@ -136,12 +146,10 @@ function LogoScreen({
                     {
                       src: imageSrc,
                       alt: imageAlt ?? "Logo",
-                      className: `h-auto w-full max-w-full object-contain ${trimBorder ? "[clip-path:inset(2%_1.5%_2%_1.5%)]" : ""}`,
+                      className: `h-auto w-full max-w-full object-contain ${trimBorder ? "[clip-path:inset(2%_1.5%_2%_1.5%)]" : isZyphoriaMain ? "[clip-path:inset(32%_11%_34%_11%)]" : ""}`,
                       style: {
-                        // Zyphoria asset already contains neon/highlight in the file.
-                        // Avoid extra blending/glow so it doesn't look like a "light box".
-                        mixBlendMode: void 0,
-                        filter: isIdatamind || isRit ? "drop-shadow(0 0 8px rgba(255,255,255,0.9)) drop-shadow(0 0 22px rgba(255,255,255,0.6))" : isZyphoria1 ? "saturate(1.03) contrast(1.03)" : void 0,
+                        mixBlendMode: isZyphoriaWordmark ? "lighten" : void 0,
+                        filter: isIdatamind || isRit ? "drop-shadow(0 0 8px rgba(255,255,255,0.9)) drop-shadow(0 0 22px rgba(255,255,255,0.6))" : isZyphoriaWordmark ? "brightness(1.08) saturate(1.08) contrast(1.06) drop-shadow(0 0 14px rgba(200,250,100,0.35))" : void 0,
                         imageRendering: isRit ? "high-quality" : "auto"
                       },
                       draggable: false
@@ -250,7 +258,7 @@ function IntroLoader({ showIntro, onComplete }) {
           screen === 3 ? /* @__PURE__ */ jsxRuntimeExports.jsx(
             LogoScreen,
             {
-              imageSrc: "/zyphoria1.png",
+              imageSrc: "/zyphoria2.png",
               imageAlt: "Zyphoria '26",
               label: "Department of Computer Science and Engineering",
               accent: "lime",

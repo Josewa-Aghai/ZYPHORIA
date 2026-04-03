@@ -1217,7 +1217,7 @@ const $$splitComponentImporter$2 = () => import("./register-C2a6p1WV.mjs");
 const Route$3 = createFileRoute("/register")({
   component: lazyRouteComponent($$splitComponentImporter$2, "component")
 });
-const $$splitComponentImporter$1 = () => import("./index-Bcvv3R2o.mjs");
+const $$splitComponentImporter$1 = () => import("./index-BEuvPVvb.mjs");
 const Route$2 = createFileRoute("/")({
   component: lazyRouteComponent($$splitComponentImporter$1, "component")
 });
@@ -1231,7 +1231,7 @@ const products = [
     price: 3e3
   }
 ];
-const $$splitComponentImporter = () => import("../_productId-DBG8Frng.mjs");
+const $$splitComponentImporter = () => import("../_productId-Bg-N15r_.mjs");
 const Route$1 = createFileRoute("/products/$productId")({
   component: lazyRouteComponent($$splitComponentImporter, "component"),
   loader: async ({

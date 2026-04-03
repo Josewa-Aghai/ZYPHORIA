@@ -875,7 +875,7 @@ function Footer() {
           {/* Col 2 — nav */}
           <div>
             <p className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Navigation</p>
-            {['Events', 'Register', 'Contact'].map((item) => (
+            {['Events', 'Register'].map((item) => (
               item === 'Register' ? (
                 <Link
                   key={item}
@@ -902,23 +902,8 @@ function Footer() {
             ))}
           </div>
 
-          {/* Col 3 — social + contact */}
-          <div>
-            <p className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Contact</p>
-            <div className="flex flex-col gap-2 mb-6">
-              {[
-                { name: 'Divyadarshini K', phone: '8056120505', display: '+91 80561 20505' },
-                { name: 'Gajalakshmi C', phone: '9994335576', display: '+91 99943 35576' },
-                { name: 'M. S. Sathish', phone: '9384579988', display: '+91 93845 79988' },
-                { name: 'S. Sanjit Kumar', phone: '8667509464', display: '+91 86675 09464' }
-              ].map(c => (
-                <div key={c.name} className="flex justify-between items-center text-[#8888A8]" style={{ gap: '1rem' }}>
-                  <span className="font-mono text-[12px] break-keep">{c.name}</span>
-                  <a href={`tel:+91${c.phone}`} className="font-mono text-[12px] whitespace-nowrap hover:text-[var(--accent)] transition-colors">{c.display}</a>
-                </div>
-              ))}
-            </div>
-            
+          {/* Col 3 — social only */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
               {['IG', 'LI', 'TW'].map((social) => (
                 <a

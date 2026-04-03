@@ -11,6 +11,7 @@ export const Route = createRootRoute({
       { name: 'description', content: '14 events. 2 days. One department. No limits. Rajalakshmi Institute of Technology, April 15–16, 2026.' },
     ],
     links: [
+      { rel: 'icon', href: '/favicon1.ico' },
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&display=swap' },
