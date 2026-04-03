@@ -1,13 +1,14 @@
 // @ts-nocheck
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState, useRef, useEffect } from 'react'
-import { Upload, Loader2, ArrowLeft } from 'lucide-react'
+import { Upload, Loader2 } from 'lucide-react'
 import toast, { Toaster } from 'react-hot-toast'
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder'
-const supabase = createClient(supabaseUrl, supabaseKey)
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const hasSupabaseConfig = Boolean(supabaseUrl && supabaseKey)
+const supabase = hasSupabaseConfig ? createClient(supabaseUrl, supabaseKey) : null
 
 export const Route = createFileRoute('/register')({
   component: RegisterPage,
@@ -77,19 +78,12 @@ function Navbar() {
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} style={{ background: scrolled ? undefined : 'transparent' }}>
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
+      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', height: '64px' }}>
         <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
             ZYPH<span style={{ color: '#C8FA64' }}>ORIA</span>
             <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
           </span>
-        </Link>
-        <Link
-          to="/"
-          className="btn-ghost font-mono"
-          style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', textDecoration: 'none' }}
-        >
-          <ArrowLeft size={14} /> BACK TO HOME
         </Link>
       </div>
     </nav>
@@ -234,7 +228,15 @@ function RegisterPage() {
     }
 
     setErrors(errs)
-    if (Object.keys(errs).length > 0) { toast.error('Please fix the highlighted errors.'); return }
+    if (Object.keys(errs).length > 0) {
+      toast.error('Please fix the highlighted errors.')
+      return
+    }
+
+    if (!hasSupabaseConfig || !supabase) {
+      toast.error('Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.')
+      return
+    }
 
     setIsSubmitting(true)
     try {
@@ -276,17 +278,40 @@ function RegisterPage() {
       const { error: insertErr } = await supabase.from('registrations').insert([insertData])
       if (insertErr) throw insertErr
 
-      fetch('/api/sync-to-sheets', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ registration: insertData }),
-      }).catch((err) => console.error('Sheets sync failed:', err))
+      try {
+        const sheetsRes = await fetch('/api/sync-to-sheets', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ registration: insertData }),
+        })
+
+        const sheetsJson = await sheetsRes.json().catch(() => null)
+
+        if (!sheetsRes.ok) {
+          console.error('Sheets sync failed:', sheetsRes.status, sheetsJson)
+          toast.error(
+            `Google Sheets sync failed (${sheetsRes.status}). Check server env + sharing.`,
+          )
+        } else {
+          console.log('Sheets sync ok:', sheetsJson)
+        }
+      } catch (err) {
+        console.error('Sheets sync failed:', err)
+        toast.error('Google Sheets sync failed. Please contact the team.')
+      }
 
       setIsSuccess(true)
       window.scrollTo(0, 0)
-    } catch (err) {
+
+    } catch (err: any) {
       console.error(err)
-      toast.error('Registration failed. Please try again.')
+      const details =
+        err?.message ||
+        err?.error_description ||
+        err?.details ||
+        err?.hint ||
+        err?.code
+      toast.error(`Registration failed: ${details ?? 'Please try again.'}`)
     } finally {
       setIsSubmitting(false)
     }
@@ -320,6 +345,8 @@ function RegisterPage() {
     <div className="relative min-h-screen pt-24 sm:pt-32 pb-20" style={{ background: 'var(--bg)' }}>
       <Toaster position="bottom-right" />
       <Navbar />
+
+
 
       <div className="container" style={{ maxWidth: '680px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
 
@@ -545,11 +572,11 @@ function RegisterPage() {
                   <a
                     href={PAYMENT_LINK}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center gap-3 border font-mono text-[11px] uppercase tracking-widest transition-all duration-300"
                     style={{ borderColor: accent, color: accent, background: accentSoft, height: '44px', padding: '0 24px' }}
-                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; e.currentTarget.style.color = '#08080C' }}
-                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = accentSoft; e.currentTarget.style.color = accent }}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; e.currentTarget.style.color = '#08080C'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = accentSoft; e.currentTarget.style.color = accent; }}
                   >
                     ↗ ACCESS PAYMENT PORTAL
                   </a>
