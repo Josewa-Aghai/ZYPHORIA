@@ -117,13 +117,7 @@ function Navbar() {
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
         {/* Logo */}
         <a href="#" style={{ textDecoration: 'none' }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
-            <img
-              src="/favicon1.ico"
-              alt="Zyphoria icon"
-              style={{ width: '34px', height: '34px', objectFit: 'contain' }}
-              draggable={false}
-            />
+          <span style={{ display: 'inline-flex', alignItems: 'center' }}>
             <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
               ZYPH<span style={{ color: 'var(--accent)' }}>ORIA</span>
               <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
@@ -1038,6 +1032,7 @@ function Footer() {
           </div>
 
 
+<<<<<<< HEAD
           {/* Col 3 — socials */}
           <div>
             <p className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Socials</p>
@@ -1064,10 +1059,116 @@ function Footer() {
                 <Instagram size={14} />
                 @zyphoria_26_rit
               </a>
+=======
+          {/* Col 3 — social only (mobile) */}
+          <div className="social-mobile-only" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
+              {[
+                { label: 'IG', href: 'https://www.instagram.com/zyphoria_26_rit?igsh=MXNrMGtuc2ppbGUwcw==', icon: '/insta1.png' },
+                { label: 'LI', href: 'mailto:zyphoria26.cse@gmail.com', icon: '/gmail.png' },
+              ].map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  className="font-mono"
+                  target={social.href.startsWith('http') ? '_blank' : undefined}
+                  rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  style={{
+                    width: social.icon ? '38px' : '32px',
+                    height: social.icon ? '38px' : '32px',
+                    border: '1px solid var(--stroke)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '10px',
+                    color: 'var(--text-muted)',
+                    textDecoration: 'none',
+                    transition: 'all 0.15s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--accent)'
+                    e.currentTarget.style.color = 'var(--accent)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--stroke)'
+                    e.currentTarget.style.color = 'var(--text-muted)'
+                  }}
+                >
+                  {social.icon ? (
+                    <img
+                      src={social.icon}
+                      alt={`${social.label} icon`}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      draggable={false}
+                    />
+                  ) : (
+                    social.label
+                  )}
+                </a>
+              ))}
+>>>>>>> 276cdf8e2dad1312f00deb6baba353348dda5a2f
             </div>
           </div>
         </div>
 
+<<<<<<< HEAD
+=======
+        {/* Desktop social row */}
+        <div
+          className="social-desktop-only"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '0.75rem',
+            padding: '1rem 0 0.5rem',
+          }}
+        >
+          {[
+            { label: 'IG', href: 'https://www.instagram.com/zyphoria_26_rit?igsh=MXNrMGtuc2ppbGUwcw==', icon: '/insta1.png' },
+            { label: 'LI', href: 'mailto:zyphoria26.cse@gmail.com', icon: '/gmail.png' },
+          ].map((social) => (
+            <a
+              key={`desktop-${social.label}`}
+              href={social.href}
+              className="font-mono"
+              target={social.href.startsWith('http') ? '_blank' : undefined}
+              rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              style={{
+                    width: social.icon ? '38px' : '32px',
+                    height: social.icon ? '38px' : '32px',
+                border: '1px solid var(--stroke)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '10px',
+                color: 'var(--text-muted)',
+                textDecoration: 'none',
+                transition: 'all 0.15s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--accent)'
+                e.currentTarget.style.color = 'var(--accent)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--stroke)'
+                e.currentTarget.style.color = 'var(--text-muted)'
+              }}
+            >
+              {social.icon ? (
+                <img
+                  src={social.icon}
+                  alt={`${social.label} icon`}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  draggable={false}
+                />
+              ) : (
+                social.label
+              )}
+            </a>
+          ))}
+        </div>
+
+>>>>>>> 276cdf8e2dad1312f00deb6baba353348dda5a2f
         {/* Bottom strip */}
         <div
           className="font-mono"
