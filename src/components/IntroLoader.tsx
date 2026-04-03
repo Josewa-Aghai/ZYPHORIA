@@ -179,10 +179,6 @@ function LogoScreen({
               className={`h-auto w-full max-w-full object-contain ${
                 trimBorder
                   ? '[clip-path:inset(2%_1.5%_2%_1.5%)]'
-                  : isZyphoria1
-                  ? '[clip-path:inset(32%_11%_34%_11%)]'
-                  : isZyphoriaMain
-                  ? '[clip-path:inset(32%_11%_34%_11%)]'
                   : ''
               }`}
               style={{
@@ -191,12 +187,10 @@ function LogoScreen({
                     ? 'drop-shadow(0 0 7px rgba(255,255,255,0.65)) drop-shadow(0 0 14px rgba(255,255,255,0.35))'
                     : isZyphoria3
                       ? 'brightness(1.03) saturate(1.03) contrast(1.02) drop-shadow(0 0 7px rgba(200,250,100,0.2))'
-                    : isZyphoria1
-                      ? 'brightness(1.07) saturate(1.05) contrast(1.08) drop-shadow(0 0 10px rgba(200,250,100,0.28))'
                     : isZyphoriaWordmark
                       ? 'brightness(1.05) saturate(1.05) contrast(1.04) drop-shadow(0 0 10px rgba(200,250,100,0.28))'
                       : undefined,
-                mixBlendMode: isZyphoria1 ? 'lighten' : undefined,
+                mixBlendMode: isZyphoriaWordmark ? 'lighten' : undefined,
                 imageRendering: (isRit ? 'high-quality' : 'auto') as any,
               }}
               draggable={false}
@@ -324,7 +318,7 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
           {screen === 3 ? (
             <LogoScreen
               key="screen-three"
-              imageSrc="/zyphoria1.png"
+              imageSrc="/zyphoria.png"
               imageAlt="Zyphoria '26"
               accent="lime"
             />
