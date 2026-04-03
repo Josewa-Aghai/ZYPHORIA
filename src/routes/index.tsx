@@ -117,9 +117,17 @@ function Navbar() {
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
         {/* Logo */}
         <a href="#" style={{ textDecoration: 'none' }}>
-          <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
-            ZYPH<span style={{ color: 'var(--accent)' }}>ORIA</span>
-            <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
+            <img
+              src="/favicon1.ico"
+              alt="Zyphoria icon"
+              style={{ width: '26px', height: '26px', objectFit: 'contain' }}
+              draggable={false}
+            />
+            <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
+              ZYPH<span style={{ color: 'var(--accent)' }}>ORIA</span>
+              <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
+            </span>
           </span>
         </a>
 
@@ -151,9 +159,9 @@ function Navbar() {
           ))}
         </div>
 
-        {/* Register pill */}
+        {/* Register button */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Link to="/register" className="btn-lime-pill">Register</Link>
+          <Link to="/register" className="btn-lime-pill" style={{ borderRadius: '0' }}>Register</Link>
           {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -835,6 +843,7 @@ function OrganizersSection() {
               ))}
             </div>
           </div>
+
         </div>
       </div>
     </section>
