@@ -2,9 +2,10 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, User, Phone } from 'lucide-react'
+import { Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, User, Phone, Lock, Gamepad } from 'lucide-react'
 import { Toaster } from 'react-hot-toast'
 import { IntroLoader } from '../components/IntroLoader'
+import { MiniGame } from '../components/MiniGame'
 
 // No supabase client needed in index.tsx anymore as form is moved to register.tsx
 
@@ -241,9 +242,200 @@ function Navbar() {
 
 // ─── Hero ────────────────────────────────────────────────────────────────────
 
+// ── Easter Egg Modal ──────────────────────────────────────────────────────────
+function EasterEggModal({ onClose }: { onClose: () => void }) {
+  const [visible, setVisible] = useState(false)
+  const [glitch, setGlitch] = useState(false)
+  const [showGame, setShowGame] = useState(false)
+
+  // ⚠️ ALL hooks must come before any conditional return
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), 10)
+    const g = setInterval(() => {
+      setGlitch(true)
+      setTimeout(() => setGlitch(false), 120)
+    }, 2800)
+    document.body.style.overflow = 'hidden'
+    return () => { clearTimeout(t); clearInterval(g); document.body.style.overflow = 'auto' }
+  }, [])
+
+  const handleClose = () => {
+    setVisible(false)
+    setTimeout(onClose, 200)
+  }
+
+  // Conditional render AFTER all hooks
+  if (showGame) return <MiniGame onClose={() => setShowGame(false)} />
+
+  return (
+    <div
+      onClick={handleClose}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 99999,
+        backgroundColor: 'rgba(8,8,12,0.88)',
+        backdropFilter: 'blur(10px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        opacity: visible ? 1 : 0, transition: 'opacity 200ms ease',
+        padding: '1rem',
+      }}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: '100%', maxWidth: '420px',
+          background: '#0D0D14',
+          border: '1px solid rgba(255,77,109,0.35)',
+          boxShadow: '0 0 60px rgba(255,77,109,0.15), inset 0 0 40px rgba(255,77,109,0.04)',
+          position: 'relative', padding: '3rem 2.5rem',
+          textAlign: 'center',
+          transform: visible ? 'scale(1)' : 'scale(0.92)',
+          transition: 'transform 220ms cubic-bezier(0.34,1.56,0.64,1)',
+        }}
+      >
+        {/* ASCII corners */}
+        {['tl','tr','bl','br'].map(pos => (
+          <span key={pos} className={`ascii-corner ${pos}`} style={{ color: '#FF4D6D', fontSize: '18px' }}>
+            {pos === 'tl' ? '┌' : pos === 'tr' ? '┐' : pos === 'bl' ? '└' : '┘'}
+          </span>
+        ))}
+
+        {/* Dim scanlines */}
+        <div style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,77,109,0.015) 3px, rgba(255,77,109,0.015) 4px)',
+        }} />
+
+        {/* Close button */}
+        <button
+          onClick={handleClose}
+          style={{
+            position: 'absolute', top: '1rem', right: '1rem',
+            background: 'none', border: 'none', color: '#4A4A62',
+            cursor: 'pointer', display: 'flex',
+          }}
+        >
+          <X size={18} />
+        </button>
+
+        {/* Lock icon */}
+        <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+          <motion.div
+            animate={{ y: [0, -6, 0], filter: ['drop-shadow(0 0 8px #FF4D6D)', 'drop-shadow(0 0 20px #FF4D6D)', 'drop-shadow(0 0 8px #FF4D6D)'] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <Lock size={56} strokeWidth={1.2} color="#FF4D6D" />
+          </motion.div>
+        </div>
+
+        {/* Chip label */}
+        <p className="font-mono" style={{ fontSize: '10px', letterSpacing: '0.25em', color: '#FF4D6D', marginBottom: '0.75rem', textTransform: 'uppercase', opacity: 0.7 }}>
+          [ SECRET PROTOCOL DETECTED ]
+        </p>
+
+        {/* Glitchy title */}
+        <h2
+          className="font-display uppercase"
+          style={{
+            fontSize: 'clamp(22px, 4vw, 28px)',
+            color: '#EEEEF5',
+            lineHeight: 1.2,
+            marginBottom: '1rem',
+            letterSpacing: '-0.02em',
+            filter: glitch ? 'blur(1.5px) brightness(1.4)' : 'none',
+            transform: glitch ? 'translate(2px, -1px)' : 'none',
+            transition: 'filter 60ms, transform 60ms',
+            textShadow: '0 0 20px rgba(255,77,109,0.4)',
+          }}
+        >
+          You&apos;ve Cracked<br />
+          <span style={{ color: '#FF4D6D' }}>The Protocol.</span>
+        </h2>
+
+        <p className="font-mono" style={{ fontSize: '13px', color: '#6A6A8A', lineHeight: 1.6, marginBottom: '2rem' }}>
+          An encrypted chamber has been unlocked.<br />
+          Initiate the sequence — if you dare.
+        </p>
+
+        {/* CTA */}
+        <motion.button
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+          className="font-display uppercase tracking-widest"
+          style={{
+            width: '100%', padding: '1rem',
+            background: 'rgba(255,77,109,0.1)',
+            border: '1px solid #FF4D6D',
+            color: '#FF4D6D',
+            fontSize: '13px',
+            cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+            transition: 'background 0.2s, box-shadow 0.2s',
+          }}
+          onMouseEnter={(e: any) => { e.currentTarget.style.background = '#FF4D6D'; e.currentTarget.style.color = '#08080C'; e.currentTarget.style.boxShadow = '0 0 24px rgba(255,77,109,0.5)' }}
+          onMouseLeave={(e: any) => { e.currentTarget.style.background = 'rgba(255,77,109,0.1)'; e.currentTarget.style.color = '#FF4D6D'; e.currentTarget.style.boxShadow = 'none' }}
+          onClick={() => setShowGame(true)}
+        >
+          <Gamepad size={16} />
+          PLAY THE MINI-GAME
+        </motion.button>
+
+        <p className="font-mono" style={{ fontSize: '9px', color: '#3A3A5A', marginTop: '1.25rem', letterSpacing: '0.15em' }}>
+          CLASSIFIED · ZYPHORIA '26 EASTER EGG
+        </p>
+      </div>
+    </div>
+  )
+}
+
 function Hero() {
   const target = new Date('2026-04-15T09:00:00+05:30')
   const { days, hours, mins, secs } = useCountdown(target)
+
+  // 0 = lime default | 1 = red breach | 2 = lime "restored" | 3 = red urgent | 4 = modal
+  const [eggPhase, setEggPhase] = useState<0|1|2|3|4>(0)
+
+  // ── Per-phase colour tokens ────────────────────────────────────────────────
+  const isRed  = eggPhase === 1 || eggPhase === 3
+  const isLime = eggPhase === 0 || eggPhase === 2
+
+  const hudAccent   = isRed  ? '#FF4D6D' : '#C8FA64'
+  const hudBorder   = isRed  ? 'rgba(255,77,109,0.35)'  : 'rgba(200,250,100,0.18)'
+  const hudGlow     = isRed  ? 'rgba(255,77,109,0.08)'  : 'rgba(200,250,100,0.06)'
+  const hudGlowHov  = isRed  ? 'rgba(255,77,109,0.2)'   : 'rgba(200,250,100,0.12)'
+  const hudBordHov  = isRed  ? 'rgba(255,77,109,0.7)'   : 'rgba(200,250,100,0.5)'
+  const digitShadow = isRed  ? 'rgba(255,77,109,0.7)'   : 'rgba(200,250,100,0.6)'
+  const sweepColor1 = isRed  ? '#FF4D6D'                : '#C8FA64'
+  const sweepColor2 = isRed  ? 'rgba(255,77,109,0.6)'   : 'rgba(200,250,100,0.6)'
+  const sweepColor3 = isRed  ? 'rgba(255,77,109,0.5)'   : 'rgba(200,250,100,0.5)'
+  const sweepSpeed  = eggPhase === 3 ? 1.4 : isRed ? 2.5 : 4
+
+  // ── Per-phase HUD text ────────────────────────────────────────────────────
+  const hdrLeft = [
+    'COUNTDOWN',          // 0
+    'BREACH DETECTED',    // 1
+    'RECOVERING...',      // 2
+    '⚠ FINAL SEQUENCE',  // 3
+    'COUNTDOWN',          // 4 (modal open, HUD behind)
+  ][eggPhase]
+  const hdrRight = [
+    'ACTIVE',   // 0
+    'CRACKED',  // 1
+    'STABLE?',  // 2
+    'EXECUTE',  // 3
+    'ACTIVE',   // 4
+  ][eggPhase]
+  const statusText = [
+    'AWAITING PROTOCOL',    // 0
+    'CRACK THE PROTOCOL',   // 1
+    'SYSTEM RESTORED?',     // 2
+    'INITIATE NOW  ▶▶▶',   // 3
+    'AWAITING PROTOCOL',    // 4
+  ][eggPhase]
+
+  const handleHudClick = () => {
+    if (eggPhase < 3) setEggPhase((p) => (p + 1) as 0|1|2|3|4)
+    else if (eggPhase === 3) setEggPhase(4)
+  }
 
   return (
     <section
@@ -258,6 +450,9 @@ function Hero() {
     >
       <StarField />
 
+      {/* Easter Egg Modal */}
+      {eggPhase === 4 && <EasterEggModal onClose={() => setEggPhase(3)} />}
+
       <div className="container" style={{ position: 'relative', zIndex: 2, width: '100%' }}>
         <div
           style={{
@@ -270,196 +465,173 @@ function Hero() {
         >
           {/* Left — copy */}
           <div>
-            {/* Micro tag */}
             <div className="font-mono" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2.5rem' }}>
               <span style={{ color: 'var(--accent)', fontSize: '10px' }}>◆</span>
-              <span
-                style={{
-                  fontSize: '11px',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  color: 'var(--text-muted)',
-                }}
-              >
+              <span style={{ fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
                 CSE Symposium · RIT · April 15–16 2026
               </span>
             </div>
 
-            {/* Headline */}
-            <h1
-              className="font-display"
-              style={{ fontSize: 'clamp(52px, 8vw, 110px)', lineHeight: 0.95, marginBottom: '2rem' }}
-            >
+            <h1 className="font-display" style={{ fontSize: 'clamp(52px, 8vw, 110px)', lineHeight: 0.95, marginBottom: '2rem' }}>
               <span style={{ display: 'block' }}>INNOVATE.</span>
               <span style={{ display: 'block' }}>DOMINATE.</span>
-              <span style={{ display: 'block', color: 'var(--accent)', textShadow: '0 0 40px rgba(200,250,100,0.3)' }}>
-                ZYPHORIA.
-              </span>
+              <span style={{ display: 'block', color: 'var(--accent)', textShadow: '0 0 40px rgba(200,250,100,0.3)' }}>ZYPHORIA.</span>
             </h1>
 
-            {/* Sub-copy */}
-            <p
-              className="font-mono"
-              style={{
-                fontSize: '15px',
-                lineHeight: 1.6,
-                color: 'var(--text-muted)',
-                marginBottom: '2.5rem',
-                maxWidth: '480px',
-              }}
-            >
+            <p className="font-mono" style={{ fontSize: '15px', lineHeight: 1.6, color: 'var(--text-muted)', marginBottom: '2.5rem', maxWidth: '480px' }}>
               14 events. 2 days. One department. No limits.
             </p>
 
-            {/* CTAs */}
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <Link to="/register" className="btn-filled" style={{ fontSize: '12px', background: 'transparent', border: '1px solid var(--accent)', color: 'var(--accent)', marginRight: '1rem', textDecoration: 'none' }}>REGISTER NOW</Link>
-              <a href="#events" className="btn-filled" style={{ fontSize: '12px' }}>
-                Explore Events
-              </a>
+              <a href="#events" className="btn-filled" style={{ fontSize: '12px' }}>Explore Events</a>
             </div>
           </div>
 
           {/* Right — countdown terminal HUD */}
           <div
             className="countdown-block group"
+            onClick={handleHudClick}
             style={{
               background: 'rgba(12, 12, 18, 0.4)',
               backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(200, 250, 100, 0.15)',
+              border: `1px solid ${hudBorder}`,
               padding: '2.5rem 2rem',
               minWidth: '320px',
               position: 'relative',
-              boxShadow: '0 0 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(200, 250, 100, 0.05)',
+              boxShadow: `0 0 50px rgba(0,0,0,0.5), inset 0 0 20px ${hudGlow}`,
               overflow: 'hidden',
-              transition: 'all 0.3s ease'
+              transition: 'all 0.4s ease',
+              cursor: 'pointer',
+              userSelect: 'none',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(200, 250, 100, 0.4)';
-              e.currentTarget.style.boxShadow = '0 0 50px rgba(0,0,0,0.5), inset 0 0 30px rgba(200, 250, 100, 0.1)';
+              e.currentTarget.style.borderColor = hudBordHov
+              e.currentTarget.style.boxShadow = `0 0 50px rgba(0,0,0,0.5), inset 0 0 30px ${hudGlowHov}`
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(200, 250, 100, 0.15)';
-              e.currentTarget.style.boxShadow = '0 0 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(200, 250, 100, 0.05)';
+              e.currentTarget.style.borderColor = hudBorder
+              e.currentTarget.style.boxShadow = `0 0 50px rgba(0,0,0,0.5), inset 0 0 20px ${hudGlow}`
             }}
           >
             {/* ASCII Corners */}
-            <span className="ascii-corner tl" style={{ color: 'var(--accent)' }}>┌</span>
-            <span className="ascii-corner bl" style={{ color: 'var(--accent)' }}>└</span>
-            <span className="ascii-corner tr" style={{ color: 'var(--accent)' }}>┐</span>
-            <span className="ascii-corner br" style={{ color: 'var(--accent)' }}>┘</span>
+            {['tl','bl','tr','br'].map((pos, i) => (
+              <span key={pos} className={`ascii-corner ${pos}`} style={{ color: hudAccent, transition: 'color 0.4s' }}>
+                {['┌','└','┐','┘'][i]}
+              </span>
+            ))}
 
-            {/* Sweep Animations — multiple lines at different angles/speeds */}
-            <motion.div 
+            {/* Click hint tooltip — only in phase 0 */}
+            {eggPhase === 0 && (
+              <div style={{
+                position: 'absolute', top: '6px', left: '50%', transform: 'translateX(-50%)',
+                zIndex: 2,
+              }}>
+                <motion.div
+                  animate={{ opacity: [0, 0.5, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, delay: 4 }}
+                  className="font-mono"
+                  style={{ fontSize: '8px', letterSpacing: '0.15em', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}
+                >
+                  · · ·
+                </motion.div>
+              </div>
+            )}
+
+            {/* Tint flicker overlay — red phases only */}
+            {isRed && (
+              <motion.div
+                animate={{ opacity: [0, eggPhase===3 ? 0.12 : 0.06, 0, 0.04, 0] }}
+                transition={{ duration: eggPhase===3 ? 0.35 : 0.6, repeat: Infinity, repeatDelay: eggPhase===3 ? 0.8 : 2.2 }}
+                style={{ position: 'absolute', inset: 0, background: '#FF4D6D', zIndex: 0, pointerEvents: 'none' }}
+              />
+            )}
+
+            {/* Sweep scan lines */}
+            <motion.div
               animate={{ top: ['-10%', '110%'] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+              transition={{ duration: sweepSpeed, repeat: Infinity, ease: 'linear' }}
               style={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                height: '2px',
-                background: 'linear-gradient(90deg, transparent, var(--accent), transparent)',
-                opacity: 0.3,
-                zIndex: 0
+                position: 'absolute', left: 0, right: 0, height: '2px',
+                background: `linear-gradient(90deg, transparent, ${sweepColor1}, transparent)`,
+                opacity: 0.3, zIndex: 0,
               }}
             />
-            <motion.div 
+            <motion.div
               animate={{ top: ['110%', '-10%'] }}
-              transition={{ duration: 6, repeat: Infinity, ease: 'linear', delay: 1.5 }}
+              transition={{ duration: sweepSpeed * 1.4, repeat: Infinity, ease: 'linear', delay: 1.5 }}
               style={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                height: '1px',
-                background: 'linear-gradient(90deg, transparent, rgba(200, 250, 100, 0.6), transparent)',
-                opacity: 0.2,
-                zIndex: 0
+                position: 'absolute', left: 0, right: 0, height: '1px',
+                background: `linear-gradient(90deg, transparent, ${sweepColor2}, transparent)`,
+                opacity: 0.2, zIndex: 0,
               }}
             />
-            <motion.div 
+            <motion.div
               animate={{ left: ['-10%', '110%'] }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'linear', delay: 0.8 }}
+              transition={{ duration: sweepSpeed * 1.2, repeat: Infinity, ease: 'linear', delay: 0.8 }}
               style={{
-                position: 'absolute',
-                top: 0,
-                bottom: 0,
-                width: '1px',
-                background: 'linear-gradient(180deg, transparent, var(--accent), transparent)',
-                opacity: 0.15,
-                zIndex: 0
+                position: 'absolute', top: 0, bottom: 0, width: '1px',
+                background: `linear-gradient(180deg, transparent, ${sweepColor1}, transparent)`,
+                opacity: 0.15, zIndex: 0,
               }}
             />
-            <motion.div 
+            <motion.div
               animate={{ top: ['-10%', '110%'] }}
               transition={{ duration: 7, repeat: Infinity, ease: 'linear', delay: 3 }}
               style={{
-                position: 'absolute',
-                left: '20%',
-                right: '20%',
-                height: '1px',
+                position: 'absolute', left: '20%', right: '20%', height: '1px',
                 background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
-                opacity: 0.15,
-                transform: 'rotate(15deg)',
-                zIndex: 0
+                opacity: 0.15, transform: 'rotate(15deg)', zIndex: 0,
               }}
             />
-            <motion.div 
+            <motion.div
               animate={{ left: ['110%', '-10%'] }}
               transition={{ duration: 8, repeat: Infinity, ease: 'linear', delay: 2 }}
               style={{
-                position: 'absolute',
-                top: '30%',
-                bottom: '30%',
-                width: '1px',
-                background: 'linear-gradient(180deg, transparent, rgba(200, 250, 100, 0.5), transparent)',
-                opacity: 0.12,
-                zIndex: 0
+                position: 'absolute', top: '30%', bottom: '30%', width: '1px',
+                background: `linear-gradient(180deg, transparent, ${sweepColor3}, transparent)`,
+                opacity: 0.12, zIndex: 0,
               }}
             />
 
-            {/* Background glowing grid */}
+            {/* Background dot grid */}
             <div style={{
-              position: 'absolute',
-              inset: 0,
-              opacity: 0.05,
-              backgroundImage: 'radial-gradient(var(--accent) 1px, transparent 1px)',
-              backgroundSize: '16px 16px',
-              zIndex: 0
+              position: 'absolute', inset: 0, opacity: 0.05,
+              backgroundImage: `radial-gradient(${hudAccent} 1px, transparent 1px)`,
+              backgroundSize: '16px 16px', zIndex: 0,
+              transition: 'background-image 0.4s',
             }} />
 
-            {/* Content Container */}
+            {/* Content */}
             <div style={{ position: 'relative', zIndex: 1 }}>
-              {/* Terminal header bar */}
+              {/* Header bar */}
               <div
                 className="font-mono flex items-center justify-between"
                 style={{
-                  fontSize: '10px',
-                  color: 'var(--text-muted)',
-                  letterSpacing: '0.15em',
+                  fontSize: '10px', color: 'var(--text-muted)', letterSpacing: '0.15em',
                   borderBottom: '1px solid rgba(255,255,255,0.1)',
-                  paddingBottom: '1rem',
-                  marginBottom: '2rem',
+                  paddingBottom: '1rem', marginBottom: '2rem',
                 }}
               >
                 <div className="flex items-center gap-2">
-                  <motion.div 
-                    animate={{ opacity: [1, 0, 1] }} 
-                    transition={{ duration: 2, repeat: Infinity }}
-                    style={{ width: '6px', height: '6px', background: 'var(--accent)' }} 
+                  <motion.div
+                    animate={{ opacity: [1, 0, 1] }}
+                    transition={{ duration: eggPhase===3 ? 0.25 : isRed ? 0.5 : 2, repeat: Infinity }}
+                    style={{ width: '6px', height: '6px', background: hudAccent, transition: 'background 0.4s' }}
                   />
-                  <span>COUNTDOWN</span>
+                  <span>{hdrLeft}</span>
                 </div>
-                <div className="flex items-center gap-2" style={{ color: 'var(--accent)' }}>
-                  <motion.div 
-                    animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} 
-                    transition={{ duration: 1, repeat: Infinity }}
-                    style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'var(--accent)', boxShadow: '0 0 8px var(--accent)' }} 
+                <div className="flex items-center gap-2" style={{ color: hudAccent, transition: 'color 0.4s' }}>
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: eggPhase===3 ? 0.2 : isRed ? 0.4 : 1, repeat: Infinity }}
+                    style={{ width: '4px', height: '4px', borderRadius: '50%', background: hudAccent, boxShadow: `0 0 8px ${hudAccent}`, transition: 'background 0.4s, box-shadow 0.4s' }}
                   />
-                  <span>ACTIVE</span>
+                  <span>{hdrRight}</span>
                 </div>
               </div>
 
-              {/* Digits Grid */}
+              {/* Digits */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
                 {[
                   { label: 'DAYS', value: pad(days) },
@@ -468,46 +640,33 @@ function Hero() {
                   { label: 'SECONDS', value: pad(secs) },
                 ].map(({ label, value }) => (
                   <div key={label} style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <div 
-                      className="font-display" 
-                      style={{ 
-                        position: 'relative', 
-                        height: '1.2em', 
-                        width: '100%',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        fontSize: 'clamp(32px, 6vw, 48px)',
-                        color: '#fff',
-                        perspective: '800px',
-                        transformStyle: 'preserve-3d'
+                    <div
+                      className="font-display"
+                      style={{
+                        position: 'relative', height: '1.2em', width: '100%',
+                        display: 'flex', justifyContent: 'center', alignItems: 'center',
+                        fontSize: 'clamp(32px, 6vw, 48px)', color: '#fff',
+                        perspective: '800px', transformStyle: 'preserve-3d',
                       }}
                     >
                       <AnimatePresence mode="popLayout">
                         <motion.div
                           key={value}
-                          initial={{ rotateX: -90, z: -100, opacity: 0, filter: "blur(8px)" }}
-                          animate={{ rotateX: 0, z: 0, opacity: 1, filter: "blur(0px)" }}
-                          exit={{ rotateX: 90, z: 100, opacity: 0, filter: "blur(8px)", position: 'absolute' }}
-                          transition={{ 
-                            type: "spring", 
-                            stiffness: 150, 
-                            damping: 12, 
-                            mass: 1.2
-                          }}
-                          style={{ transformOrigin: "center center", textShadow: '0 0 20px rgba(200,250,100,0.6)' }}
+                          initial={{ rotateX: -90, z: -100, opacity: 0, filter: 'blur(8px)' }}
+                          animate={{ rotateX: 0, z: 0, opacity: 1, filter: 'blur(0px)' }}
+                          exit={{ rotateX: 90, z: 100, opacity: 0, filter: 'blur(8px)', position: 'absolute' }}
+                          transition={{ type: 'spring', stiffness: 150, damping: 12, mass: 1.2 }}
+                          style={{ transformOrigin: 'center center', textShadow: `0 0 20px ${digitShadow}`, transition: 'text-shadow 0.4s' }}
                         >
                           {value}
                         </motion.div>
                       </AnimatePresence>
                     </div>
                     <div
-                      className="font-mono flex items-center justify-center gap-2 transition-all duration-300 group-hover:text-[var(--accent)]"
-                      style={{ fontSize: '9px', color: 'var(--text-muted)', letterSpacing: '0.2em', marginTop: '8px' }}
+                      className="font-mono flex items-center justify-center gap-2"
+                      style={{ fontSize: '9px', color: isRed ? 'rgba(255,77,109,0.5)' : 'var(--text-muted)', letterSpacing: '0.2em', marginTop: '8px', transition: 'color 0.4s' }}
                     >
-                      <span style={{ opacity: 0.3 }}>[</span>
-                      {label}
-                      <span style={{ opacity: 0.3 }}>]</span>
+                      <span style={{ opacity: 0.3 }}>[</span>{label}<span style={{ opacity: 0.3 }}>]</span>
                     </div>
                   </div>
                 ))}
@@ -517,16 +676,24 @@ function Hero() {
               <div
                 className="font-mono flex justify-between items-center"
                 style={{
-                  fontSize: '9px',
-                  color: 'var(--text-muted)',
-                  letterSpacing: '0.1em',
+                  fontSize: '9px', color: 'var(--text-muted)', letterSpacing: '0.1em',
                   borderTop: '1px solid rgba(255,255,255,0.1)',
-                  paddingTop: '1rem',
-                  textTransform: 'uppercase'
+                  paddingTop: '1rem', textTransform: 'uppercase',
                 }}
               >
                 <span>TARGET // ZYPHORIA '26</span>
-                <span style={{ color: 'var(--accent)', opacity: 0.7 }}>AWAITING PROTOCOL</span>
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={statusText}
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 0.7, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.25 }}
+                    style={{ color: hudAccent }}
+                  >
+                    {statusText}
+                  </motion.span>
+                </AnimatePresence>
               </div>
             </div>
           </div>
@@ -535,12 +702,8 @@ function Hero() {
 
       <style>{`
         @media (max-width: 900px) {
-          .hero-grid {
-            grid-template-columns: 1fr !important;
-          }
-          .countdown-block {
-            min-width: unset !important;
-          }
+          .hero-grid { grid-template-columns: 1fr !important; }
+          .countdown-block { min-width: unset !important; }
         }
       `}</style>
     </section>
