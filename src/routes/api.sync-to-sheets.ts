@@ -1,4 +1,4 @@
-// @ts-nocheck
+import { createFileRoute } from '@tanstack/react-router'
 import { createAPIFileRoute } from '@tanstack/react-start/api';
 import crypto from 'node:crypto';
 
@@ -46,8 +46,8 @@ async function getGoogleToken(clientEmail: string, privateKey: string) {
   return data.access_token;
 }
 
-export const APIRoute = createAPIFileRoute('/api/sync-to-sheets')({
-  POST: async ({ request }) => {
+export const Route = createAPIFileRoute('/api/sync-to-sheets')({
+  POST: async ({ request }: { request: Request }) => {
     try {
       const body = await request.json();
       const { registration } = body;

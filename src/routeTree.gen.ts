@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsProductIdRouteImport } from './routes/products/$productId'
+import { Route as ApiSyncToSheetsRouteImport } from './routes/api.sync-to-sheets'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -28,34 +29,48 @@ const ProductsProductIdRoute = ProductsProductIdRouteImport.update({
   path: '/products/$productId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSyncToSheetsRoute = ApiSyncToSheetsRouteImport.update({
+  id: '/api/sync-to-sheets',
+  path: '/api/sync-to-sheets',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
+  '/api/sync-to-sheets': typeof ApiSyncToSheetsRoute
   '/products/$productId': typeof ProductsProductIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
+  '/api/sync-to-sheets': typeof ApiSyncToSheetsRoute
   '/products/$productId': typeof ProductsProductIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
+  '/api/sync-to-sheets': typeof ApiSyncToSheetsRoute
   '/products/$productId': typeof ProductsProductIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/register' | '/products/$productId'
+  fullPaths: '/' | '/register' | '/api/sync-to-sheets' | '/products/$productId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/register' | '/products/$productId'
-  id: '__root__' | '/' | '/register' | '/products/$productId'
+  to: '/' | '/register' | '/api/sync-to-sheets' | '/products/$productId'
+  id:
+    | '__root__'
+    | '/'
+    | '/register'
+    | '/api/sync-to-sheets'
+    | '/products/$productId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   RegisterRoute: typeof RegisterRoute
+  ApiSyncToSheetsRoute: typeof ApiSyncToSheetsRoute
   ProductsProductIdRoute: typeof ProductsProductIdRoute
 }
 
@@ -82,12 +97,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsProductIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/sync-to-sheets': {
+      id: '/api/sync-to-sheets'
+      path: '/api/sync-to-sheets'
+      fullPath: '/api/sync-to-sheets'
+      preLoaderRoute: typeof ApiSyncToSheetsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   RegisterRoute: RegisterRoute,
+  ApiSyncToSheetsRoute: ApiSyncToSheetsRoute,
   ProductsProductIdRoute: ProductsProductIdRoute,
 }
 export const routeTree = rootRouteImport
