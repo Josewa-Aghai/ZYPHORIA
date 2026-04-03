@@ -96,6 +96,12 @@ function LogoScreen({
   reveal = false,
   trimBorder = false,
 }: LogoScreenProps) {
+  const lowerSrc = imageSrc?.toLowerCase() ?? ''
+  const isZyphoria = lowerSrc.includes('zyphoria')
+  const isZyphoria1 = lowerSrc.includes('zyphoria1')
+  const isIdatamind = lowerSrc.includes('idatamind')
+  const isRit = lowerSrc.includes('ritlogo')
+
   const glowClass = accent === 'lime'
     ? 'bg-[radial-gradient(circle,rgba(200,250,100,0.22),transparent_60%)]'
     : 'bg-[radial-gradient(circle,rgba(251,146,60,0.22),transparent_60%)]'
@@ -110,17 +116,28 @@ function LogoScreen({
     >
       <div className={`absolute inset-x-0 top-1/2 mx-auto h-192 w-[min(94vw,78rem)] -translate-y-1/2 rounded-full blur-3xl ${glowClass}`} />
 
-      <div className="relative flex w-full flex-col items-center justify-center gap-6">
+      <div
+        className="relative flex w-full flex-col items-center justify-center gap-6"
+        style={isZyphoria1 ? { paddingTop: '4vh' } : undefined}
+      >
         {label ? (
-          <p 
-            className={`font-mono text-center uppercase tracking-[0.25em] ${imageSrc?.includes('Zyphoria') ? 'font-bold' : ''}`}
+          <p
+            className={`font-mono text-center uppercase tracking-[0.2em] relative z-30 ${
+              isZyphoria1
+                ? 'text-xs sm:text-sm md:text-base font-semibold'
+                : isZyphoria
+                ? 'text-sm sm:text-lg md:text-xl font-bold'
+                : 'text-xs sm:text-sm'
+            }`}
             style={{
-              fontSize: imageSrc?.includes('Zyphoria') ? 'clamp(12px, 2.5vw, 16px)' : 'clamp(10px, 2vw, 14px)',
-              marginBottom: imageSrc?.includes('Zyphoria') ? '-7rem' : '0',
-              zIndex: 30,
-              color: imageSrc?.includes('Zyphoria') ? '#C8FA64' : 'rgba(255,255,255,0.8)',
-              textShadow: imageSrc?.includes('Zyphoria') ? '0 0 20px rgba(200,250,100,0.6)' : '0 0 16px rgba(255,255,255,0.4)',
-              position: 'relative'
+              // For Zyphoria (screen 3), keep the department text
+              // in the middle area, just above the logo.
+              marginBottom: isZyphoria1 ? '0.25rem' : isZyphoria ? '-5.5rem' : '0',
+              color: isZyphoria1 || isZyphoria ? '#C8FA64' : 'rgba(255,255,255,0.8)',
+              textShadow:
+                isZyphoria1 || isZyphoria
+                  ? '0 0 16px rgba(200,250,100,0.55)'
+                  : '0 0 16px rgba(255,255,255,0.4)',
             }}
           >
             {label}
@@ -131,20 +148,41 @@ function LogoScreen({
           <motion.div
             variants={logoVariants}
             className={`relative flex items-center justify-center sm:mx-auto ${
-              imageSrc?.includes('rit')
-                ? 'w-[80vw] max-w-[280px] sm:max-w-[400px] lg:max-w-[500px]'
+              isRit
+                ? 'w-[min(80vw,28rem)] sm:w-[min(70vw,32rem)] lg:w-[min(55vw,36rem)]'
+                : imageSrc?.toLowerCase().includes('idatamind')
+                ? 'w-[75vw] sm:w-[65vw] lg:w-[50vw] max-w-[44rem]'
                 : 'w-[min(90vw,36rem)] sm:w-[min(80vw,44rem)] lg:w-[min(70vw,52rem)]'
             }`}
-            animate={reveal ? { scale: [1, 1.04, 1], filter: ['drop-shadow(0 0 0 rgba(0,0,0,0))', 'drop-shadow(0 0 36px rgba(200,250,100,0.48))', 'drop-shadow(0 0 70px rgba(200,250,100,0.78))'] } : undefined}
+            animate={
+              reveal
+                ? {
+                    scale: [1, 1.04, 1],
+                    filter: [
+                      'drop-shadow(0 0 0 rgba(0,0,0,0))',
+                      'drop-shadow(0 0 26px rgba(200,250,100,0.42))',
+                      'drop-shadow(0 0 46px rgba(200,250,100,0.75))',
+                    ],
+                  }
+                : undefined
+            }
             transition={{ duration: 2.8, repeat: reveal ? Number.POSITIVE_INFINITY : 0, repeatType: 'mirror' }}
           >
             <img
               src={imageSrc}
               alt={imageAlt ?? 'Logo'}
-              className={`h-auto w-full object-contain ${trimBorder ? '[clip-path:inset(2%_1.5%_2%_1.5%)]' : ''}`}
+              className={`h-auto w-full max-w-full object-contain ${trimBorder ? '[clip-path:inset(2%_1.5%_2%_1.5%)]' : ''}`}
               style={{
-                filter: imageSrc?.includes('idatamind') ? 'drop-shadow(0 0 8px rgba(255,255,255,0.95)) drop-shadow(0 0 24px rgba(255,255,255,0.7))' : undefined,
-                mixBlendMode: imageSrc?.includes('Zyphoria') ? 'screen' : undefined
+                // Zyphoria asset already contains neon/highlight in the file.
+                // Avoid extra blending/glow so it doesn't look like a "light box".
+                mixBlendMode: undefined,
+                filter:
+                  isIdatamind || isRit
+                    ? 'drop-shadow(0 0 8px rgba(255,255,255,0.9)) drop-shadow(0 0 22px rgba(255,255,255,0.6))'
+                    : isZyphoria1
+                      ? 'saturate(1.03) contrast(1.03)'
+                      : undefined,
+                imageRendering: (isRit ? 'high-quality' : 'auto') as any,
               }}
               draggable={false}
             />
@@ -247,10 +285,9 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
           {screen === 1 ? (
             <LogoScreen
               key="screen-one"
-              imageSrc="/rit.png"
+              imageSrc="/ritlogo.png"
               imageAlt="Rajalakshmi Institute of Technology"
               label="Presented by"
-              trimBorder
             />
           ) : null}
 
@@ -267,7 +304,7 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
           {screen === 3 ? (
             <LogoScreen
               key="screen-three"
-              imageSrc="/Zyphoria.png"
+              imageSrc="/zyphoria1.png"
               imageAlt="Zyphoria '26"
               label="Department of Computer Science and Engineering"
               accent="lime"
