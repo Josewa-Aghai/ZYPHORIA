@@ -1,14 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, Upload, CheckCircle, Loader2, User, Phone } from 'lucide-react'
-import toast, { Toaster } from 'react-hot-toast'
-import { createClient } from '@supabase/supabase-js'
+import { Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, User, Phone } from 'lucide-react'
+import { Toaster } from 'react-hot-toast'
 import { IntroLoader } from '../components/IntroLoader'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder'
-const supabase = createClient(supabaseUrl, supabaseKey)
+// No supabase client needed in index.tsx anymore as form is moved to register.tsx
 
 export const Route = createFileRoute('/')({
   component: ZyphoriaHome,
@@ -155,7 +152,7 @@ function Navbar() {
 
         {/* Register pill */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <a href="/register.html" className="btn-lime-pill">Register</a>
+          <Link to="/register" className="btn-lime-pill">Register</Link>
           {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -176,26 +173,50 @@ function Navbar() {
             { label: 'EVENTS', target: 'events' },
             { label: 'TEAM', target: 'organizers' },
             { label: 'REGISTER', target: 'register' }
-          ].map((link) => (
-            <a
-              key={link.label}
-              href={link.target === 'register' ? '/register.html' : `#${link.target}`}
-              className="font-mono"
-              onClick={() => setMenuOpen(false)}
-              style={{
-                display: 'block',
-                padding: '0.75rem 0',
-                fontSize: '12px',
-                letterSpacing: '0.12em',
-                color: 'var(--text-muted)',
-                textDecoration: 'none',
-                textTransform: 'uppercase',
-                borderBottom: '1px solid var(--stroke)',
-              }}
-            >
-              {link.label}
-            </a>
-          ))}
+          ].map((link) => {
+            if (link.target === 'register') {
+              return (
+                <Link
+                  key={link.label}
+                  to="/register"
+                  className="font-mono"
+                  onClick={() => setMenuOpen(false)}
+                  style={{
+                    display: 'block',
+                    padding: '0.75rem 0',
+                    fontSize: '12px',
+                    letterSpacing: '0.12em',
+                    color: 'var(--text-muted)',
+                    textDecoration: 'none',
+                    textTransform: 'uppercase',
+                    borderBottom: '1px solid var(--stroke)',
+                  }}
+                >
+                  {link.label}
+                </Link>
+              )
+            }
+            return (
+              <a
+                key={link.label}
+                href={`#${link.target}`}
+                className="font-mono"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  display: 'block',
+                  padding: '0.75rem 0',
+                  fontSize: '12px',
+                  letterSpacing: '0.12em',
+                  color: 'var(--text-muted)',
+                  textDecoration: 'none',
+                  textTransform: 'uppercase',
+                  borderBottom: '1px solid var(--stroke)',
+                }}
+              >
+                {link.label}
+              </a>
+            )
+          })}
         </div>
       )}
 
@@ -283,7 +304,7 @@ function Hero() {
 
             {/* CTAs */}
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-              <a href="/register.html" className="btn-filled" style={{ fontSize: '12px', background: 'transparent', border: '1px solid var(--accent)', color: 'var(--accent)', marginRight: '1rem' }}>REGISTER NOW</a>
+              <Link to="/register" className="btn-filled" style={{ fontSize: '12px', background: 'transparent', border: '1px solid var(--accent)', color: 'var(--accent)', marginRight: '1rem', textDecoration: 'none' }}>REGISTER NOW</Link>
               <a href="#events" className="btn-filled" style={{ fontSize: '12px' }}>
                 Explore Events
               </a>
@@ -437,6 +458,7 @@ function EventCard({ event, onClick }: { event: EventItem; onClick: () => void }
 
 function EventModal({ event, onClose }: { event: EventItem; onClose: () => void }) {
   const [opening, setOpening] = useState(true)
+  const navigate = useNavigate()
   
   useEffect(() => {
     const t = setTimeout(() => setOpening(false), 10)
@@ -594,7 +616,7 @@ function EventModal({ event, onClose }: { event: EventItem; onClose: () => void 
               e.currentTarget.style.boxShadow = 'none';
             }}
             onClick={() => {
-              window.location.href = '/register.html?event=' + encodeURIComponent(event.name);
+              navigate({ to: '/register', search: { event: event.name } })
               handleClose();
             }}
           >
@@ -693,38 +715,6 @@ function EventsSection() {
     </section>
   )
 }
-
-// ─── Constants ───────────────────────────────────────────────────────────────
-
-const techDropdownEvents = [
-  "Reverse Engineering Arena",
-  "AI Prompt Engineering Battle",
-  "UI/UX Redesign Challenge",
-  "Tech Treasure Hunt",
-  "Research Pitch",
-  "Build a Startup in 60 Min",
-  "Bug Hunt"
-]
-
-const nonTechDropdownEvents = [
-  "Engineering Standup Comedy",
-  "Tech Meme War",
-  "Mystery Box Innovation",
-  "Reel Making Challenge",
-  "Tech Dum Charades",
-  "E-Sports",
-  "Marketing a Useless Product"
-]
-
-const PAYMENT_LINK = "https://edu.easebuzz.in/register.html/RAJALAKSHMIbw5w4/ZYPHORIA_2026_SYMPOSIUM"
-
-const NAME_REGEX = /^[A-Za-z\s.'-]{2,100}$/
-const PHONE_REGEX = /^(\+91[\s-]?)?[6-9]\d{9}$/
-const DEPT_REGEX = /^[A-Za-z\s&./()-]{2,100}$/
-const COLLEGE_REGEX = /^[A-Za-z\s&.,'/()-]{2,200}$/
-const TEAM_NAME_REGEX = /^[A-Za-z0-9\s&._'-]{2,100}$/
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 
 // ─── About ────────────────────────────────────────────────────────────────────
 
@@ -886,16 +876,29 @@ function Footer() {
           <div>
             <p className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Navigation</p>
             {['Events', 'Register', 'Contact'].map((item) => (
-              <a
-                key={item}
-                href={item === 'Register' ? '/register.html' : `#${item.toLowerCase()}`}
-                className="font-mono"
-                style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'none', marginBottom: '0.75rem', transition: 'color 0.15s' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
-              >
-                {item}
-              </a>
+              item === 'Register' ? (
+                <Link
+                  key={item}
+                  to="/register"
+                  className="font-mono"
+                  style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'none', marginBottom: '0.75rem', transition: 'color 0.15s' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+                >
+                  {item}
+                </Link>
+              ) : (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  className="font-mono"
+                  style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'none', marginBottom: '0.75rem', transition: 'color 0.15s' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+                >
+                  {item}
+                </a>
+              )
             ))}
           </div>
 
@@ -988,13 +991,13 @@ function CtaBanner() {
         <p className="font-mono text-sm sm:text-base text-[#8888A8] mb-8">
           ₹300 per team per event · April 15–16, 2026 · Rajalakshmi Institute of Technology
         </p>
-        <a 
-          href="/register.html" 
+        <Link 
+          to="/register" 
           className="btn-lime-pill" 
           style={{ padding: '1rem 3rem', fontSize: '14px', display: 'inline-block', background: 'var(--accent)', color: '#08080C', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 'bold' }}
         >
           REGISTER NOW
-        </a>
+        </Link>
       </div>
     </section>
   )
