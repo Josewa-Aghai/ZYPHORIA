@@ -117,13 +117,7 @@ function Navbar() {
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
         {/* Logo */}
         <a href="#" style={{ textDecoration: 'none' }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
-            <img
-              src="/favicon1.ico"
-              alt="Zyphoria icon"
-              style={{ width: '34px', height: '34px', objectFit: 'contain' }}
-              draggable={false}
-            />
+          <span style={{ display: 'inline-flex', alignItems: 'center' }}>
             <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
               ZYPH<span style={{ color: 'var(--accent)' }}>ORIA</span>
               <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
@@ -1067,8 +1061,7 @@ function Footer() {
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
               {[
                 { label: 'IG', href: 'https://www.instagram.com/zyphoria_26_rit?igsh=MXNrMGtuc2ppbGUwcw==', icon: '/insta1.png' },
-                { label: 'LI', href: '#', icon: null },
-                { label: 'TW', href: '#', icon: null },
+                { label: 'LI', href: 'mailto:zyphoria26.cse@gmail.com', icon: '/gmail.png' },
               ].map((social) => (
                 <a
                   key={social.label}
@@ -1077,8 +1070,8 @@ function Footer() {
                   target={social.href.startsWith('http') ? '_blank' : undefined}
                   rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   style={{
-                    width: social.label === 'IG' ? '38px' : '32px',
-                    height: social.label === 'IG' ? '38px' : '32px',
+                    width: social.icon ? '38px' : '32px',
+                    height: social.icon ? '38px' : '32px',
                     border: '1px solid var(--stroke)',
                     display: 'flex',
                     alignItems: 'center',
@@ -1125,8 +1118,7 @@ function Footer() {
         >
           {[
             { label: 'IG', href: 'https://www.instagram.com/zyphoria_26_rit?igsh=MXNrMGtuc2ppbGUwcw==', icon: '/insta1.png' },
-            { label: 'LI', href: '#', icon: null },
-            { label: 'TW', href: '#', icon: null },
+            { label: 'LI', href: 'mailto:zyphoria26.cse@gmail.com', icon: '/gmail.png' },
           ].map((social) => (
             <a
               key={`desktop-${social.label}`}
@@ -1135,8 +1127,8 @@ function Footer() {
               target={social.href.startsWith('http') ? '_blank' : undefined}
               rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
               style={{
-                    width: social.label === 'IG' ? '38px' : '32px',
-                    height: social.label === 'IG' ? '38px' : '32px',
+                    width: social.icon ? '38px' : '32px',
+                    height: social.icon ? '38px' : '32px',
                 border: '1px solid var(--stroke)',
                 display: 'flex',
                 alignItems: 'center',

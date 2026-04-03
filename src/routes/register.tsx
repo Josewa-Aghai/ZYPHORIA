@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState, useRef, useEffect } from 'react'
-import { Upload, Loader2, ArrowLeft } from 'lucide-react'
+import { Upload, Loader2 } from 'lucide-react'
 import toast, { Toaster } from 'react-hot-toast'
 import { createClient } from '@supabase/supabase-js'
 
@@ -78,19 +78,12 @@ function Navbar() {
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} style={{ background: scrolled ? undefined : 'transparent' }}>
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
+      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', height: '64px' }}>
         <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
             ZYPH<span style={{ color: '#C8FA64' }}>ORIA</span>
             <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
           </span>
-        </Link>
-        <Link
-          to="/"
-          className="btn-ghost font-mono"
-          style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', textDecoration: 'none' }}
-        >
-          <ArrowLeft size={14} /> BACK TO HOME
         </Link>
       </div>
     </nav>

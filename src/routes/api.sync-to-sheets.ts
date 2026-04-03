@@ -91,10 +91,10 @@ export const Route = createFileRoute('/api/sync-to-sheets')({
           // 2. Get Access Token
           const token = await getGoogleToken(clientEmail, privateKey)
 
-          // 3. Format Registration Data into an array of values (row)
-          // Match the order of these to match your columns in Google Sheets.
+          // 3. Format registration as one horizontal row (A, B, C...).
+          // Every new submission appends to the next row with same column order.
           const rowData = [
-            new Date().toISOString(), // Timestamp
+            new Date().toISOString(),
             registration.team_name || 'Individual',
             registration.leader_name || '',
             registration.leader_email || '',
@@ -104,7 +104,6 @@ export const Route = createFileRoute('/api/sync-to-sheets')({
             registration.technical_event || '',
             registration.non_technical_event || '',
             registration.payment_screenshot_url || '',
-            // Participants if any
             registration.participant1_name || '',
             registration.participant2_name || '',
             registration.participant3_name || '',

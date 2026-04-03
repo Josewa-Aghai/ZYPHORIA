@@ -192,11 +192,11 @@ function LogoScreen({
                     : isZyphoria3
                       ? 'brightness(1.03) saturate(1.03) contrast(1.02) drop-shadow(0 0 7px rgba(200,250,100,0.2))'
                     : isZyphoria1
-                      ? 'brightness(1.03) saturate(1.02) contrast(1.02) drop-shadow(0 0 7px rgba(200,250,100,0.2))'
+                      ? 'brightness(1.07) saturate(1.05) contrast(1.08) drop-shadow(0 0 10px rgba(200,250,100,0.28))'
                     : isZyphoriaWordmark
                       ? 'brightness(1.05) saturate(1.05) contrast(1.04) drop-shadow(0 0 10px rgba(200,250,100,0.28))'
                       : undefined,
-                mixBlendMode: isZyphoria1 ? 'screen' : undefined,
+                mixBlendMode: isZyphoria1 ? 'lighten' : undefined,
                 imageRendering: (isRit ? 'high-quality' : 'auto') as any,
               }}
               draggable={false}
@@ -326,7 +326,6 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
               key="screen-three"
               imageSrc="/zyphoria1.png"
               imageAlt="Zyphoria '26"
-              subtitle="Department of Engineering"
               accent="lime"
             />
           ) : null}
