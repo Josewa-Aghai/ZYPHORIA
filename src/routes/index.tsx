@@ -868,69 +868,86 @@ function RegistrationSection() {
 
   // UI rendering
   const Label = ({ children }: { children: React.ReactNode }) => (
-    <label className="font-mono text-xs uppercase tracking-wider text-[#8888A8] mb-2 block">{children}</label>
+    <label className="font-mono text-xs sm:text-[10px] uppercase tracking-[0.2em] text-white sm:text-[#8888A8] font-medium sm:font-normal mb-2 sm:mb-2.5 block sm:opacity-80">{children}</label>
   );
 
   const Input = ({ err, ...props }: any) => (
-    <div className="mb-4">
+    <div className="mb-3 sm:mb-5 last:mb-0">
       <input
-        className="w-full bg-[#101018] border outline-none font-mono text-sm p-3 text-[#EEEEF5] transition-colors"
-        style={{ borderColor: err ? 'var(--danger)' : 'var(--stroke)' }}
-        onFocus={(e) => e.target.style.borderColor = accent}
-        onBlur={(e) => e.target.style.borderColor = err ? 'var(--danger)' : 'var(--stroke)'}
+        className="w-full bg-[#0D0D14] border-2 sm:border sm:border-[var(--stroke)] border-[rgba(255,255,255,0.6)] outline-none font-mono text-sm sm:text-base pl-9 pr-7 py-5 sm:px-4 sm:py-3.5 text-[#EEEEF5] transition-all duration-300 placeholder:text-[#3A3A4A] hover:bg-[#12121A] rounded-[8px] sm:rounded-none"
+        style={err ? { borderColor: 'var(--danger)' } : {}}
+        onFocus={(e) => {
+          e.target.style.borderColor = accent;
+          if (window.innerWidth < 640) {
+            e.target.style.boxShadow = `0 0 20px ${accent}40`;
+            e.target.style.transform = 'translateY(-2px)';
+          } else {
+            e.target.style.boxShadow = 'inset 0 1px 2px rgba(0,0,0,0.2)';
+            e.target.style.transform = 'translateY(0)';
+          }
+          e.target.style.background = '#12121A';
+        }}
+        onBlur={(e) => {
+          e.target.style.borderColor = err ? 'var(--danger)' : '';
+          e.target.style.boxShadow = window.innerWidth < 640 ? 'none' : 'inset 0 1px 2px rgba(0,0,0,0.2)';
+          e.target.style.transform = 'translateY(0)';
+          e.target.style.background = '#0D0D14';
+        }}
         {...props}
       />
-      {err && <div className="text-[var(--danger)] text-xs mt-1 font-mono">{err}</div>}
+      {err && <div className="text-[var(--danger)] text-[10px] mt-2 font-mono tracking-wide">{err}</div>}
     </div>
   );
 
   return (
     <section id="register" className="section-padding" style={{ background: 'var(--bg)' }}>
-      <div className="container" style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <div style={{ marginBottom: '3rem', textAlign: 'center' }}>
-          <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ 04 — REGISTER ]</p>
-          <h2 className="font-display" style={{ fontSize: 'clamp(32px, 4vw, 52px)', color: 'var(--text-primary)' }}>
+      <div className="container" style={{ maxWidth: '850px', margin: '0 auto' }}>
+        <div style={{ marginBottom: '4rem', textAlign: 'center' }}>
+          <p className="section-label" style={{ color: 'var(--text-muted)', fontSize: '12px' }}>[ 04 — REGISTER ]</p>
+          <h2 className="font-display" style={{ fontSize: 'clamp(36px, 5vw, 64px)', color: 'var(--text-primary)', lineHeight: 1.1 }}>
             Join the Arena.
           </h2>
-          <p className="font-mono text-sm text-[#8888A8] mt-2">Secure your spot in the symposium.</p>
+          <p className="font-mono text-sm sm:text-base text-[#8888A8] mt-4 max-w-[500px] mx-auto opacity-80">"Choose your path, gather your team, and prepare for the ultimate technical showdown."</p>
         </div>
 
-        <div className="cta-container" style={{ padding: '3rem', position: 'relative' }}>
+        <div className="registration-card p-6 sm:p-10 md:p-16" style={{ position: 'relative', background: 'rgba(16, 16, 24, 0.4)', backdropFilter: 'blur(10px)', border: '1px solid var(--stroke)' }}>
           <span className="ascii-corner tl" style={{ color: accent }}>┌</span>
           <span className="ascii-corner bl" style={{ color: accent }}>└</span>
-          <span className="ascii-corner tr" style={{ right: '12px', color: accent }}>┐</span>
-          <span className="ascii-corner br" style={{ right: '12px', color: accent }}>┘</span>
+          <span className="ascii-corner tr" style={{ color: accent }}>┐</span>
+          <span className="ascii-corner br" style={{ color: accent }}>┘</span>
 
           {isSuccess ? (
-            <div style={{ textAlign: 'center', padding: '4rem 0', opacity: 1, transform: 'scale(1)', transition: 'all 0.5s ease' }}>
-              <CheckCircle style={{ margin: '0 auto 1rem', color: accent }} size={48} />
-              <h3 className="font-display" style={{ fontSize: '32px', marginBottom: '0.5rem' }}>"You're In!"</h3>
-              <p className="font-mono text-sm text-[#8888A8]">"Your Technical/Non-Technical event registration has been submitted."</p>
+            <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+              <CheckCircle style={{ margin: '0 auto 1.5rem', color: accent }} size={64} />
+              <h3 className="font-display" style={{ fontSize: '36px', marginBottom: '1rem', color: 'var(--text-primary)' }}>"TRANSMISSION RECEIVED"</h3>
+              <p className="font-mono text-base text-[#8888A8]">Registration confirmed. Check your email for details.</p>
             </div>
           ) : (
             <div>
               {/* Tab Switcher */}
-              <div style={{ display: 'flex', gap: '1rem', marginBottom: '3rem', borderBottom: '1px solid var(--stroke)' }}>
+              <div className="mb-8 sm:mb-16" style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', borderBottom: '1px solid var(--stroke)' }}>
                 <button
                   onClick={() => setTab('tech')}
-                  className="font-mono text-sm uppercase tracking-wider bg-transparent border-none cursor-pointer"
+                  className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] bg-transparent border-none cursor-pointer flex-1 sm:flex-none"
                   style={{ 
-                    padding: '1rem 1.5rem', 
+                    padding: '1.25rem 2rem', 
                     color: tab === 'tech' ? 'var(--accent)' : 'var(--text-muted)',
                     borderBottom: tab === 'tech' ? '2px solid var(--accent)' : '2px solid transparent',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.3s ease',
+                    marginBottom: '-1px'
                   }}
                 >
                   Technical
                 </button>
                 <button
                   onClick={() => setTab('nontech')}
-                  className="font-mono text-sm uppercase tracking-wider bg-transparent border-none cursor-pointer"
+                  className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] bg-transparent border-none cursor-pointer flex-1 sm:flex-none"
                   style={{ 
-                    padding: '1rem 1.5rem', 
+                    padding: '1.25rem 2rem', 
                     color: tab === 'nontech' ? 'var(--danger)' : 'var(--text-muted)',
                     borderBottom: tab === 'nontech' ? '2px solid var(--danger)' : '2px solid transparent',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.3s ease',
+                    marginBottom: '-1px'
                   }}
                 >
                   Non-Technical
@@ -938,27 +955,46 @@ function RegistrationSection() {
               </div>
 
               {/* Form body */}
-              <div>
-                <Label>{tab === 'tech' ? 'Technical Event' : 'Non-Technical Event'} ({dateLabel})</Label>
-                <div className="mb-6">
+              <div className="flex flex-col gap-8 sm:gap-12">
+                
+                {/* SECTION 1: EVENT DETAILS */}
+                <div style={{ marginTop: '1rem' }}>
+                  <h4 className="font-display text-xl mb-6 sm:mb-6 flex items-center gap-2" style={{ color: accent }}>
+                    <span>EVENT</span>
+                    <span>DIRECTIVE</span>
+                  </h4>
+                  <Label>{tab === 'tech' ? 'Technical Event' : 'Non-Technical Event'} ({dateLabel})</Label>
+                <div className="mb-8">
                   <select
                     value={formData.event}
                     onChange={(e) => setFormData(p => ({ ...p, event: e.target.value }))}
-                    className="w-full bg-[#101018] border outline-none font-mono text-sm p-3 text-[#EEEEF5]"
-                    style={{ borderColor: errors.event ? 'var(--danger)' : 'var(--stroke)' }}
+                    className="w-full bg-[#0D0D14] border-2 sm:border sm:border-[var(--stroke)] border-[rgba(255,255,255,0.6)] outline-none font-mono text-sm sm:text-base pl-9 pr-7 py-5 sm:p-4 text-[#EEEEF5] transition-all duration-300 hover:bg-[#12121A] appearance-none rounded-[8px] sm:rounded-none"
+                    style={{ 
+                      ...(errors.event ? { borderColor: 'var(--danger)' } : {}),
+                      backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23FFFFFF\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'right 1rem center',
+                      backgroundSize: '1.2em'
+                    }}
                   >
-                    <option value="">-- Select Event --</option>
+                    <option value="">-- Choose Target —-</option>
                     {eventsList.map(ev => <option key={ev} value={ev}>{ev}</option>)}
                   </select>
-                  {errors.event && <div className="text-[var(--danger)] text-xs mt-1 font-mono">{errors.event}</div>}
-                </div>
+                  </div> {/* Close event combo wrapper */}
 
-                <Label>Team Name</Label>
-                <Input value={formData.teamName} onChange={(e: any) => setFormData(p => ({ ...p, teamName: e.target.value }))} err={errors.teamName} placeholder="Enter Team Name" />
+                  <Label>Team Name</Label>
+                  <Input value={formData.teamName} onChange={(e: any) => setFormData(p => ({ ...p, teamName: e.target.value }))} err={errors.teamName} placeholder="Enter Team Name" />
+                </div> {/* Close SECTION 1 Wrapper */}
 
-                <div className="mt-8 mb-6">
-                  <h4 className="font-display text-xl mb-4" style={{ color: accent }}>👑 Team Leader</h4>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0 1rem' }}>
+                {/* SECTION 2: TEAM LEADER */}
+                <div>
+                  <h4 className="font-display text-xl mt-12 mb-6 sm:mt-8 sm:mb-6 flex items-center gap-2" style={{ color: accent }}>
+                    <span>TEAM</span>
+                    <span>LEADER</span>
+                  </h4>
+                  <div className="p-6 sm:p-8 border relative overflow-hidden" style={{ borderColor: 'var(--stroke)', background: 'rgba(25, 25, 35, 0.3)' }}>
+                    <div className="absolute top-0 right-0 p-2 font-mono text-[9px] text-[#3A3A4A] tracking-widest">COMMANDER // 01</div>
+                    <div className="gap-4 sm:gap-[0_1.5rem]" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
                     <div>
                       <Label>Full Name</Label>
                       <Input value={formData.leader.name} onChange={(e: any) => handleLeaderChange('name', e.target.value)} err={errors['leader.name']} placeholder="John Doe" />
@@ -972,36 +1008,46 @@ function RegistrationSection() {
                       <Input value={formData.leader.college} onChange={(e: any) => handleLeaderChange('college', e.target.value)} err={errors['leader.college']} placeholder="RIT" />
                     </div>
                     <div>
-                      <Label>Email</Label>
+                      <Label>Email Address</Label>
                       <Input value={formData.leader.email} onChange={(e: any) => handleLeaderChange('email', e.target.value)} err={errors['leader.email']} placeholder="john@example.com" />
                     </div>
                     <div>
-                      <Label>Phone</Label>
+                      <Label>Phone Connection</Label>
                       <Input value={formData.leader.phone} onChange={(e: any) => handleLeaderChange('phone', e.target.value)} err={errors['leader.phone']} placeholder="9876543210" />
                     </div>
                   </div>
                 </div>
 
-                <Label>Number of Participants (excluding leader)</Label>
-                <div className="mb-6">
+                <Label>Squad Capacity (excluding leader)</Label>
+                <div className="mb-8">
                   <select
                     value={formData.participantCount}
                     onChange={(e) => setFormData(p => ({ ...p, participantCount: e.target.value }))}
-                    className="w-full bg-[#101018] border outline-none font-mono text-sm p-3 text-[#EEEEF5]"
-                    style={{ borderColor: errors.participantCount ? 'var(--danger)' : 'var(--stroke)' }}
+                    className="w-full bg-[#0D0D14] border-2 sm:border sm:border-[var(--stroke)] border-[rgba(255,255,255,0.6)] outline-none font-mono text-sm sm:text-base pl-9 pr-7 py-5 sm:p-4 text-[#EEEEF5] transition-all duration-300 hover:bg-[#12121A] appearance-none rounded-[8px] sm:rounded-none"
+                    style={{ 
+                      ...(errors.participantCount ? { borderColor: 'var(--danger)' } : {}),
+                      backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23FFFFFF\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'/%3E%3C/svg%3E")',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'right 1rem center',
+                      backgroundSize: '1.2em'
+                    }}
                   >
-                    <option value="0">0 (Solo)</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
+                    <option value="0">0 (Solo Operative)</option>
+                    <option value="1">1 Member</option>
+                    <option value="2">2 Members</option>
+                    <option value="3">3 Members</option>
                   </select>
-                  {errors.participantCount && <div className="text-[var(--danger)] text-xs mt-1 font-mono">{errors.participantCount}</div>}
+                  {errors.participantCount && <div className="text-[var(--danger)] text-[10px] mt-1.5 font-mono">{errors.participantCount}</div>}
                 </div>
 
                 {Array.from({ length: parseInt(formData.participantCount) }).map((_, idx) => (
-                  <div key={idx} className="mt-6 mb-6 p-4 border" style={{ borderColor: 'var(--stroke)', background: 'var(--elevated)' }}>
-                    <h4 className="font-display text-lg mb-4 text-[#EEEEF5]">Participant {idx + 1}</h4>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0 1rem' }}>
+                  <div key={idx} className="mt-8">
+                    <h4 className="font-display text-lg mb-6 sm:mb-6 text-[#EEEEF5] flex items-center gap-2">
+                       Participant {idx + 1}
+                    </h4>
+                    <div className="p-6 sm:p-8 border relative overflow-hidden" style={{ borderColor: 'var(--stroke)', background: 'rgba(25, 25, 35, 0.3)' }}>
+                      <div className="absolute top-0 right-0 p-2 font-mono text-[9px] text-[#3A3A4A] tracking-widest">MEMBER // {idx + 1}</div>
+                      <div className="gap-4 sm:gap-[0_1.5rem]" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
                       <div>
                         <Label>Full Name</Label>
                         <Input value={formData.participants[idx].name} onChange={(e: any) => handleParticipantChange(idx, 'name', e.target.value)} err={errors[`p${idx}.name`]} placeholder="Jane Doe" />
@@ -1022,45 +1068,114 @@ function RegistrationSection() {
                         <Label>Phone</Label>
                         <Input value={formData.participants[idx].phone} onChange={(e: any) => handleParticipantChange(idx, 'phone', e.target.value)} err={errors[`p${idx}.phone`]} placeholder="9123456780" />
                       </div>
+                      </div>
                     </div>
                   </div>
                 ))}
 
-                <div className="mt-8 mb-8 pt-8 border-t" style={{ borderColor: 'var(--stroke)' }}>
-                  <h4 className="font-display text-xl mb-4 flex items-center gap-2" style={{ color: accent }}>💳 Payment</h4>
-                  <p className="font-mono text-sm text-[#8888A8] mb-6">
-                    Pay ₹300 per team for an event via the secure portal, then upload the screenshot below.
+                </div> {/* Close SECTION 2 Wrapper */}
+
+                {/* SECTION 3: PAYMENT PROTOCOL */}
+                <div className="pt-8 sm:pt-10 border-t" style={{ borderColor: 'var(--stroke)' }}>
+                  <h4 className="font-display text-xl mt-4 mb-6 sm:mt-0 sm:mb-4 flex items-center gap-2" style={{ color: accent }}>
+                    <span>PAYMENT</span>
+                    <span>PROTOCOL</span>
+                  </h4>
+                  <p className="font-mono text-sm text-[#8888A8] mb-8 leading-relaxed max-w-[600px]">
+                    Initialize payment of ₹300 per team for the event via our secure uplink. Upload your confirmation receipt below for verification.
                   </p>
                   
-                  <a href={PAYMENT_LINK} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-6 py-3 border font-mono text-xs uppercase tracking-wider hover:bg-white transition-all cursor-pointer mb-8" style={{ borderColor: accent, color: accent }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'white'; e.currentTarget.style.color = 'var(--bg)'; e.currentTarget.style.boxShadow = `0 0 15px ${accent}`; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = accent; e.currentTarget.style.boxShadow = 'none'; }}>
-                    ↗ Pay ₹300 Now
-                  </a>
+                  <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center mb-10">
+                    <a 
+                      href={PAYMENT_LINK} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="inline-flex items-center gap-3 px-8 py-4 border font-mono text-sm uppercase tracking-widest transition-all duration-300" 
+                      style={{ 
+                        borderColor: accent, 
+                        color: accent,
+                        background: 'rgba(200, 250, 100, 0.05)'
+                      }} 
+                      onMouseEnter={(e) => { 
+                        e.currentTarget.style.backgroundColor = accent; 
+                        e.currentTarget.style.color = 'var(--bg)'; 
+                        e.currentTarget.style.boxShadow = `0 0 25px ${accent}40`; 
+                      }} 
+                      onMouseLeave={(e) => { 
+                        e.currentTarget.style.backgroundColor = 'rgba(200, 250, 100, 0.05)'; 
+                        e.currentTarget.style.color = accent; 
+                        e.currentTarget.style.boxShadow = 'none'; 
+                      }}
+                    >
+                      ↗ Access Payment Portal
+                    </a>
+                    <div className="font-mono text-[10px] text-[#555575] uppercase tracking-widest">
+                      ID // SYMP-2026-PAY
+                    </div>
+                  </div>
 
-                  <div className="relative border-2 border-dashed p-8 text-center flex flex-col items-center justify-center cursor-pointer transition-colors" style={{ borderColor: errors.file ? 'var(--danger)' : 'var(--stroke)', background: 'var(--elevated)' }}>
-                    <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                  <div className="group relative border-2 border-dashed p-10 text-center flex flex-col items-center justify-center cursor-pointer transition-all duration-300 hover:bg-[#12121A] overflow-hidden" 
+                       style={{ borderColor: errors.file ? 'var(--danger)' : 'var(--stroke)', background: 'rgba(13, 13, 20, 0.6)' }}>
+                    <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                    
+                    {/* Hover effect background */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/0 to-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+
                     {filePreview ? (
-                      <div className="flex flex-col items-center">
-                        <img src={filePreview} alt="Preview" className="h-24 object-cover mb-2 border" style={{ borderColor: 'var(--stroke)' }} />
-                        <span className="font-mono text-xs text-[#8888A8]">{file?.name}</span>
+                      <div className="flex flex-col items-center relative z-20">
+                        <div className="relative mb-4">
+                          <img src={filePreview} alt="Preview" className="h-32 w-32 object-cover border-2 shadow-2xl" style={{ borderColor: accent }} />
+                          <div className="absolute -top-2 -right-2 bg-green-500 rounded-full p-1 shadow-lg">
+                            <CheckCircle size={16} color="white" />
+                          </div>
+                        </div>
+                        <span className="font-mono text-sm text-[#EEEEF5] font-bold mb-1">{file?.name}</span>
+                        <span className="font-mono text-[10px] text-[#8888A8] uppercase tracking-wider">File secured // {(file?.size ? file.size / (1024 * 1024) : 0).toFixed(2)} MB</span>
                       </div>
                     ) : (
                       <>
-                        <Upload size={32} style={{ color: accent, marginBottom: '1rem' }} />
-                        <p className="font-mono text-sm text-[#EEEEF5]">Click to upload screenshot</p>
-                        <p className="font-mono text-xs text-[#8888A8] mt-2">Max 5MB (Images only)</p>
+                        <div className="mb-4 p-4 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
+                          <Upload size={32} style={{ color: accent }} />
+                        </div>
+                        <p className="font-mono text-base text-[#EEEEF5] mb-2 font-medium tracking-wide">Upload Transmission Receipt</p>
+                        <p className="font-mono text-xs text-[#8888A8] opacity-70">PNG, JPG or WEBP (Max 5MB)</p>
                       </>
                     )}
                   </div>
-                  {errors.file && <div className="text-[var(--danger)] text-xs mt-2 font-mono text-center">{errors.file}</div>}
+                  {errors.file && <div className="text-[var(--danger)] text-xs mt-3 font-mono text-center tracking-wide">{errors.file}</div>}
                 </div>
 
                 <button 
                   onClick={handleSubmit} 
                   disabled={isSubmitting}
-                  className="w-full font-mono font-bold text-sm uppercase tracking-wider py-4 flex items-center justify-center gap-2 transition-all cursor-pointer"
-                  style={{ backgroundColor: isSubmitting ? 'var(--stroke)' : accent, color: isSubmitting ? 'var(--text-muted)' : 'var(--bg)' }}
+                  className="w-full font-mono font-bold text-sm uppercase tracking-wider py-5 flex items-center justify-center gap-3 transition-all duration-300 relative overflow-hidden group shadow-xl"
+                  style={{ 
+                    backgroundColor: isSubmitting ? 'var(--stroke)' : accent, 
+                    color: isSubmitting ? 'var(--text-muted)' : 'var(--bg)',
+                    border: 'none',
+                    cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                    marginTop: '2rem'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSubmitting) {
+                      e.currentTarget.style.backgroundColor = 'white';
+                      e.currentTarget.style.boxShadow = `0 0 30px ${accent}60`;
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSubmitting) {
+                      e.currentTarget.style.backgroundColor = accent;
+                      e.currentTarget.style.boxShadow = 'none';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }
+                  }}
                 >
-                  {isSubmitting ? <><Loader2 className="animate-spin" size={18} /> Submitting...</> : 'Register Now'}
+                  {isSubmitting ? (
+                    <><Loader2 className="animate-spin" size={20} /> SYNCING DATA...</>
+                  ) : (
+                    <>CONFIRM REGISTRATION <span className="group-hover:translate-x-1 transition-transform">→</span></>
+                  )}
                 </button>
               </div>
             </div>
