@@ -2,7 +2,7 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, User, Phone, Lock, Gamepad, Mail, Instagram } from 'lucide-react'
+import { Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, User, Phone, Mail, Instagram } from 'lucide-react'
 import { Toaster } from 'react-hot-toast'
 import { IntroLoader } from '../components/IntroLoader'
 import { MiniGame } from '../components/MiniGame'
@@ -12,6 +12,12 @@ import { MiniGame } from '../components/MiniGame'
 export const Route = createFileRoute('/')({
   component: ZyphoriaHome,
 })
+
+/** In-page nav: hash links conflict with the SPA router; scroll explicitly. */
+function scrollToSection(id: string) {
+  if (typeof document === 'undefined') return
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
 
 // ─── Data ───────────────────────────────────────────────────────────────────
 
@@ -117,14 +123,18 @@ function Navbar() {
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} style={{ background: scrolled ? undefined : 'transparent' }}>
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
         {/* Logo */}
-        <a href="#" style={{ textDecoration: 'none' }}>
+        <Link
+          to="/"
+          style={{ textDecoration: 'none' }}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
           <span style={{ display: 'inline-flex', alignItems: 'center' }}>
             <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
               ZYPH<span style={{ color: 'var(--accent)' }}>ORIA</span>
               <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
             </span>
           </span>
-        </a>
+        </Link>
 
         {/* Center nav — desktop */}
         <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }} className="desktop-nav">
@@ -133,25 +143,50 @@ function Navbar() {
             { label: 'EVENTS', target: 'events' },
             { label: 'TEAM', target: 'organizers' },
             { label: 'REGISTER', target: 'register' }
-          ].map((link) => (
-            <a
-              key={link.label}
-              href={link.target === 'register' ? '/register.html' : `#${link.target}`}
-              className="font-mono"
-              style={{
-                fontSize: '12px',
-                letterSpacing: '0.12em',
-                color: 'var(--text-muted)',
-                textDecoration: 'none',
-                textTransform: 'uppercase',
-                transition: 'color 0.15s',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
-            >
-              {link.label}
-            </a>
-          ))}
+          ].map((link) =>
+            link.target === 'register' ? (
+              <Link
+                key={link.label}
+                to="/register"
+                className="font-mono"
+                style={{
+                  fontSize: '12px',
+                  letterSpacing: '0.12em',
+                  color: 'var(--text-muted)',
+                  textDecoration: 'none',
+                  textTransform: 'uppercase',
+                  transition: 'color 0.15s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.label}
+                href={`#${link.target}`}
+                className="font-mono"
+                style={{
+                  fontSize: '12px',
+                  letterSpacing: '0.12em',
+                  color: 'var(--text-muted)',
+                  textDecoration: 'none',
+                  textTransform: 'uppercase',
+                  transition: 'color 0.15s',
+                  cursor: 'pointer',
+                }}
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollToSection(link.target)
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+              >
+                {link.label}
+              </a>
+            ),
+          )}
         </div>
 
         {/* Register button */}
@@ -236,199 +271,39 @@ function Navbar() {
 
 // ─── Hero ────────────────────────────────────────────────────────────────────
 
-// ── Easter Egg Modal ──────────────────────────────────────────────────────────
-function EasterEggModal({ onClose }: { onClose: () => void }) {
-  const [visible, setVisible] = useState(false)
-  const [glitch, setGlitch] = useState(false)
-  const [showGame, setShowGame] = useState(false)
-
-  // ⚠️ ALL hooks must come before any conditional return
-  useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 10)
-    const g = setInterval(() => {
-      setGlitch(true)
-      setTimeout(() => setGlitch(false), 120)
-    }, 2800)
-    document.body.style.overflow = 'hidden'
-    return () => { clearTimeout(t); clearInterval(g); document.body.style.overflow = 'auto' }
-  }, [])
-
-  const handleClose = () => {
-    setVisible(false)
-    setTimeout(onClose, 200)
-  }
-
-  // Conditional render AFTER all hooks
-  if (showGame) return <MiniGame onClose={() => setShowGame(false)} />
-
-  return (
-    <div
-      onClick={handleClose}
-      style={{
-        position: 'fixed', inset: 0, zIndex: 99999,
-        backgroundColor: 'rgba(8,8,12,0.88)',
-        backdropFilter: 'blur(10px)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        opacity: visible ? 1 : 0, transition: 'opacity 200ms ease',
-        padding: '1rem',
-      }}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          width: '100%', maxWidth: '420px',
-          background: '#0D0D14',
-          border: '1px solid rgba(255,77,109,0.35)',
-          boxShadow: '0 0 60px rgba(255,77,109,0.15), inset 0 0 40px rgba(255,77,109,0.04)',
-          position: 'relative', padding: '3rem 2.5rem',
-          textAlign: 'center',
-          transform: visible ? 'scale(1)' : 'scale(0.92)',
-          transition: 'transform 220ms cubic-bezier(0.34,1.56,0.64,1)',
-        }}
-      >
-        {/* ASCII corners */}
-        {['tl','tr','bl','br'].map(pos => (
-          <span key={pos} className={`ascii-corner ${pos}`} style={{ color: '#FF4D6D', fontSize: '18px' }}>
-            {pos === 'tl' ? '┌' : pos === 'tr' ? '┐' : pos === 'bl' ? '└' : '┘'}
-          </span>
-        ))}
-
-        {/* Dim scanlines */}
-        <div style={{
-          position: 'absolute', inset: 0, pointerEvents: 'none',
-          background: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,77,109,0.015) 3px, rgba(255,77,109,0.015) 4px)',
-        }} />
-
-        {/* Close button */}
-        <button
-          onClick={handleClose}
-          style={{
-            position: 'absolute', top: '1rem', right: '1rem',
-            background: 'none', border: 'none', color: '#4A4A62',
-            cursor: 'pointer', display: 'flex',
-          }}
-        >
-          <X size={18} />
-        </button>
-
-        {/* Lock icon */}
-        <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-          <motion.div
-            animate={{ y: [0, -6, 0], filter: ['drop-shadow(0 0 8px #FF4D6D)', 'drop-shadow(0 0 20px #FF4D6D)', 'drop-shadow(0 0 8px #FF4D6D)'] }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <Lock size={56} strokeWidth={1.2} color="#FF4D6D" />
-          </motion.div>
-        </div>
-
-        {/* Chip label */}
-        <p className="font-mono" style={{ fontSize: '10px', letterSpacing: '0.25em', color: '#FF4D6D', marginBottom: '0.75rem', textTransform: 'uppercase', opacity: 0.7 }}>
-          [ SECRET PROTOCOL DETECTED ]
-        </p>
-
-        {/* Glitchy title */}
-        <h2
-          className="font-display uppercase"
-          style={{
-            fontSize: 'clamp(22px, 4vw, 28px)',
-            color: '#EEEEF5',
-            lineHeight: 1.2,
-            marginBottom: '1rem',
-            letterSpacing: '-0.02em',
-            filter: glitch ? 'blur(1.5px) brightness(1.4)' : 'none',
-            transform: glitch ? 'translate(2px, -1px)' : 'none',
-            transition: 'filter 60ms, transform 60ms',
-            textShadow: '0 0 20px rgba(255,77,109,0.4)',
-          }}
-        >
-          You&apos;ve Cracked<br />
-          <span style={{ color: '#FF4D6D' }}>The Protocol.</span>
-        </h2>
-
-        <p className="font-mono" style={{ fontSize: '13px', color: '#6A6A8A', lineHeight: 1.6, marginBottom: '2rem' }}>
-          An encrypted chamber has been unlocked.<br />
-          Initiate the sequence — if you dare.
-        </p>
-
-        {/* CTA */}
-        <motion.button
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.97 }}
-          className="font-display uppercase tracking-widest"
-          style={{
-            width: '100%', padding: '1rem',
-            background: 'rgba(255,77,109,0.1)',
-            border: '1px solid #FF4D6D',
-            color: '#FF4D6D',
-            fontSize: '13px',
-            cursor: 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
-            transition: 'background 0.2s, box-shadow 0.2s',
-          }}
-          onMouseEnter={(e: any) => { e.currentTarget.style.background = '#FF4D6D'; e.currentTarget.style.color = '#08080C'; e.currentTarget.style.boxShadow = '0 0 24px rgba(255,77,109,0.5)' }}
-          onMouseLeave={(e: any) => { e.currentTarget.style.background = 'rgba(255,77,109,0.1)'; e.currentTarget.style.color = '#FF4D6D'; e.currentTarget.style.boxShadow = 'none' }}
-          onClick={() => setShowGame(true)}
-        >
-          <Gamepad size={16} />
-          PLAY THE MINI-GAME
-        </motion.button>
-
-        <p className="font-mono" style={{ fontSize: '9px', color: '#3A3A5A', marginTop: '1.25rem', letterSpacing: '0.15em' }}>
-          CLASSIFIED · ZYPHORIA '26 EASTER EGG
-        </p>
-      </div>
-    </div>
-  )
-}
-
 function Hero() {
   const target = new Date('2026-04-15T09:00:00+05:30')
   const { days, hours, mins, secs } = useCountdown(target)
 
-  // 0 = lime default | 1 = red breach | 2 = lime "restored" | 3 = red urgent | 4 = modal
-  const [eggPhase, setEggPhase] = useState<0|1|2|3|4>(0)
+  const [showMiniGame, setShowMiniGame] = useState(false)
+  const [protocolBreached, setProtocolBreached] = useState(false)
+  const lastCountdownTapRef = useRef(0)
 
-  // ── Per-phase colour tokens ────────────────────────────────────────────────
-  const isRed  = eggPhase === 1 || eggPhase === 3
-  const isLime = eggPhase === 0 || eggPhase === 2
+  const isRed = protocolBreached
+  const hudAccent = isRed ? '#FF4D6D' : '#C8FA64'
+  const hudBorder = isRed ? 'rgba(255,77,109,0.4)' : 'rgba(200,250,100,0.18)'
+  const hudGlow = isRed ? 'rgba(255,77,109,0.1)' : 'rgba(200,250,100,0.06)'
+  const hudGlowHov = isRed ? 'rgba(255,77,109,0.22)' : 'rgba(200,250,100,0.12)'
+  const hudBordHov = isRed ? 'rgba(255,77,109,0.75)' : 'rgba(200,250,100,0.5)'
+  const digitShadow = isRed ? 'rgba(255,77,109,0.65)' : 'rgba(200,250,100,0.6)'
+  const sweepColor1 = isRed ? '#FF4D6D' : '#C8FA64'
+  const sweepColor2 = isRed ? 'rgba(255,77,109,0.65)' : 'rgba(200,250,100,0.6)'
+  const sweepColor3 = isRed ? 'rgba(255,77,109,0.55)' : 'rgba(200,250,100,0.5)'
+  const sweepSpeed = isRed ? 2.8 : 4
 
-  const hudAccent   = isRed  ? '#FF4D6D' : '#C8FA64'
-  const hudBorder   = isRed  ? 'rgba(255,77,109,0.35)'  : 'rgba(200,250,100,0.18)'
-  const hudGlow     = isRed  ? 'rgba(255,77,109,0.08)'  : 'rgba(200,250,100,0.06)'
-  const hudGlowHov  = isRed  ? 'rgba(255,77,109,0.2)'   : 'rgba(200,250,100,0.12)'
-  const hudBordHov  = isRed  ? 'rgba(255,77,109,0.7)'   : 'rgba(200,250,100,0.5)'
-  const digitShadow = isRed  ? 'rgba(255,77,109,0.7)'   : 'rgba(200,250,100,0.6)'
-  const sweepColor1 = isRed  ? '#FF4D6D'                : '#C8FA64'
-  const sweepColor2 = isRed  ? 'rgba(255,77,109,0.6)'   : 'rgba(200,250,100,0.6)'
-  const sweepColor3 = isRed  ? 'rgba(255,77,109,0.5)'   : 'rgba(200,250,100,0.5)'
-  const sweepSpeed  = eggPhase === 3 ? 1.4 : isRed ? 2.5 : 4
+  const hdrLeft = isRed ? '⚠ BREACH DETECTED' : 'COUNTDOWN'
+  const statusText = isRed ? 'DOUBLE-TAP TO LAUNCH GAME' : 'DOUBLE-TAP FOR GAME'
 
-  // ── Per-phase HUD text ────────────────────────────────────────────────────
-  const hdrLeft = [
-    'COUNTDOWN',          // 0
-    'BREACH DETECTED',    // 1
-    'RECOVERING...',      // 2
-    '⚠ FINAL SEQUENCE',  // 3
-    'COUNTDOWN',          // 4 (modal open, HUD behind)
-  ][eggPhase]
-  const hdrRight = [
-    'ACTIVE',   // 0
-    'CRACKED',  // 1
-    'STABLE?',  // 2
-    'EXECUTE',  // 3
-    'ACTIVE',   // 4
-  ][eggPhase]
-  const statusText = [
-    'AWAITING PROTOCOL',    // 0
-    'CRACK THE PROTOCOL',   // 1
-    'SYSTEM RESTORED?',     // 2
-    'INITIATE NOW  ▶▶▶',   // 3
-    'AWAITING PROTOCOL',    // 4
-  ][eggPhase]
-
-  const handleHudClick = () => {
-    if (eggPhase < 3) setEggPhase((p) => (p + 1) as 0|1|2|3|4)
-    else if (eggPhase === 3) setEggPhase(4)
+  /** First interaction flips HUD to red breach; two quick taps open the game */
+  const handleCountdownActivate = () => {
+    setProtocolBreached(true)
+    const now = Date.now()
+    if (now - lastCountdownTapRef.current < 450) {
+      setShowMiniGame(true)
+      lastCountdownTapRef.current = 0
+    } else {
+      lastCountdownTapRef.current = now
+    }
   }
 
   return (
@@ -444,8 +319,14 @@ function Hero() {
     >
       <StarField />
 
-      {/* Easter Egg Modal */}
-      {eggPhase === 4 && <EasterEggModal onClose={() => setEggPhase(3)} />}
+      {showMiniGame && (
+        <MiniGame
+          onClose={() => {
+            setShowMiniGame(false)
+            setProtocolBreached(false)
+          }}
+        />
+      )}
 
       <div className="container" style={{ position: 'relative', zIndex: 2, width: '100%' }}>
         <div
@@ -478,14 +359,36 @@ function Hero() {
 
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <Link to="/register" className="btn-filled" style={{ fontSize: '12px', background: 'transparent', border: '1px solid var(--accent)', color: 'var(--accent)', marginRight: '1rem', textDecoration: 'none' }}>REGISTER NOW</Link>
-              <a href="#events" className="btn-filled" style={{ fontSize: '12px' }}>Explore Events</a>
+              <a
+                href="#events"
+                className="btn-filled"
+                style={{ fontSize: '12px', cursor: 'pointer' }}
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollToSection('events')
+                }}
+              >
+                Explore Events
+              </a>
             </div>
           </div>
 
           {/* Right — countdown terminal HUD */}
           <div
             className="countdown-block group"
-            onClick={handleHudClick}
+            role="button"
+            tabIndex={0}
+            onClick={handleCountdownActivate}
+            onDoubleClick={() => {
+              setProtocolBreached(true)
+              setShowMiniGame(true)
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                handleCountdownActivate()
+              }
+            }}
             style={{
               background: 'rgba(12, 12, 18, 0.4)',
               backdropFilter: 'blur(20px)',
@@ -515,28 +418,10 @@ function Hero() {
               </span>
             ))}
 
-            {/* Click hint tooltip — only in phase 0 */}
-            {eggPhase === 0 && (
-              <div style={{
-                position: 'absolute', top: '6px', left: '50%', transform: 'translateX(-50%)',
-                zIndex: 2,
-              }}>
-                <motion.div
-                  animate={{ opacity: [0, 0.5, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, delay: 4 }}
-                  className="font-mono"
-                  style={{ fontSize: '8px', letterSpacing: '0.15em', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}
-                >
-                  · · ·
-                </motion.div>
-              </div>
-            )}
-
-            {/* Tint flicker overlay — red phases only */}
-            {isRed && (
+            {protocolBreached && (
               <motion.div
-                animate={{ opacity: [0, eggPhase===3 ? 0.12 : 0.06, 0, 0.04, 0] }}
-                transition={{ duration: eggPhase===3 ? 0.35 : 0.6, repeat: Infinity, repeatDelay: eggPhase===3 ? 0.8 : 2.2 }}
+                animate={{ opacity: [0, 0.08, 0, 0.05, 0] }}
+                transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 0.5 }}
                 style={{ position: 'absolute', inset: 0, background: '#FF4D6D', zIndex: 0, pointerEvents: 'none' }}
               />
             )}
@@ -610,18 +495,26 @@ function Hero() {
                 <div className="flex items-center gap-2">
                   <motion.div
                     animate={{ opacity: [1, 0, 1] }}
-                    transition={{ duration: eggPhase===3 ? 0.25 : isRed ? 0.5 : 2, repeat: Infinity }}
+                    transition={{ duration: protocolBreached ? 0.35 : 2, repeat: Infinity }}
                     style={{ width: '6px', height: '6px', background: hudAccent, transition: 'background 0.4s' }}
                   />
                   <span>{hdrLeft}</span>
                 </div>
-                <div className="flex items-center gap-2" style={{ color: hudAccent, transition: 'color 0.4s' }}>
+                <div className="flex items-center gap-2" style={{ color: hudAccent, transition: 'color 0.4s', textAlign: 'right' }}>
                   <motion.div
                     animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: eggPhase===3 ? 0.2 : isRed ? 0.4 : 1, repeat: Infinity }}
-                    style={{ width: '4px', height: '4px', borderRadius: '50%', background: hudAccent, boxShadow: `0 0 8px ${hudAccent}`, transition: 'background 0.4s, box-shadow 0.4s' }}
+                    transition={{ duration: protocolBreached ? 0.45 : 1, repeat: Infinity }}
+                    style={{ width: '4px', height: '4px', borderRadius: '50%', background: hudAccent, boxShadow: `0 0 8px ${hudAccent}`, transition: 'background 0.4s, box-shadow 0.4s', flexShrink: 0 }}
                   />
-                  <span>{hdrRight}</span>
+                  {protocolBreached ? (
+                    <span style={{ fontSize: '8px', letterSpacing: '0.12em', lineHeight: 1.35, maxWidth: '130px' }}>
+                      PROTOCOL
+                      <br />
+                      BREACHED
+                    </span>
+                  ) : (
+                    <span style={{ letterSpacing: '0.15em' }}>ACTIVE</span>
+                  )}
                 </div>
               </div>
 
@@ -658,7 +551,13 @@ function Hero() {
                     </div>
                     <div
                       className="font-mono flex items-center justify-center gap-2"
-                      style={{ fontSize: '9px', color: isRed ? 'rgba(255,77,109,0.5)' : 'var(--text-muted)', letterSpacing: '0.2em', marginTop: '8px', transition: 'color 0.4s' }}
+                      style={{
+                        fontSize: '9px',
+                        color: protocolBreached ? 'rgba(255,77,109,0.45)' : 'var(--text-muted)',
+                        letterSpacing: '0.2em',
+                        marginTop: '8px',
+                        transition: 'color 0.4s',
+                      }}
                     >
                       <span style={{ opacity: 0.3 }}>[</span>{label}<span style={{ opacity: 0.3 }}>]</span>
                     </div>
@@ -1300,13 +1199,28 @@ function CtaBanner() {
         <h2 className="font-display" style={{ fontSize: 'clamp(32px, 4vw, 48px)', color: 'var(--text-primary)', marginBottom: '1rem' }}>
           Ready to Compete?
         </h2>
-        <p className="font-mono text-sm sm:text-base text-[#8888A8] mb-8">
+        <p
+          className="font-mono text-sm sm:text-base text-[#8888A8]"
+          style={{ marginBottom: '2.75rem', lineHeight: 1.6 }}
+        >
           ₹300 per team per event · April 15–16, 2026 · Rajalakshmi Institute of Technology
         </p>
         <Link 
           to="/register" 
           className="btn-lime-pill hover:opacity-90 transition-opacity" 
-          style={{ padding: '1rem 3rem', fontSize: '14px', display: 'inline-block', background: 'var(--accent)', color: '#08080C', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 'bold', borderRadius: '0px' }}
+          style={{
+            padding: '1rem 3rem',
+            fontSize: '14px',
+            display: 'inline-block',
+            background: 'var(--accent)',
+            color: '#08080C',
+            textDecoration: 'none',
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+            fontWeight: 'bold',
+            borderRadius: '0px',
+            marginTop: '0.5rem',
+          }}
         >
           REGISTER NOW
         </Link>

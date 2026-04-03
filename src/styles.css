@@ -281,6 +281,12 @@ body::after {
   border-bottom-color: var(--stroke);
 }
 
+/* Anchor scroll offset for sticky navbar */
+main section[id],
+footer[id] {
+  scroll-margin-top: 96px;
+}
+
 /* Section layout */
 .section-padding {
   padding: 120px 0;
