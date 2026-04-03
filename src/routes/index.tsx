@@ -117,9 +117,17 @@ function Navbar() {
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
         {/* Logo */}
         <a href="#" style={{ textDecoration: 'none' }}>
-          <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
-            ZYPH<span style={{ color: 'var(--accent)' }}>ORIA</span>
-            <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
+            <img
+              src="/favicon1.ico"
+              alt="Zyphoria icon"
+              style={{ width: '26px', height: '26px', objectFit: 'contain' }}
+              draggable={false}
+            />
+            <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
+              ZYPH<span style={{ color: 'var(--accent)' }}>ORIA</span>
+              <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
+            </span>
           </span>
         </a>
 
@@ -151,9 +159,9 @@ function Navbar() {
           ))}
         </div>
 
-        {/* Register pill */}
+        {/* Register button */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Link to="/register" className="btn-lime-pill">Register</Link>
+          <Link to="/register" className="btn-lime-pill" style={{ borderRadius: '0' }}>Register</Link>
           {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -963,8 +971,8 @@ function OrganizersSection() {
             <p className="font-mono" style={sectionLabelStyle}>STUDENT COORDINATORS</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { name: 'Divyadarshini K', phone: '8056120505' },
-                { name: 'Gajalakshmi C', phone: '9994335576' },
+                { name: 'Divyadarshini  K', phone: '8056120505' },
+                { name: 'Gajalakshmi  C', phone: '9994335576' },
                 { name: 'M. S. Sathish', phone: '9384579988' },
                 { name: 'S. Sanjit Kumar', phone: '8667509464' }
               ].map(p => (
@@ -982,6 +990,7 @@ function OrganizersSection() {
               ))}
             </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -1022,7 +1031,7 @@ function Footer() {
           {/* Col 2 — nav */}
           <div>
             <p className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Navigation</p>
-            {['Events', 'Register', 'Contact'].map((item) => (
+            {['Events', 'Register'].map((item) => (
               item === 'Register' ? (
                 <Link
                   key={item}
@@ -1049,23 +1058,8 @@ function Footer() {
             ))}
           </div>
 
-          {/* Col 3 — social + contact */}
-          <div>
-            <p className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Contact</p>
-            <div className="flex flex-col gap-2 mb-6">
-              {[
-                { name: 'Divyadarshini K', phone: '8056120505', display: '+91 80561 20505' },
-                { name: 'Gajalakshmi C', phone: '9994335576', display: '+91 99943 35576' },
-                { name: 'M. S. Sathish', phone: '9384579988', display: '+91 93845 79988' },
-                { name: 'S. Sanjit Kumar', phone: '8667509464', display: '+91 86675 09464' }
-              ].map(c => (
-                <div key={c.name} className="flex justify-between items-center text-[#8888A8]" style={{ gap: '1rem' }}>
-                  <span className="font-mono text-[12px] break-keep">{c.name}</span>
-                  <a href={`tel:+91${c.phone}`} className="font-mono text-[12px] whitespace-nowrap hover:text-[var(--accent)] transition-colors">{c.display}</a>
-                </div>
-              ))}
-            </div>
-            
+          {/* Col 3 — social only (mobile) */}
+          <div className="social-mobile-only" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
               {['IG', 'LI', 'TW'].map((social) => (
                 <a
@@ -1100,6 +1094,47 @@ function Footer() {
           </div>
         </div>
 
+        {/* Desktop social row */}
+        <div
+          className="social-desktop-only"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '0.75rem',
+            padding: '1rem 0 0.5rem',
+          }}
+        >
+          {['IG', 'LI', 'TW'].map((social) => (
+            <a
+              key={`desktop-${social}`}
+              href="#"
+              className="font-mono"
+              style={{
+                width: '32px',
+                height: '32px',
+                border: '1px solid var(--stroke)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '10px',
+                color: 'var(--text-muted)',
+                textDecoration: 'none',
+                transition: 'all 0.15s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--accent)'
+                e.currentTarget.style.color = 'var(--accent)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--stroke)'
+                e.currentTarget.style.color = 'var(--text-muted)'
+              }}
+            >
+              {social}
+            </a>
+          ))}
+        </div>
+
         {/* Bottom strip */}
         <div
           className="font-mono"
@@ -1117,8 +1152,16 @@ function Footer() {
       </div>
 
       <style>{`
+        .social-desktop-only { display: flex; }
+        .social-mobile-only { display: flex; }
+
         @media (max-width: 768px) {
           .footer-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+          .social-desktop-only { display: none !important; }
+        }
+
+        @media (min-width: 769px) {
+          .social-mobile-only { display: none !important; }
         }
       `}</style>
     </footer>

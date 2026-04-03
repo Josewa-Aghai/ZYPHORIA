@@ -176,10 +176,15 @@ function LogoScreen({
                       'drop-shadow(0 0 26px rgba(200,250,100,0.42))',
                       'drop-shadow(0 0 46px rgba(200,250,100,0.75))',
                     ],
+                    opacity: 1,
                   }
-                : undefined
+                : 'visible'
             }
-            transition={{ duration: 2.8, repeat: reveal ? Number.POSITIVE_INFINITY : 0, repeatType: 'mirror' }}
+            transition={
+              reveal
+                ? { duration: 2.8, repeat: Number.POSITIVE_INFINITY, repeatType: 'mirror' }
+                : { duration: 1, ease: 'easeOut' }
+            }
           >
             <img
               src={imageSrc}
