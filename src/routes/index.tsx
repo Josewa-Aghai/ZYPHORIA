@@ -1187,8 +1187,6 @@ function Footer() {
                 { label: 'IG', href: 'https://www.instagram.com/zyphoria_26_rit?igsh=MXNrMGtuc2ppbGUwcw==', icon: '/insta1.png' },
                 { label: 'LI', href: 'mailto:zyphoria26.cse@gmail.com', icon: '/gmail.png' },
               ].map((social) => (
-                { label: 'GM', href: 'mailto:zyphoria26.cse@gmail.com', icon: '/gmail.png' },
-              ].map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
