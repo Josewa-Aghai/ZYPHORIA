@@ -52,6 +52,15 @@ async function getGoogleToken(clientEmail: string, privateKey: string) {
   return data.access_token;
 }
 
+/** Tab name for A1 ranges (e.g. Sheet1 or 'My Sheet'). Ignores any !range suffix in env. */
+function resolveSheetTabName(envRange: string | undefined): string {
+  const raw = (envRange || '').trim()
+  if (!raw) return 'Sheet1'
+  const bang = raw.indexOf('!')
+  if (bang === -1) return raw
+  return raw.slice(0, bang)
+}
+
 export const Route = createFileRoute('/api/sync-to-sheets')({
   server: {
     handlers: {
@@ -91,31 +100,61 @@ export const Route = createFileRoute('/api/sync-to-sheets')({
           // 2. Get Access Token
           const token = await getGoogleToken(clientEmail, privateKey)
 
-          // 3. Format registration as one horizontal row (A, B, C...).
-          // Every new submission appends to the next row with same column order.
+          // 3. One row matching sheet headers (row 1 in the spreadsheet should be):
+          // TIMESTAMP | TEAM NAME | MEMBER1 | MEMBER2 | MEMBER3 | MEMBER4 |
+          // MAIL ID | PHONE NUMBER | DEPARTMENT | COLLEGE NAME | EVENT NAME | PAYMENT PROOF
+          // MEMBER1 = leader; MEMBER2–4 = additional members (blank if none).
+          const eventName =
+            registration.technical_event || registration.non_technical_event || ''
           const rowData = [
             new Date().toISOString(),
-            registration.team_name || 'Individual',
+            registration.team_name || '',
             registration.leader_name || '',
+            registration.participant1_name || '',
+            registration.participant2_name || '',
+            registration.participant3_name || '',
             registration.leader_email || '',
             registration.leader_phone || '',
             registration.leader_department || '',
             registration.leader_college || '',
-            registration.technical_event || '',
-            registration.non_technical_event || '',
+            eventName,
             registration.payment_screenshot_url || '',
-            registration.participant1_name || '',
-            registration.participant2_name || '',
-            registration.participant3_name || '',
           ];
 
-          // 4. Append to Google Sheets
-          const range = process.env.GOOGLE_SHEETS_RANGE || 'Sheet1!A:Z'
-          const encodedRange = encodeURIComponent(range)
-          const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodedRange}:append?valueInputOption=USER_ENTERED`
+          if (rowData.length !== 12) {
+            throw new Error(`Expected 12 columns, got ${rowData.length}`)
+          }
 
-          const response = await fetch(url, {
-            method: 'POST',
+          // 4. values.append can attach to a "table" that starts at column G if that column was used first.
+          // Read A:L, then PUT the next row at A{row}:L{row} so TIMESTAMP is always column A.
+          const tab = resolveSheetTabName(process.env.GOOGLE_SHEETS_RANGE)
+          const readRange = `${tab}!A:L`
+          const readUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(readRange)}`
+
+          const readRes = await fetch(readUrl, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          const readJson = await readRes.json()
+          if (!readRes.ok) {
+            console.error('Sheets read failed:', readJson)
+            return new Response(
+              JSON.stringify({
+                error: 'Failed to read Google Sheet (check tab name and sharing)',
+                details: readJson,
+              }),
+              { status: 502, headers: { 'Content-Type': 'application/json' } },
+            )
+          }
+
+          const existingRows: unknown[][] = readJson.values ?? []
+          const nextRow = existingRows.length + 1
+          const writeRange = `${tab}!A${nextRow}:L${nextRow}`
+          const writeUrl =
+            `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(writeRange)}` +
+            `?valueInputOption=USER_ENTERED`
+
+          const response = await fetch(writeUrl, {
+            method: 'PUT',
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
@@ -126,10 +165,10 @@ export const Route = createFileRoute('/api/sync-to-sheets')({
           const result = await response.json()
 
           if (!response.ok) {
-            console.error('Failed to append to Google Sheets:', result)
+            console.error('Failed to write row to Google Sheets:', result)
             return new Response(
               JSON.stringify({
-                error: 'Failed to append to Google Sheets',
+                error: 'Failed to write row to Google Sheets',
                 details: result,
               }),
               { status: 502, headers: { 'Content-Type': 'application/json' } },
@@ -137,7 +176,12 @@ export const Route = createFileRoute('/api/sync-to-sheets')({
           }
 
           return new Response(
-            JSON.stringify({ success: true, message: 'Synced to Google Sheets', details: result }),
+            JSON.stringify({
+              success: true,
+              message: 'Synced to Google Sheets',
+              row: nextRow,
+              details: result,
+            }),
             { status: 200, headers: { 'Content-Type': 'application/json' } },
           )
         } catch (err: any) {
