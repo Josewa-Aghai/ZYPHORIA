@@ -1130,14 +1130,20 @@ function OrganizersSection() {
             <p className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', letterSpacing: '0.15em', marginBottom: '1rem' }}>STUDENT COORDINATORS</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { name: 'Divyadarshini K', phone: '8056120505' },
-                { name: 'Shree Suriya', phone: '9360572003' },
-                { name: 'Naveen Kumar', phone: '7904769905' },
-                { name: 'Joshua Ewrain', phone: '8838523009' },
+                { name: "Divyadarshini K", phone: "8056120505" },
+                { name: "Gajalakshmi C", phone: "9994335576" },
+                { name: "M. S. Sathish", phone: "9384579988" },
+                { name: "S. Sanjit Kumar", phone: "8667509464" },
               ].map(s => (
                 <div key={s.name} className="p-4" style={{ background: '#101018', border: '1px solid #1E1E2E' }}>
-                  <div className="font-display student-coordinator-name font-bold text-[16px] text-[#EEEEF5] mb-1">{s.name}</div>
-                  <div className="font-mono text-[11px] text-[#8888A8]">{s.phone}</div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <User size={16} color="#C8FA64" />
+                    <div className="font-display student-coordinator-name font-bold text-[16px] text-[#EEEEF5]">{s.name}</div>
+                  </div>
+                  <a href={`tel:+91${s.phone}`} className="flex items-center gap-1 font-mono text-[11px] text-[#8888A8] hover:text-[#C8FA64] transition-colors">
+                    <Phone size={12} color="#C8FA64" />
+                    {s.phone}
+                  </a>
                 </div>
               ))}
             </div>
@@ -1182,11 +1188,15 @@ function Footer() {
 
           {/* Col 3 — social only (mobile) */}
           <div className="social-mobile-only" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
-              {[
-                { label: 'IG', href: 'https://www.instagram.com/zyphoria_26_rit?igsh=MXNrMGtuc2ppbGUwcw==', icon: '/insta1.png' },
-                { label: 'LI', href: 'mailto:zyphoria26.cse@gmail.com', icon: '/gmail.png' },
-              ].map((social) => (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <p className="font-mono" style={{ fontSize: '10px', color: '#8888A8', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '8px' }}>
+                SOCIALS
+              </p>
+              <div style={{ display: 'flex', gap: '0.75rem' }}>
+                {[
+                  { label: 'IG', href: 'https://www.instagram.com/zyphoria_26_rit?igsh=MXNrMGtuc2ppbGUwcw==', icon: '/insta1.png' },
+                  { label: 'LI', href: 'mailto:zyphoria26.cse@gmail.com', icon: '/gmail.png' },
+                ].map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
@@ -1222,64 +1232,11 @@ function Footer() {
                   />
                 </a>
               ))}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Desktop social row */}
-        <div
-          className="social-desktop-only"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '0.75rem',
-            padding: '1rem 0 0.5rem',
-          }}
-        >
-          {[
-            { label: 'IG', href: 'https://www.instagram.com/zyphoria_26_rit?igsh=MXNrMGtuc2ppbGUwcw==', icon: '/insta1.png' },
-            { label: 'LI', href: 'mailto:zyphoria26.cse@gmail.com', icon: '/gmail.png' },
-          ].map((social) => (
-            <a
-              key={`desktop-${social.label}`}
-              href={social.href}
-              className="font-mono"
-              target={social.href.startsWith('http') ? '_blank' : undefined}
-              rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-              style={{
-                    width: social.icon ? '38px' : '32px',
-                    height: social.icon ? '38px' : '32px',
-                border: '1px solid var(--stroke)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '10px',
-                color: 'var(--text-muted)',
-                textDecoration: 'none',
-                transition: 'all 0.15s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--accent)'
-                e.currentTarget.style.color = 'var(--accent)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--stroke)'
-                e.currentTarget.style.color = 'var(--text-muted)'
-              }}
-            >
-              {social.icon ? (
-                <img
-                  src={social.icon}
-                  alt={`${social.label} icon`}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  draggable={false}
-                />
-              ) : (
-                social.label
-              )}
-            </a>
-          ))}
-        </div>
         {/* Bottom strip */}
         <div
           className="font-mono"
