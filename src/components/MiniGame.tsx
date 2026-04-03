@@ -134,6 +134,255 @@ function FlagCaptured({ password, onClose }: { password: string; onClose: () => 
   )
 }
 
+// ── WIN CREDITS SEQUENCE ──────────────────────────────────────────────────────
+function WinCredits({ onClose }: { onClose: () => void }) {
+  const [flash, setFlash] = useState(false)
+
+  useEffect(() => {
+    // Step 1: Screen flash white (0ms)
+    setFlash(true)
+    setTimeout(() => setFlash(false), 150)
+  }, [])
+
+  const developers = [
+    {
+      name: 'Josewa Aghai',
+      handle: '@josewa_aghai34',
+      link: 'https://www.instagram.com/josewa_aghai34?igsh=eW85MW85b2FzdXZl',
+      direction: 'top' as const
+    },
+    {
+      name: 'Jegadesh N',
+      handle: '@_._._jxck_._._',
+      link: 'https://www.instagram.com/_._._.jxck._._._?igsh=Y3hxZXo2dWhhODF5',
+      direction: 'right' as const
+    },
+    {
+      name: 'Jeevesh R',
+      handle: '@jexxsh_jfj',
+      link: 'https://www.instagram.com/jexxsh_jfj?igsh=MThkcjE2aHYwcG1pag==',
+      direction: 'left' as const
+    },
+    {
+      name: 'Jebin Rufus',
+      handle: '@_rufuzz._',
+      link: 'https://www.instagram.com/_rufuzz._?igsh=aGxvOTVwbWpxdjMw',
+      direction: 'bottom' as const
+    }
+  ]
+
+  const getInitialPosition = (direction: string) => {
+    switch (direction) {
+      case 'top': return { y: '-120vh', x: 0 }
+      case 'right': return { x: '120vw', y: 0 }
+      case 'left': return { x: '-120vw', y: 0 }
+      case 'bottom': return { y: '120vh', x: 0 }
+      default: return { x: 0, y: 0 }
+    }
+  }
+
+  return (
+    <div style={{
+      position: 'fixed',
+      inset: 0,
+      zIndex: 9999999,
+      background: flash ? '#FFFFFF' : 'rgba(8, 8, 12, 0.98)',
+      backdropFilter: 'blur(20px)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '2rem',
+      transition: 'background 150ms'
+    }}>
+      {/* Step 2: Win text fades in (200ms) */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+        style={{ textAlign: 'center', marginBottom: '2rem' }}
+      >
+        <div className="font-display" style={{
+          fontSize: '2rem',
+          fontWeight: 'bold',
+          color: '#C8FA64',
+          lineHeight: 1.2,
+          textAlign: 'center'
+        }}>
+          PROTOCOL BREACHED.<br />
+          ACCESS GRANTED.
+        </div>
+      </motion.div>
+
+      {/* Step 3: Sub text fades in (800ms delay) */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8, duration: 0.5 }}
+        style={{ textAlign: 'center', marginBottom: '3rem' }}
+      >
+        <div className="font-mono" style={{
+          fontSize: '13px',
+          color: '#8888A8',
+          textAlign: 'center'
+        }}>
+          "The architects behind Zyphoria '26"
+        </div>
+      </motion.div>
+
+      {/* Step 4: 4 developer cards animate in (1200ms delay) */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.5 }}
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '1.5rem',
+          marginBottom: '3rem'
+        }}
+      >
+        {developers.map((dev, index) => (
+          <motion.div
+            key={dev.name}
+            initial={getInitialPosition(dev.direction)}
+            animate={{ x: 0, y: 0 }}
+            transition={{
+              delay: 1.2,
+              duration: 0.9,
+              ease: [0.34, 1.56, 0.64, 1]
+            }}
+            whileHover={{
+              scale: 1.04,
+              boxShadow: '0 0 40px rgba(200,250,100,0.4)'
+            }}
+            style={{
+              position: 'relative',
+              background: '#101018',
+              border: '1px solid #C8FA64',
+              padding: '24px',
+              width: '200px',
+              cursor: 'pointer',
+              borderRadius: 0,
+              boxShadow: '0 0 24px rgba(200,250,100,0.2)',
+              transition: 'all 200ms ease',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center'
+            }}
+            onClick={() => window.open(dev.link, '_blank')}
+          >
+            {/* ASCII Corners */}
+            <span style={{
+              position: 'absolute',
+              top: '8px',
+              left: '8px',
+              color: '#C8FA64',
+              fontSize: '12px',
+              fontFamily: 'monospace'
+            }}>┌</span>
+            <span style={{
+              position: 'absolute',
+              top: '8px',
+              right: '8px',
+              color: '#C8FA64',
+              fontSize: '12px',
+              fontFamily: 'monospace'
+            }}>┐</span>
+            <span style={{
+              position: 'absolute',
+              bottom: '8px',
+              left: '8px',
+              color: '#C8FA64',
+              fontSize: '12px',
+              fontFamily: 'monospace'
+            }}>└</span>
+            <span style={{
+              position: 'absolute',
+              bottom: '8px',
+              right: '8px',
+              color: '#C8FA64',
+              fontSize: '12px',
+              fontFamily: 'monospace'
+            }}>┘</span>
+
+            {/* Instagram Icon */}
+            <div style={{ marginBottom: '16px' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="#FF4D6D">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </div>
+
+            {/* Name */}
+            <div className="font-display" style={{
+              fontSize: '16px',
+              fontWeight: 'bold',
+              color: '#EEEEF5',
+              marginBottom: '8px'
+            }}>
+              {dev.name}
+            </div>
+
+            {/* Handle */}
+            <div className="font-mono" style={{
+              fontSize: '12px',
+              color: '#C8FA64'
+            }}>
+              {dev.handle}
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      {/* Step 6: Bottom text fades in (2400ms) */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2.4, duration: 0.5 }}
+        style={{ textAlign: 'center', marginBottom: '2rem' }}
+      >
+        <motion.div
+          animate={{ opacity: [1, 0.5, 1] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="font-mono"
+          style={{
+            fontSize: '10px',
+            color: '#8888A8',
+            textTransform: 'uppercase',
+            letterSpacing: '0.2em'
+          }}
+        >
+          TAP A NAME TO CONNECT →
+        </motion.div>
+      </motion.div>
+
+      {/* Step 7: Close button appears (2600ms) */}
+      <motion.button
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 2.6, duration: 0.4 }}
+        whileHover={{ scale: 1.04 }}
+        whileTap={{ scale: 0.97 }}
+        onClick={onClose}
+        className="font-display"
+        style={{
+          padding: '1rem 2rem',
+          fontSize: '13px',
+          background: 'transparent',
+          border: '1px solid #C8FA64',
+          color: '#C8FA64',
+          cursor: 'pointer',
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em'
+        }}
+      >
+        [ RETURN TO SITE ]
+      </motion.button>
+    </div>
+  )
+}
+
 // ── Main mini-game ────────────────────────────────────────────────────────────
 export function MiniGame({ onClose }: { onClose: () => void }) {
   const [answer]    = useState(() => ANSWERS[Math.floor(Math.random()*ANSWERS.length)])
@@ -141,7 +390,7 @@ export function MiniGame({ onClose }: { onClose: () => void }) {
   const [gStates,   setGStates]   = useState<CS[][]>([])
   const [cur,       setCur]       = useState('')
   const [timeLeft,  setTimeLeft]  = useState(TIME)
-  const [phase,     setPhase]     = useState<'play'|'win'|'lose'>('play')
+  const [phase,     setPhase]     = useState<'play'|'win'|'lose'|'credits'>('play')
   const [shake,     setShake]     = useState(false)
   const [msg,       setMsg]       = useState('')
   const [kMap,      setKMap]      = useState<Record<string,string>>({})
@@ -196,7 +445,7 @@ export function MiniGame({ onClose }: { onClose: () => void }) {
     setCur('')
 
     if (cur === answer) {
-      setTimeout(()=>{ setPhase('win'); setTimeout(()=>setShowFlag(true),500) }, WORD_LEN*120+200)
+      setTimeout(()=>{ setPhase('credits') }, WORD_LEN*120+200)
       return
     }
     if (ng.length >= MAX_TRY) {
@@ -225,6 +474,14 @@ export function MiniGame({ onClose }: { onClose: () => void }) {
   }, [submit, del, typeKey])
 
   if (showFlag) return <FlagCaptured password={answer} onClose={onClose} />
+
+  // Show credits sequence on win
+  if (phase === 'credits') {
+    return <WinCredits onClose={() => {
+      setPhase('win')
+      setTimeout(() => setShowFlag(true), 500)
+    }} />
+  }
 
   const timerPct = (timeLeft/TIME)*100
   const timerClr = timeLeft>60 ? '#C8FA64' : timeLeft>30 ? '#FFA726' : '#FF4D6D'
