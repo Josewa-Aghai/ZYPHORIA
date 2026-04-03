@@ -291,6 +291,8 @@ function RegisterPage() {
       <Toaster position="bottom-right" />
       <Navbar />
 
+
+
       <div className="container" style={{ maxWidth: '680px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
         {/* Heading */}
         <div style={{ marginBottom: '4rem', textAlign: 'center' }}>
@@ -509,13 +511,13 @@ function RegisterPage() {
                 </p>
                 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
-                  <a 
-                    href={PAYMENT_LINK} 
-                    target="_blank" 
-                    rel="noreferrer" 
-                    className="inline-flex items-center gap-3 border font-mono text-[11px] uppercase tracking-widest transition-all duration-300" 
-                    style={{ borderColor: accent, color: accent, background: accentSoft, height: '44px', padding: '0 24px' }} 
-                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; e.currentTarget.style.color = '#08080C'; }} 
+                  <a
+                    href={PAYMENT_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-3 border font-mono text-[11px] uppercase tracking-widest transition-all duration-300"
+                    style={{ borderColor: accent, color: accent, background: accentSoft, height: '44px', padding: '0 24px' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = accent; e.currentTarget.style.color = '#08080C'; }}
                     onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = accentSoft; e.currentTarget.style.color = accent; }}
                   >
                     ↗ ACCESS PAYMENT PORTAL

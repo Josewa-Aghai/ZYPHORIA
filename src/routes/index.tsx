@@ -2,7 +2,7 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, User, Phone } from 'lucide-react'
+import { Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, User, Phone, Mail, Instagram } from 'lucide-react'
 import { Toaster } from 'react-hot-toast'
 import { IntroLoader } from '../components/IntroLoader'
 
@@ -1014,7 +1014,7 @@ function Footer() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '2fr 1fr 1fr',
+            gridTemplateColumns: '2fr 1fr',
             gap: '4rem',
             paddingBottom: '4rem',
             borderBottom: '1px solid var(--stroke)',
@@ -1023,120 +1023,49 @@ function Footer() {
         >
           {/* Col 1 — logo + tagline */}
           <div>
-            <div className="font-display" style={{ fontSize: '24px', marginBottom: '0.75rem' }}>
+            <div className="font-display" style={{ fontSize: '24px' }}>
               ZYPH<span style={{ color: 'var(--accent)' }}>ORIA</span>
               <span className="font-mono" style={{ fontSize: '12px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400 }}>'26</span>
             </div>
-            <p className="font-mono" style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: '280px' }}>
-              The annual CSE Symposium of Rajalakshmi Institute of Technology. Sci-fi precision. Human ambition.
+            <div className="footer-divider" />
+            <p className="footer-tagline-main">
+              The annual CSE Symposium of<br />
+              Rajalakshmi Institute of Technology
+            </p>
+            <p className="footer-tagline-sub">
+              In association with iDataMind · April 15–16, 2026
             </p>
           </div>
 
-          {/* Col 2 — nav */}
-          <div>
-            <p className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Navigation</p>
-            {['Events', 'Register'].map((item) => (
-              item === 'Register' ? (
-                <Link
-                  key={item}
-                  to="/register"
-                  className="font-mono"
-                  style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'none', marginBottom: '0.75rem', transition: 'color 0.15s' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
-                >
-                  {item}
-                </Link>
-              ) : (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  className="font-mono"
-                  style={{ display: 'block', fontSize: '13px', color: 'var(--text-muted)', textDecoration: 'none', marginBottom: '0.75rem', transition: 'color 0.15s' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
-                >
-                  {item}
-                </a>
-              )
-            ))}
-          </div>
 
-          {/* Col 3 — social only (mobile) */}
-          <div className="social-mobile-only" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
-              {['IG', 'LI', 'TW'].map((social) => (
-                <a
-                  key={social}
-                  href="#"
-                  className="font-mono"
-                  style={{
-                    width: '32px',
-                    height: '32px',
-                    border: '1px solid var(--stroke)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '10px',
-                    color: 'var(--text-muted)',
-                    textDecoration: 'none',
-                    transition: 'all 0.15s',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--accent)'
-                    e.currentTarget.style.color = 'var(--accent)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--stroke)'
-                    e.currentTarget.style.color = 'var(--text-muted)'
-                  }}
-                >
-                  {social}
-                </a>
-              ))}
+          {/* Col 3 — socials */}
+          <div>
+            <p className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.25rem' }}>Socials</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <a
+                href="mailto:zyphoria26.cse@gmail.com"
+                className="font-mono"
+                style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#8888A8', textDecoration: 'none', transition: 'color 0.15s' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#C8FA64')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#8888A8')}
+              >
+                <Mail size={14} />
+                zyphoria26.cse@gmail.com
+              </a>
+              <a
+                href="https://instagram.com/zyphoria_26_rit"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono"
+                style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#8888A8', textDecoration: 'none', transition: 'color 0.15s' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#C8FA64')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#8888A8')}
+              >
+                <Instagram size={14} />
+                @zyphoria_26_rit
+              </a>
             </div>
           </div>
-        </div>
-
-        {/* Desktop social row */}
-        <div
-          className="social-desktop-only"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '0.75rem',
-            padding: '1rem 0 0.5rem',
-          }}
-        >
-          {['IG', 'LI', 'TW'].map((social) => (
-            <a
-              key={`desktop-${social}`}
-              href="#"
-              className="font-mono"
-              style={{
-                width: '32px',
-                height: '32px',
-                border: '1px solid var(--stroke)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '10px',
-                color: 'var(--text-muted)',
-                textDecoration: 'none',
-                transition: 'all 0.15s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'var(--accent)'
-                e.currentTarget.style.color = 'var(--accent)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--stroke)'
-                e.currentTarget.style.color = 'var(--text-muted)'
-              }}
-            >
-              {social}
-            </a>
-          ))}
         </div>
 
         {/* Bottom strip */}
@@ -1151,13 +1080,35 @@ function Footer() {
             textTransform: 'uppercase',
           }}
         >
-          ZYPHORIA '26 · CSE DEPARTMENT · RAJALAKSHMI INSTITUTE OF TECHNOLOGY · APRIL 15–16
+          © ZYPHORIA '26 · CSE DEPARTMENT · RAJALAKSHMI INSTITUTE OF TECHNOLOGY
         </div>
       </div>
 
       <style>{`
         .social-desktop-only { display: flex; }
         .social-mobile-only { display: flex; }
+
+        .footer-divider {
+          width: 100%;
+          height: 1px;
+          background: #1E1E2E;
+          margin: 10px 0;
+        }
+
+        .footer-tagline-main {
+          font-family: 'JetBrains Mono', monospace;
+          color: #8888A8;
+          font-size: 12px;
+          line-height: 1.7;
+        }
+
+        .footer-tagline-sub {
+          font-family: 'JetBrains Mono', monospace;
+          color: #C8FA64;
+          font-size: 10px;
+          letter-spacing: 0.1em;
+          margin-top: 6px;
+        }
 
         @media (max-width: 768px) {
           .footer-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }

@@ -87,18 +87,11 @@ export const Route = createFileRoute('/api/sync-to-sheets')({
             registration.participant1_name || '',
             registration.participant2_name || '',
             registration.participant3_name || '',
-<<<<<<< HEAD
           ];
 
           // 4. Append to Google Sheets
           const range = process.env.GOOGLE_SHEETS_RANGE || 'Sheet1!A:Z';
           const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}:append?valueInputOption=USER_ENTERED`;
-=======
-          ]
-
-          // 4. Append to Google Sheets
-          const range = process.env.GOOGLE_SHEETS_RANGE || 'Sheet1!A:Z'
-          const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}:append?valueInputOption=USER_ENTERED`
 
           const response = await fetch(url, {
             method: 'POST',
