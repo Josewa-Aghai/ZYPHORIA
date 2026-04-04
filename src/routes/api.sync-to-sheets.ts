@@ -64,6 +64,25 @@ function resolveSheetTabName(envRange: string | undefined): string {
 export const Route = createFileRoute('/api/sync-to-sheets')({
   server: {
     handlers: {
+      GET: async () => {
+        const sheetId = process.env.GOOGLE_SHEET_ID
+        const clientEmail = process.env.GOOGLE_CLIENT_EMAIL || process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL
+        const privateKey = process.env.GOOGLE_PRIVATE_KEY
+
+        return new Response(
+          JSON.stringify({
+            status: 'ok',
+            env: {
+              hasGoogleSheetId: Boolean(sheetId),
+              hasGoogleClientEmail: Boolean(clientEmail),
+              hasGooglePrivateKey: Boolean(privateKey),
+              sheetId: sheetId || null,
+              clientEmail: clientEmail || null,
+            },
+          }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        )
+      },
       POST: async ({ request }) => {
         try {
           const body = await request.json()
