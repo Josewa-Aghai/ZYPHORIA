@@ -257,7 +257,7 @@ function EasterEggModal({ onClose }: { onClose: () => void }) {
   }
 
   // Conditional render AFTER all hooks
-  if (showGame) return <MiniGame onClose={() => setShowGame(false)} />
+  if (showGame) return <MiniGame onClose={() => { setShowGame(false); setTimeout(onClose, 100) }} />
 
   return (
     <div
@@ -443,7 +443,7 @@ function Hero() {
       <StarField />
 
       {/* Easter Egg Modal */}
-      {eggPhase === 4 && <EasterEggModal onClose={() => setEggPhase(3)} />}
+      {eggPhase === 4 && <EasterEggModal onClose={() => setEggPhase(0)} />}
 
       <div className="container" style={{ position: 'relative', zIndex: 2, width: '100%' }}>
         <div

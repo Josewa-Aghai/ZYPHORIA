@@ -321,7 +321,7 @@ function RegisterPage() {
   // ─── Success screen ─────────────────────────────────────────────────────────
   if (isSuccess) {
     return (
-      <div className="relative min-h-screen pt-20" style={{ background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="relative min-h-screen pt-20" style={{ background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
         <Navbar />
         <div style={{ textAlign: 'center', padding: '0 2rem' }}>
           <div style={{ marginBottom: '2rem' }}>
