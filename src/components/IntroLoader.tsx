@@ -102,11 +102,7 @@ function LogoScreen({
 }: LogoScreenProps) {
   const lowerSrc = imageSrc?.toLowerCase() ?? ''
   const isZyphoria = lowerSrc.includes('zyphoria')
-  const isZyphoria1 = lowerSrc.includes('zyphoria1')
-  const isZyphoria2 = lowerSrc.includes('zyphoria2')
-  const isZyphoria3 = lowerSrc.includes('zyphoria3')
-  const isZyphoriaMain = lowerSrc.includes('zyphoria.png') && !isZyphoria1
-  const isZyphoriaWordmark = isZyphoria1 || isZyphoria2 || isZyphoria3 || isZyphoriaMain
+  const isZyphoriaMain = lowerSrc.includes('zyphoria.png')
   const isIdatamind = lowerSrc.includes('idatamind')
   const isRit = lowerSrc.includes('ritlogo')
 
@@ -135,17 +131,17 @@ function LogoScreen({
             animate="visible"
             exit="exit"
             className={`font-mono text-center uppercase tracking-[0.2em] relative z-30 ${
-              isZyphoriaWordmark
+              isZyphoriaMain
                 ? 'text-xs sm:text-sm'
                 : isZyphoria
                 ? 'text-sm sm:text-lg md:text-xl font-bold'
                 : 'text-xs sm:text-sm'
             }`}
             style={{
-              marginBottom: isZyphoriaWordmark ? '12px' : isZyphoria ? '-5.5rem' : '0',
-              color: isZyphoriaWordmark ? 'rgba(255,255,255,0.8)' : isZyphoria ? '#C8FA64' : 'rgba(255,255,255,0.8)',
+              marginBottom: isZyphoriaMain ? '12px' : isZyphoria ? '-5.5rem' : '0',
+              color: isZyphoriaMain ? 'rgba(255,255,255,0.8)' : isZyphoria ? '#C8FA64' : 'rgba(255,255,255,0.8)',
               textShadow:
-                isZyphoriaWordmark
+                isZyphoriaMain
                   ? '0 0 16px rgba(255,255,255,0.4)'
                   : isZyphoria
                   ? '0 0 16px rgba(200,250,100,0.55)'
@@ -174,9 +170,7 @@ function LogoScreen({
             className={`relative flex items-center justify-center sm:mx-auto ${
               isRit
                 ? 'w-[min(80vw,28rem)] sm:w-[min(70vw,32rem)] lg:w-[min(55vw,36rem)]'
-                : isZyphoria1
-                ? 'w-[min(92vw,44rem)] sm:w-[min(84vw,52rem)] lg:w-[min(72vw,58rem)]'
-                : isZyphoria3
+                : isZyphoriaMain
                 ? 'w-[min(95vw,48rem)] sm:w-[min(88vw,58rem)] lg:w-[min(78vw,64rem)]'
                 : imageSrc?.toLowerCase().includes('idatamind')
                 ? 'w-[75vw] sm:w-[65vw] lg:w-[50vw] max-w-[44rem]'
@@ -197,12 +191,10 @@ function LogoScreen({
                 filter:
                   isIdatamind || isRit
                     ? 'drop-shadow(0 0 7px rgba(255,255,255,0.65)) drop-shadow(0 0 14px rgba(255,255,255,0.35))'
-                    : isZyphoria3
-                      ? 'brightness(1.03) saturate(1.03) contrast(1.02) drop-shadow(0 0 7px rgba(200,250,100,0.2))'
-                    : isZyphoriaWordmark
+                    : isZyphoriaMain
                       ? 'brightness(1.05) saturate(1.05) contrast(1.04) drop-shadow(0 0 10px rgba(200,250,100,0.28))'
                       : undefined,
-                mixBlendMode: isZyphoriaWordmark ? 'lighten' : undefined,
+                mixBlendMode: isZyphoriaMain ? 'lighten' : undefined,
                 imageRendering: (isRit ? 'high-quality' : 'auto') as any,
               }}
               draggable={false}
@@ -215,12 +207,10 @@ function LogoScreen({
             className={`font-mono text-center uppercase tracking-[0.22em] leading-tight ${
               isZyphoriaMain
                 ? 'text-sm font-semibold text-lime-100/95 sm:text-2xl md:text-3xl'
-                : isZyphoria1
-                ? 'text-lime-200/90 text-xs sm:text-sm'
                 : 'text-white/65 text-xs sm:text-sm'
             }`}
             style={{
-              marginTop: isZyphoriaMain ? '0.15rem' : isZyphoria1 ? '-0.35rem' : undefined,
+              marginTop: isZyphoriaMain ? '0.15rem' : undefined,
               textShadow: isZyphoriaMain ? '0 0 14px rgba(200,250,100,0.28)' : undefined,
             }}
           >
