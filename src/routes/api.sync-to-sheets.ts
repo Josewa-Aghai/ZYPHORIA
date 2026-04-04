@@ -157,7 +157,6 @@ export const Route = createFileRoute('/api/sync-to-sheets')({
             JSON.stringify({
               success: true,
               message: 'Synced to Google Sheets',
-              row: nextRow,
               details: result,
             }),
             { status: 200, headers: { 'Content-Type': 'application/json' } },
