@@ -253,6 +253,10 @@ function RegisterPage() {
       const { data: publicUrlData } = supabase.storage.from(paymentBucketName).getPublicUrl(filename)
       const publicUrl = publicUrlData.publicUrl
 
+      const fullEventName = tab === 'nontech' && formData.event === 'E-Sports' && formData.eSportsGame
+        ? `E-Sports: ${formData.eSportsGame}`
+        : formData.event
+
       const insertData = {
         team_name:               teamName,
         leader_name:             leaderName,
@@ -261,8 +265,7 @@ function RegisterPage() {
         leader_department:       leaderDept,
         leader_college:          leaderCollege,
         technical_event:         tab === 'tech' ? formData.event : null,
-        non_technical_event:     tab === 'nontech' ? formData.event : null,
-        esports_title:           formData.event === 'E-Sports' ? formData.eSportsGame : null,
+        non_technical_event:     tab === 'nontech' ? fullEventName : null,
         payment_screenshot_url:  publicUrl,
         participant1_name:       count >= 1 ? parts[0].name || null : null,
         participant1_department: count >= 1 ? parts[0].department || null : null,
