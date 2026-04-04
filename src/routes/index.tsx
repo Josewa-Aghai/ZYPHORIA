@@ -68,13 +68,13 @@ function pad(n: number) {
 function StarField() {
   const stars = useRef<Array<{ x: number; y: number; size: number; dur: number; delay: number }>>([])
   if (stars.current.length === 0) {
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 60; i++) {
       stars.current.push({
         x: Math.random() * 100,
         y: Math.random() * 100,
-        size: Math.random() * 1.5 + 0.5,
-        dur: Math.random() * 4 + 2,
-        delay: Math.random() * 5,
+        size: Math.random() * 1.2 + 0.5,
+        dur: Math.random() * 3.5 + 2,
+        delay: Math.random() * 4,
       })
     }
   }
@@ -89,11 +89,12 @@ function StarField() {
             top: `${s.y}%`,
             width: `${s.size}px`,
             height: `${s.size}px`,
-            opacity: 0.2,
+            opacity: 0.15,
             ['--duration' as string]: `${s.dur}s`,
-            ['--min-opacity' as string]: '0.05',
-            ['--max-opacity' as string]: `${0.1 + Math.random() * 0.5}`,
+            ['--min-opacity' as string]: '0.03',
+            ['--max-opacity' as string]: `${0.08 + Math.random() * 0.4}`,
             animationDelay: `${s.delay}s`,
+            willChange: 'opacity',
           }}
         />
       ))}

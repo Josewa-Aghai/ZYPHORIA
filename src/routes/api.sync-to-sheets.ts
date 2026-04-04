@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import crypto from 'node:crypto';
+import crypto from 'node:crypto'
+import { getChennaiDateTime } from '../utils/dateUtils'
 
 /**
  * Helper to generate a Google OAuth2 access token without any external dependencies.
@@ -126,7 +127,7 @@ export const Route = createFileRoute('/api/sync-to-sheets')({
           const eventName =
             registration.technical_event || registration.non_technical_event || registration.event || ''
           const rowData = [
-            new Date().toISOString(),
+            getChennaiDateTime(),
             registration.team_name || '',
             registration.member1 || registration.leader_name || '',
             registration.member2 || registration.participant1_name || '',

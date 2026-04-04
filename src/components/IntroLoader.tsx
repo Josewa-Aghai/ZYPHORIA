@@ -27,33 +27,33 @@ type Star = {
 }
 
 const INTRO_TIMINGS = {
-  screenOne: 1600,
-  screenTwo: 1600,
-  screenThree: 1800,
-  exit: 320,
+  screenOne: 1200,
+  screenTwo: 1200,
+  screenThree: 1400,
+  exit: 240,
 } as const
 
 const shellVariants: Variants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.24, ease: 'easeOut' } },
-  exit: { opacity: 0, scale: 1.003, transition: { duration: 0.3, ease: 'easeInOut' } },
+  visible: { opacity: 1, transition: { duration: 0.12, ease: 'easeOut' } },
+  exit: { opacity: 0, scale: 1.001, transition: { duration: 0.2, ease: 'easeInOut' } },
 }
 
 const contentVariants: Variants = {
-  hidden: { opacity: 0, y: 18, scale: 0.98 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.32, ease: 'easeOut' } },
-  exit: { opacity: 0, y: -6, scale: 1.005, transition: { duration: 0.18, ease: 'easeInOut' } },
+  hidden: { opacity: 0, y: 12, scale: 0.99 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.2, ease: 'easeOut' } },
+  exit: { opacity: 0, y: -4, scale: 1.001, transition: { duration: 0.12, ease: 'easeInOut' } },
 }
 
 const logoVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.94 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.32, ease: 'easeOut' } },
+  hidden: { opacity: 0, scale: 0.96 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.2, ease: 'easeOut' } },
 }
 
 const labelVariants: Variants = {
-  hidden: { opacity: 0, y: 8, scale: 0.99 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.36, ease: 'easeOut' } },
-  exit: { opacity: 0, y: -6, scale: 1.01, transition: { duration: 0.18, ease: 'easeInOut' } },
+  hidden: { opacity: 0, y: 6, scale: 0.99 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.22, ease: 'easeOut' } },
+  exit: { opacity: 0, y: -4, scale: 1.005, transition: { duration: 0.12, ease: 'easeInOut' } },
 }
 
 function buildStars(count: number): Star[] {
@@ -69,9 +69,8 @@ function buildStars(count: number): Star[] {
 
 function ParticleField() {
   const particles = useMemo(() => {
-    // Reduce particle count on mobile for better performance
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
-    return buildStars(isMobile ? 8 : 18)
+    // Optimized particle count for performance
+    return buildStars(10)
   }, [])
 
   return (
@@ -181,7 +180,7 @@ function LogoScreen({
                 : 'w-[min(90vw,36rem)] sm:w-[min(80vw,44rem)] lg:w-[min(70vw,52rem)]'
             }`}
             animate="visible"
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            transition={{ duration: 0.28, ease: 'easeOut' }}
           >
             <img
               src={imageSrc}
@@ -296,6 +295,7 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
         animate={closing ? 'exit' : 'visible'}
         exit="exit"
         className="fixed inset-0 z-1000 overflow-hidden bg-[#050508] text-white"
+        style={{ willChange: 'opacity, transform' }}
       >
         <ParticleField />
 

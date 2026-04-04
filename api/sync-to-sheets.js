@@ -1,5 +1,23 @@
 import crypto from 'crypto'
 
+function getChennaiDateTime() {
+  const now = new Date()
+  const istTimeString = now.toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  })
+  const [date, time] = istTimeString.split(', ')
+  const [day, month, year] = date.split('/')
+  const monthName = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][parseInt(month) - 1]
+  return `${day}-${monthName}-${year}, ${time} IST`
+}
+
 function resolveSheetTabName(envRange) {
   const raw = (envRange || '').trim()
   if (!raw) return 'Sheet1'
@@ -132,7 +150,7 @@ export default async function handler(req, res) {
     const eventName =
       registration.technical_event || registration.non_technical_event || registration.event || ''
     const rowData = [
-      new Date().toISOString(),
+      getChennaiDateTime(),
       registration.team_name || '',
       registration.member1 || registration.leader_name || '',
       registration.member2 || registration.participant1_name || '',
