@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ZyphoriaRouteImport } from './routes/zyphoria'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsProductIdRouteImport } from './routes/products/$productId'
 import { Route as ApiSyncToSheetsRouteImport } from './routes/api.sync-to-sheets'
 
+const ZyphoriaRoute = ZyphoriaRouteImport.update({
+  id: '/zyphoria',
+  path: '/zyphoria',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -38,12 +44,14 @@ const ApiSyncToSheetsRoute = ApiSyncToSheetsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
+  '/zyphoria': typeof ZyphoriaRoute
   '/api/sync-to-sheets': typeof ApiSyncToSheetsRoute
   '/products/$productId': typeof ProductsProductIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
+  '/zyphoria': typeof ZyphoriaRoute
   '/api/sync-to-sheets': typeof ApiSyncToSheetsRoute
   '/products/$productId': typeof ProductsProductIdRoute
 }
@@ -51,18 +59,30 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/register': typeof RegisterRoute
+  '/zyphoria': typeof ZyphoriaRoute
   '/api/sync-to-sheets': typeof ApiSyncToSheetsRoute
   '/products/$productId': typeof ProductsProductIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/register' | '/api/sync-to-sheets' | '/products/$productId'
+  fullPaths:
+    | '/'
+    | '/register'
+    | '/zyphoria'
+    | '/api/sync-to-sheets'
+    | '/products/$productId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/register' | '/api/sync-to-sheets' | '/products/$productId'
+  to:
+    | '/'
+    | '/register'
+    | '/zyphoria'
+    | '/api/sync-to-sheets'
+    | '/products/$productId'
   id:
     | '__root__'
     | '/'
     | '/register'
+    | '/zyphoria'
     | '/api/sync-to-sheets'
     | '/products/$productId'
   fileRoutesById: FileRoutesById
@@ -70,12 +90,20 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   RegisterRoute: typeof RegisterRoute
+  ZyphoriaRoute: typeof ZyphoriaRoute
   ApiSyncToSheetsRoute: typeof ApiSyncToSheetsRoute
   ProductsProductIdRoute: typeof ProductsProductIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/zyphoria': {
+      id: '/zyphoria'
+      path: '/zyphoria'
+      fullPath: '/zyphoria'
+      preLoaderRoute: typeof ZyphoriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -110,6 +138,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   RegisterRoute: RegisterRoute,
+  ZyphoriaRoute: ZyphoriaRoute,
   ApiSyncToSheetsRoute: ApiSyncToSheetsRoute,
   ProductsProductIdRoute: ProductsProductIdRoute,
 }

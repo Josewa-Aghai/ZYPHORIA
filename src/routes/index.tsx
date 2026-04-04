@@ -117,14 +117,14 @@ function Navbar() {
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} style={{ background: scrolled ? undefined : 'transparent' }}>
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
         {/* Logo */}
-        <a href="#" style={{ textDecoration: 'none' }}>
+        <Link to="/" style={{ textDecoration: 'none' }}>
           <span style={{ display: 'inline-flex', alignItems: 'center' }}>
             <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
               ZYPH<span style={{ color: 'var(--accent)' }}>ORIA</span>
               <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
             </span>
           </span>
-        </a>
+        </Link>
 
         {/* Center nav — desktop */}
         <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }} className="desktop-nav">
