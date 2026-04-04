@@ -27,37 +27,33 @@ type Star = {
 }
 
 const INTRO_TIMINGS = {
-  screenOne: 2000,
-  screenTwo: 2000,
-  screenThree: 2300,
-  exit: 420,
+  screenOne: 1600,
+  screenTwo: 1600,
+  screenThree: 1800,
+  exit: 320,
 } as const
 
 const shellVariants: Variants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.3, ease: 'easeOut' } },
-  exit: { opacity: 0, scale: 1.005, transition: { duration: 0.45, ease: 'easeInOut' } },
-}
-
-const willChangeStyles = {
-  willChange: 'opacity, transform',
+  visible: { opacity: 1, transition: { duration: 0.24, ease: 'easeOut' } },
+  exit: { opacity: 0, scale: 1.003, transition: { duration: 0.3, ease: 'easeInOut' } },
 }
 
 const contentVariants: Variants = {
-  hidden: { opacity: 0, y: 20, scale: 0.96 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: 'easeOut' } },
-  exit: { opacity: 0, y: -8, scale: 1.01, transition: { duration: 0.24, ease: 'easeInOut' } },
+  hidden: { opacity: 0, y: 18, scale: 0.98 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.32, ease: 'easeOut' } },
+  exit: { opacity: 0, y: -6, scale: 1.005, transition: { duration: 0.18, ease: 'easeInOut' } },
 }
 
 const logoVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.9, filter: 'blur(4px)' },
-  visible: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 0.55, ease: 'easeOut' } },
+  hidden: { opacity: 0, scale: 0.94 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.32, ease: 'easeOut' } },
 }
 
 const labelVariants: Variants = {
-  hidden: { opacity: 0, y: 10, scale: 0.99 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.68, ease: 'easeOut' } },
-  exit: { opacity: 0, y: -7, scale: 1.01, transition: { duration: 0.24, ease: 'easeInOut' } },
+  hidden: { opacity: 0, y: 8, scale: 0.99 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.36, ease: 'easeOut' } },
+  exit: { opacity: 0, y: -6, scale: 1.01, transition: { duration: 0.18, ease: 'easeInOut' } },
 }
 
 function buildStars(count: number): Star[] {
@@ -312,7 +308,7 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
           Skip
         </button>
 
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           {screen === 1 ? (
             <LogoScreen
               key="screen-one"

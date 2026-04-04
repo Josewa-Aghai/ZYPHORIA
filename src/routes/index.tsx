@@ -257,7 +257,7 @@ function EasterEggModal({ onClose }: { onClose: () => void }) {
   }
 
   // Conditional render AFTER all hooks
-  if (showGame) return <MiniGame onClose={() => { setShowGame(false); onClose() }} />
+  if (showGame) return <MiniGame onClose={() => { setShowGame(false); handleClose() }} />
 
   return (
     <div
