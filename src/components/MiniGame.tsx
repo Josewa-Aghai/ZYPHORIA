@@ -477,7 +477,10 @@ export function MiniGame({ onClose }: { onClose: () => void }) {
 
   // Show credits sequence on win
   if (phase === 'credits') {
-    return <WinCredits onClose={onClose} />
+    return <WinCredits onClose={() => {
+      setPhase('win')
+      setTimeout(() => setShowFlag(true), 500)
+    }} />
   }
 
   const timerPct = (timeLeft/TIME)*100
