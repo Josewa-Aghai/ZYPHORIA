@@ -156,6 +156,18 @@ function LogoScreen({
           </motion.p>
         ) : null}
 
+        {subtitle && isZyphoriaMain ? (
+          <p
+            className="font-mono text-center uppercase tracking-[0.22em] leading-tight text-sm font-semibold text-lime-100/95 sm:text-2xl md:text-3xl"
+            style={{
+              marginBottom: '0.15rem',
+              textShadow: '0 0 14px rgba(200,250,100,0.28)',
+            }}
+          >
+            {subtitle}
+          </p>
+        ) : null}
+
         {imageSrc ? (
           <motion.div
             variants={logoVariants}
@@ -198,12 +210,19 @@ function LogoScreen({
           </motion.div>
         ) : null}
 
-        {subtitle ? (
+        {subtitle && !isZyphoriaMain ? (
           <p
-            className={`font-mono text-center text-xs uppercase tracking-[0.22em] sm:text-sm ${
-              isZyphoria1 ? 'text-lime-200/90' : 'text-white/65'
+            className={`font-mono text-center uppercase tracking-[0.22em] leading-tight ${
+              isZyphoriaMain
+                ? 'text-sm font-semibold text-lime-100/95 sm:text-2xl md:text-3xl'
+                : isZyphoria1
+                ? 'text-lime-200/90 text-xs sm:text-sm'
+                : 'text-white/65 text-xs sm:text-sm'
             }`}
-            style={{ marginTop: isZyphoria1 ? '-0.35rem' : undefined }}
+            style={{
+              marginTop: isZyphoriaMain ? '0.15rem' : isZyphoria1 ? '-0.35rem' : undefined,
+              textShadow: isZyphoriaMain ? '0 0 14px rgba(200,250,100,0.28)' : undefined,
+            }}
           >
             {subtitle}
           </p>
@@ -321,6 +340,7 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
               imageSrc="/zyphoria.png"
               imageAlt="Zyphoria '26"
               accent="lime"
+              subtitle="Department of Computer Science and Engineering"
             />
           ) : null}
         </AnimatePresence>
