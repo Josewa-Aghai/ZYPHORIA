@@ -9,6 +9,7 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 const hasSupabaseConfig = Boolean(supabaseUrl && supabaseKey)
 const supabase = hasSupabaseConfig ? createClient(supabaseUrl, supabaseKey) : null
+const paymentBucketName = 'screenshots'
 
 export const Route = createFileRoute('/register')({
   component: RegisterPage,
@@ -242,10 +243,10 @@ function RegisterPage() {
     try {
       const ext = file!.name.split('.').pop()
       const filename = `${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`
-      const { error: uploadErr } = await supabase.storage.from('payment-screenshots').upload(filename, file!)
+      const { error: uploadErr } = await supabase.storage.from(paymentBucketName).upload(filename, file!)
       if (uploadErr) throw uploadErr
 
-      const { data: publicUrlData } = supabase.storage.from('payment-screenshots').getPublicUrl(filename)
+      const { data: publicUrlData } = supabase.storage.from(paymentBucketName).getPublicUrl(filename)
       const publicUrl = publicUrlData.publicUrl
 
       const insertData = {
