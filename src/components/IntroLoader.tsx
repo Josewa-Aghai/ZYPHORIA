@@ -72,7 +72,11 @@ function buildStars(count: number): Star[] {
 }
 
 function ParticleField() {
-  const particles = useMemo(() => buildStars(18), [])
+  const particles = useMemo(() => {
+    // Reduce particle count on mobile for better performance
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+    return buildStars(isMobile ? 8 : 18)
+  }, [])
 
   return (
     <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
@@ -122,7 +126,7 @@ function LogoScreen({
       exit="exit"
       className="relative z-10 flex min-h-screen items-center justify-center px-4 py-8 sm:px-8"
     >
-      <div className={`absolute inset-x-0 top-1/2 mx-auto h-144 w-[min(90vw,68rem)] -translate-y-1/2 rounded-full blur-2xl ${glowClass}`} />
+      <div className={`absolute inset-x-0 top-1/2 mx-auto ${isZyphoriaMain ? 'h-96 sm:h-144' : 'h-144'} w-[min(90vw,68rem)] -translate-y-1/2 rounded-full ${isZyphoriaMain ? 'blur-xl sm:blur-2xl' : 'blur-2xl'} ${glowClass}`} />
 
       <div
         className="relative flex w-full flex-col items-center justify-center gap-6"
@@ -175,7 +179,7 @@ function LogoScreen({
               isRit
                 ? 'w-[min(80vw,28rem)] sm:w-[min(70vw,32rem)] lg:w-[min(55vw,36rem)]'
                 : isZyphoriaMain
-                ? 'w-[min(95vw,48rem)] sm:w-[min(88vw,58rem)] lg:w-[min(78vw,64rem)]'
+                ? 'w-[min(85vw,32rem)] sm:w-[min(75vw,42rem)] lg:w-[min(65vw,52rem)]'
                 : imageSrc?.toLowerCase().includes('idatamind')
                 ? 'w-[75vw] sm:w-[65vw] lg:w-[50vw] max-w-[44rem]'
                 : 'w-[min(90vw,36rem)] sm:w-[min(80vw,44rem)] lg:w-[min(70vw,52rem)]'
@@ -196,7 +200,7 @@ function LogoScreen({
                   isIdatamind || isRit
                     ? 'drop-shadow(0 0 7px rgba(255,255,255,0.65)) drop-shadow(0 0 14px rgba(255,255,255,0.35))'
                     : isZyphoriaMain
-                      ? 'brightness(1.05) saturate(1.05) contrast(1.04) drop-shadow(0 0 10px rgba(200,250,100,0.28))'
+                      ? 'brightness(1.02) saturate(1.02) contrast(1.02) drop-shadow(0 0 6px rgba(200,250,100,0.2))'
                       : undefined,
                 mixBlendMode: isZyphoriaMain ? 'lighten' : undefined,
                 imageRendering: (isRit ? 'high-quality' : 'auto') as any,
