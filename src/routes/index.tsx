@@ -996,7 +996,10 @@ function EventModal({ event, onClose }: { event: EventItem; onClose: () => void 
               e.currentTarget.style.boxShadow = 'none';
             }}
             onClick={() => {
-              navigate({ to: '/register', search: { event: event.name } })
+              navigate({
+                to: '/register',
+                search: isEsports ? { event: event.name, eSportsGame: selectedGame } : { event: event.name },
+              })
               handleClose();
             }}
           >

@@ -162,6 +162,7 @@ function RegisterPage() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const eventParam = params.get('event')
+    const eSportsParam = params.get('eSportsGame')
     if (eventParam) {
       if (techDropdownEvents.includes(eventParam)) {
         setTab('tech')
@@ -169,6 +170,9 @@ function RegisterPage() {
       } else if (nonTechDropdownEvents.includes(eventParam)) {
         setTab('nontech')
         handleEventChange(eventParam)
+      }
+      if (eventParam === 'E-Sports' && eSportsParam && eSportsGames.includes(eSportsParam as typeof eSportsGames[number])) {
+        setFormData(prev => ({ ...prev, eSportsGame: eSportsParam }))
       }
     }
     window.scrollTo(0, 0)
