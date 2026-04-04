@@ -21,41 +21,26 @@ async function check() {
     console.log('✅ "registrations" table is accessible.');
   }
 
-  // 2. Check Storage Bucket 'payment-screenshots'
-  console.log('\n--- Checking Storage Bucket "payment-screenshots" ---');
+  // 2. Check Storage Bucket 'screenshots'
+  console.log('\n--- Checking Storage Bucket "screenshots" ---');
   const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
   
   if (bucketsError) {
     console.error('❌ Error listing buckets:', bucketsError.message);
   } else {
-    const bucketExists = buckets.find(b => b.name === 'payment-screenshots');
+    const bucketExists = buckets.find(b => b.name === 'screenshots');
     if (bucketExists) {
-      console.log('✅ "payment-screenshots" bucket exists.');
+      console.log('✅ "screenshots" bucket exists.');
     } else {
-      console.error('❌ "payment-screenshots" bucket does NOT exist.');
+      console.error('❌ "screenshots" bucket does NOT exist.');
       console.log('Available buckets:', buckets.map(b => b.name).join(', '));
     }
   }
 
-  // 3. Ping the edge function 'sync-to-sheets' (might fail if not deployed or no body logic)
-  console.log('\n--- Checking Edge Function "sync-to-sheets" ---');
-  // We'll just do a dry run or expect a specific error if it's not found
-  try {
-    const { data: funcData, error: funcError } = await supabase.functions.invoke('sync-to-sheets', {
-      body: { ping: true }
-    });
-    
-    if (funcError) {
-      console.error('❌ Error invoking "sync-to-sheets" function:', funcError.message || funcError.name);
-      if (funcError.context) {
-          console.error(await funcError.context.text());
-      }
-    } else {
-      console.log('✅ "sync-to-sheets" function successfully invoked. Response:', funcData);
-    }
-  } catch (err) {
-      console.error('❌ Exception invoking function:', err.message);
-  }
+  // 3. The Google Sheets sync is a local TanStack route at /api/sync-to-sheets,
+  // so this script only verifies Supabase table + storage wiring.
+  console.log('\n--- Local backend note ---');
+  console.log('ℹ /api/sync-to-sheets is handled by the app server, not a Supabase Edge Function.');
 }
 
 check();

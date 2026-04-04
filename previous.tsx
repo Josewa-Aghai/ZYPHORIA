@@ -968,13 +968,13 @@ function RegistrationSection() {
       const filename = `${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`;
       
       const { error: uploadErr } = await supabase.storage
-        .from('payment-screenshots')
+        .from('screenshots')
         .upload(filename, file!);
         
       if (uploadErr) throw uploadErr;
 
       const { data: publicUrlData } = supabase.storage
-        .from('payment-screenshots')
+        .from('screenshots')
         .getPublicUrl(filename);
       const publicUrl = publicUrlData.publicUrl;
 
@@ -1011,8 +1011,10 @@ function RegistrationSection() {
 
       if (insertErr) throw insertErr;
 
-      supabase.functions.invoke('sync-to-sheets', {
-        body: { registration: insertData },
+      fetch('/api/sync-to-sheets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ registration: insertData }),
       }).catch((err) => console.error("Sheets sync failed:", err));
 
       setIsSuccess(true);
