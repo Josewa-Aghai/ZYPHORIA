@@ -219,9 +219,9 @@ function RegisterPage() {
     if (!EMAIL_REGEX.test(leaderEmail || ''))      errs['leader.email']       = 'Invalid email'
     if (!PHONE_REGEX.test(leaderPhone || ''))      errs['leader.phone']       = 'Invalid phone'
 
-    // Validate optional member fields only if the user actually typed something
+    // Validate member fields - name is mandatory, others optional
     for (let i = 0; i < count; i++) {
-      if (parts[i].name && !NAME_REGEX.test(parts[i].name))             errs[`p${i}.name`]       = 'Invalid name'
+      if (!NAME_REGEX.test(parts[i].name || ''))                        errs[`p${i}.name`]       = 'Member name required'
       if (parts[i].department && !DEPT_REGEX.test(parts[i].department)) errs[`p${i}.department`] = 'Invalid department'
       if (parts[i].college && !COLLEGE_REGEX.test(parts[i].college))    errs[`p${i}.college`]    = 'Invalid college'
       if (parts[i].email && !EMAIL_REGEX.test(parts[i].email))          errs[`p${i}.email`]      = 'Invalid email'
@@ -350,6 +350,13 @@ function RegisterPage() {
 
 
       <div className="container" style={{ maxWidth: '680px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
+
+        {/* Back Button */}
+        <div style={{ marginBottom: '2rem' }}>
+          <Link to="/" className="font-mono uppercase tracking-[0.2em] text-[11px] text-[#8888A8] hover:text-[var(--accent)] transition-colors" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+            ← BACK TO HOME
+          </Link>
+        </div>
 
         {/* Heading */}
         <div style={{ marginBottom: '4rem', textAlign: 'center' }}>
@@ -525,32 +532,31 @@ function RegisterPage() {
                       <h4 className="font-display font-bold text-[13px] uppercase tracking-[0.1em]" style={{ color: accent, margin: 0 }}>
                         {`MEMBER // 0${idx + 2}`}
                       </h4>
-                      <div className="font-mono text-[9px] tracking-widest uppercase" style={{ color: '#3A3A5A' }}>OPTIONAL</div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: '20px' }}>
                       <div>
-                        <FormLabel optional>Full Name</FormLabel>
-                        <InputField name={`p${idx}.name`} placeholder="Enter full name" err={errors[`p${idx}.name`]} optional />
+                        <FormLabel>Full Name</FormLabel>
+                        <InputField name={`p${idx}.name`} placeholder="Enter full name" err={errors[`p${idx}.name`]} />
                       </div>
                       <div>
-                        <FormLabel optional>Department</FormLabel>
-                        <InputField name={`p${idx}.department`} placeholder="e.g. CSE, ECE, IT…" err={errors[`p${idx}.department`]} optional />
+                        <FormLabel>Department</FormLabel>
+                        <InputField name={`p${idx}.department`} placeholder="e.g. CSE, ECE, IT…" err={errors[`p${idx}.department`]} />
                       </div>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: '20px' }}>
                       <div>
-                        <FormLabel optional>College</FormLabel>
-                        <InputField name={`p${idx}.college`} placeholder="Enter college name" err={errors[`p${idx}.college`]} optional />
+                        <FormLabel>College</FormLabel>
+                        <InputField name={`p${idx}.college`} placeholder="Enter college name" err={errors[`p${idx}.college`]} />
                       </div>
                       <div>
-                        <FormLabel optional>Email</FormLabel>
-                        <InputField name={`p${idx}.email`} placeholder="Enter email address" err={errors[`p${idx}.email`]} optional />
+                        <FormLabel>Email</FormLabel>
+                        <InputField name={`p${idx}.email`} placeholder="Enter email address" err={errors[`p${idx}.email`]} />
                       </div>
                     </div>
                     <div>
-                      <FormLabel optional>Phone Connection</FormLabel>
-                      <InputField name={`p${idx}.phone`} placeholder="Enter 10-digit mobile number" err={errors[`p${idx}.phone`]} optional />
+                      <FormLabel>Phone Connection</FormLabel>
+                      <InputField name={`p${idx}.phone`} placeholder="Enter 10-digit mobile number" err={errors[`p${idx}.phone`]} />
                     </div>
                   </div>
                 </div>

@@ -1294,7 +1294,7 @@ function Footer() {
 function CtaBanner() {
   return (
     <section className="section-padding" style={{ background: 'var(--bg)', borderTop: '1px solid var(--stroke)' }}>
-      <div className="container text-center">
+      <div className="container text-center" style={{ paddingTop: '2rem' }}>
         <h2 className="font-display" style={{ fontSize: 'clamp(32px, 4vw, 48px)', color: 'var(--text-primary)', marginBottom: '1rem' }}>
           Ready to Compete?
         </h2>
@@ -1304,7 +1304,7 @@ function CtaBanner() {
         <Link 
           to="/register" 
           className="btn-lime-pill hover:opacity-90 transition-opacity" 
-          style={{ padding: '1rem 3rem', fontSize: '14px', display: 'inline-block', background: 'var(--accent)', color: '#08080C', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 'bold', borderRadius: '0px' }}
+          style={{ padding: '1rem 3rem', fontSize: '14px', display: 'inline-block', background: 'var(--accent)', color: '#08080C', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 'bold', borderRadius: '0px', marginTop: '1rem' }}
         >
           REGISTER NOW
         </Link>
