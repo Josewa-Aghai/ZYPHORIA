@@ -35,11 +35,11 @@ const events: EventItem[] = [
   { id: 7, category: 'technical', name: 'Bug Hunt', description: 'Find and fix bugs in provided code snippets across multiple rounds of increasing difficulty.', team: 'Solo / Duo', icon: Bug },
   // NON-TECHNICAL
   { id: 8, category: 'non-tech', name: 'Engineering Standup Comedy', description: 'Make the audience laugh with your best engineering-themed original comedy routine.', team: 'Individual', icon: Mic },
-  { id: 9, category: 'non-tech', name: 'Tech Meme War', description: 'Create the funniest and most relatable tech memes in a timed competition.', team: 'Individual', icon: Image },
+  { id: 9, category: 'non-tech', name: 'Tech Meme War', description: 'Create the funniest and most relatable tech memes in a timed competition.', team: '1–3', icon: Image },
   { id: 10, category: 'non-tech', name: 'Mystery Box Innovation', description: 'Build something innovative using only random items revealed from a mystery box.', team: '2–3', icon: Box },
   { id: 11, category: 'non-tech', name: 'Reel Making Challenge', description: 'Create an engaging short reel on a given topic within the time limit, edited on-site.', team: '1–3', icon: Video },
   { id: 12, category: 'non-tech', name: 'Tech Dum Charades', description: 'Act out tech terms, software names and programming concepts without speaking.', team: '3–4', icon: AppWindow },
-  { id: 13, category: 'non-tech', name: 'E-Sports', description: 'Compete in popular esports titles against the best gamers from various colleges.', team: 'Solo / Team', icon: Gamepad2 },
+  { id: 13, category: 'non-tech', name: 'E-Sports', description: 'Compete in popular esports titles against the best gamers from various colleges.', team: 'Duo', icon: Gamepad2 },
   { id: 14, category: 'non-tech', name: 'Marketing a Useless Product', description: 'Pitch and market the most useless product imaginable — creativity is king.', team: '2–3', icon: Megaphone },
 ]
 
@@ -763,23 +763,56 @@ function EventCard({ event, onClick }: { event: EventItem; onClick: () => void }
 }
 
 function EventModal({ event, onClose }: { event: EventItem; onClose: () => void }) {
+  if (!event) return null
+
   const [opening, setOpening] = useState(true)
   const navigate = useNavigate()
-  
+
   useEffect(() => {
     const t = setTimeout(() => setOpening(false), 10)
     return () => clearTimeout(t)
   }, [])
-  
+
   const handleClose = () => {
     setOpening(true) // trigger close animation
     setTimeout(onClose, 120)
   }
 
-  if (!event) return null
-
+  const [selectedGame, setSelectedGame] = useState<'PUBG MOBILE' | 'E-FOOTBALL' | 'FREEFIRE'>('PUBG MOBILE')
   const isTech = event.category === 'technical'
+  const isEsports = event.name === 'E-Sports'
   const accentColor = isTech ? 'var(--accent)' : 'var(--danger)'
+
+  const eSportsOptions = ['PUBG MOBILE', 'E-FOOTBALL', 'FREEFIRE'] as const
+  const selectedRules: Record<typeof eSportsOptions[number], string[]> = {
+    'PUBG MOBILE': [
+      'Mode: Duo (2v2) — TDM or Classic based on registrations',
+      'Winner: Classic - last surviving team; TDM - based on score',
+      'No teaming with opponents',
+      'Emulators are not allowed (Mobile only)',
+      'TDM Mode: Only M416 allowed',
+      "Coordinator's decision is final",
+    ],
+    'E-FOOTBALL': [
+      'Mode: Duo (2v2)',
+      '8 minutes per match',
+      'Extra Time: ON',
+      'Penalties: ON',
+      'Substitutions: 5 players',
+      'Knockout format applies',
+      "Coordinator's decision is final",
+    ],
+    'FREEFIRE': [
+      'Mode: Clash Squad (2v2)',
+      'No rooftop camping allowed',
+      'Grenades are not allowed',
+      'Gun skins: OFF',
+      'No hacks, panels, or third party tools',
+      'Character skills: OFF',
+      'No teaming with opponents',
+      'Emulators are strictly prohibited (Mobile only)',
+    ],
+  }
 
   return (
     <div 
@@ -874,31 +907,64 @@ function EventModal({ event, onClose }: { event: EventItem; onClose: () => void 
             <div>
               <h4 className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>INSTRUCTIONS</h4>
               <ul className="font-mono" style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px', color: '#EEEEF5', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Individual or team of {event.team}</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Laptops allowed</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Multiple rounds</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> {isEsports ? 'Fixed team size of 2 members (Duo)' : `Individual or team of ${event.team}`}</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> {isEsports ? 'Choose one game and register for it' : 'Laptops allowed'}</li>
+                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> {isEsports ? 'Matches follow official tournament rules' : 'Multiple rounds'}</li>
               </ul>
             </div>
+
+            {isEsports && (
+              <div>
+                <h4 className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>GAME OPTIONS</h4>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+                  {eSportsOptions.map((game) => (
+                    <button
+                      key={game}
+                      onClick={() => setSelectedGame(game)}
+                      className="font-mono"
+                      style={{
+                        border: selectedGame === game ? `1px solid ${accentColor}` : '1px solid #1E1E2E',
+                        background: selectedGame === game ? accentColor : 'transparent',
+                        color: selectedGame === game ? '#08080C' : '#EEEEF5',
+                        padding: '0.85rem 1rem',
+                        cursor: 'pointer',
+                        fontSize: '12px',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.08em',
+                        minWidth: '130px',
+                      }}
+                    >
+                      {game}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* RULES */}
             <div>
               <h4 className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>RULES</h4>
               <ul className="font-mono" style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px', color: '#EEEEF5', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> No external tools unless noted</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Time-limited rounds</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Points for accuracy and speed</li>
+                {(isEsports ? selectedRules[selectedGame] : [
+                  'No external tools unless noted',
+                  'Time-limited rounds',
+                  'Points for accuracy and speed',
+                ]).map((rule) => (
+                  <li key={rule} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span>{rule}</li>
+                ))}
               </ul>
             </div>
 
-            {/* EVALUATION */}
-            <div>
-              <h4 className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>EVALUATION</h4>
-              <ul className="font-mono" style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px', color: '#EEEEF5', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Correctness of output</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Speed of completion</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Depth of analysis</li>
-              </ul>
-            </div>
+            {!isEsports && (
+              <div>
+                <h4 className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>EVALUATION</h4>
+                <ul className="font-mono" style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px', color: '#EEEEF5', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Correctness of output</li>
+                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Speed of completion</li>
+                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Depth of analysis</li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
 
@@ -1109,7 +1175,8 @@ function OrganizersSection() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
               {[
                 { name: 'Ms. J. Sindhuja', role: 'AP / CSE' },
-                { name: 'Mr. P. Murugan', role: 'AP / CSE' }
+                { name: 'Mr. P. Murugan', role: 'AP / CSE' },
+                { name: 'Ms. Bharathy', role: 'AP / CSE' }
               ].map(p => (
                 <div key={p.name} className="flex items-center gap-4 p-4 group" style={{ background: '#101018', border: '1px solid #1E1E2E', transition: 'all 0.3s ease' }} onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'} onMouseLeave={e => e.currentTarget.style.borderColor = '#1E1E2E'}>
                   <div className="w-12 h-12 flex items-center justify-center transition-colors" style={{ background: 'rgba(200,250,100,0.05)', border: '1px solid var(--accent)' }}>

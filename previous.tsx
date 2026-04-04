@@ -36,11 +36,11 @@ const events: EventItem[] = [
   { id: 7, category: 'technical', name: 'Bug Hunt', description: 'Find and fix bugs in provided code snippets across multiple rounds of increasing difficulty.', team: 'Solo / Duo', icon: Bug },
   // NON-TECHNICAL
   { id: 8, category: 'non-tech', name: 'Engineering Standup Comedy', description: 'Make the audience laugh with your best engineering-themed original comedy routine.', team: 'Individual', icon: Mic },
-  { id: 9, category: 'non-tech', name: 'Tech Meme War', description: 'Create the funniest and most relatable tech memes in a timed competition.', team: 'Individual', icon: Image },
+  { id: 9, category: 'non-tech', name: 'Tech Meme War', description: 'Create the funniest and most relatable tech memes in a timed competition.', team: '1–3', icon: Image },
   { id: 10, category: 'non-tech', name: 'Mystery Box Innovation', description: 'Build something innovative using only random items revealed from a mystery box.', team: '2–3', icon: Box },
   { id: 11, category: 'non-tech', name: 'Reel Making Challenge', description: 'Create an engaging short reel on a given topic within the time limit, edited on-site.', team: '1–3', icon: Video },
   { id: 12, category: 'non-tech', name: 'Tech Dum Charades', description: 'Act out tech terms, software names and programming concepts without speaking.', team: '3–4', icon: AppWindow },
-  { id: 13, category: 'non-tech', name: 'E-Sports', description: 'Compete in popular esports titles against the best gamers from various colleges.', team: 'Solo / Team', icon: Gamepad2 },
+  { id: 13, category: 'non-tech', name: 'E-Sports', description: 'Compete in popular esports titles against the best gamers from various colleges.', team: 'Duo', icon: Gamepad2 },
   { id: 14, category: 'non-tech', name: 'Marketing a Useless Product', description: 'Pitch and market the most useless product imaginable — creativity is king.', team: '2–3', icon: Megaphone },
 ]
 
@@ -435,19 +435,19 @@ function EventCard({ event, onClick }: { event: EventItem; onClick: () => void }
 }
 
 function EventModal({ event, onClose }: { event: EventItem; onClose: () => void }) {
+  if (!event) return null
+
   const [opening, setOpening] = useState(true)
-  
+
   useEffect(() => {
     const t = setTimeout(() => setOpening(false), 10)
     return () => clearTimeout(t)
   }, [])
-  
+
   const handleClose = () => {
     setOpening(true) // trigger close animation
     setTimeout(onClose, 120)
   }
-
-  if (!event) return null
 
   const isTech = event.category === 'technical'
   const accentColor = isTech ? 'var(--accent)' : 'var(--danger)'
@@ -805,7 +805,8 @@ function OrganizersSection() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
               {[
                 { name: 'Ms. J. Sindhuja', role: 'AP / CSE' },
-                { name: 'Mr. P. Murugan', role: 'AP / CSE' }
+                { name: 'Mr. P. Murugan', role: 'AP / CSE' },
+                { name: 'Ms. Bharathy', role: 'AP / CSE' }
               ].map(p => (
                 <div key={p.name} className="flex items-center gap-4 p-4 group" style={{ background: '#101018', border: '1px solid #1E1E2E', transition: 'all 0.3s ease' }} onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'} onMouseLeave={e => e.currentTarget.style.borderColor = '#1E1E2E'}>
                   <div className="w-12 h-12 flex items-center justify-center transition-colors" style={{ background: 'rgba(200,250,100,0.05)', border: '1px solid var(--accent)' }}>

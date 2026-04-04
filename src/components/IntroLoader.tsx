@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, type Variants } from 'framer-motion'
 import { SkipForward } from 'lucide-react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, memo, useCallback } from 'react'
 
 type IntroLoaderProps = {
   showIntro: boolean
@@ -67,34 +67,37 @@ function buildStars(count: number): Star[] {
   }))
 }
 
-function ParticleField() {
+const ParticleField = memo(function ParticleField() {
   const particles = useMemo(() => {
     // Optimized particle count for performance
-    return buildStars(10)
+    return buildStars(8)
   }, [])
 
   return (
     <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,250,100,0.12),transparent_32%),radial-gradient(circle_at_top,rgba(255,255,255,0.04),transparent_42%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,250,100,0.12),transparent_32%),radial-gradient(circle_at_top,rgba(255,255,255,0.04),transparent_42%)]" style={{ willChange: 'contents' }} />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,4,6,0.82),rgba(8,8,12,0.98))]" />
       {particles.map((particle, index) => (
         <span
           key={index}
-          className="absolute rounded-full bg-white"
+          className="absolute rounded-full bg-white pointer-events-none"
           style={{
             left: `${particle.left}%`,
             top: `${particle.top}%`,
             width: `${particle.size}px`,
             height: `${particle.size}px`,
             opacity: particle.opacity * 0.55,
-          }}
+            willChange: 'transform',
+            backfaceVisibility: 'hidden',
+            perspective: 1000,
+          } as any}
         />
       ))}
     </div>
   )
-}
+})
 
-function LogoScreen({
+const LogoScreen = memo(function LogoScreen({
   imageSrc,
   imageAlt,
   label,
@@ -223,12 +226,22 @@ function LogoScreen({
       </div>
     </motion.section>
   )
-}
+})
 
-export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
+export const IntroLoader = memo(function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
   const [screen, setScreen] = useState<1 | 2 | 3>(1)
   const [closing, setClosing] = useState(false)
   const closeTimerRef = useRef<number | null>(null)
+
+  // Preload images for smooth transitions
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const images = ['/ritlogo.png', '/idatamind.png', '/zyphoria.png']
+    images.forEach(src => {
+      const img = new Image()
+      img.src = src
+    })
+  }, [])
 
   useEffect(() => {
     if (!showIntro || typeof window === 'undefined') {
@@ -266,11 +279,7 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
     }
   }, [onComplete, showIntro])
 
-  if (!showIntro) {
-    return null
-  }
-
-  const skipIntro = () => {
+  const skipIntro = useCallback(() => {
     if (typeof window === 'undefined') {
       onComplete()
       return
@@ -284,6 +293,10 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
     }
 
     closeTimerRef.current = window.setTimeout(onComplete, INTRO_TIMINGS.exit)
+  }, [onComplete])
+
+  if (!showIntro) {
+    return null
   }
 
   return (
@@ -341,4 +354,4 @@ export function IntroLoader({ showIntro, onComplete }: IntroLoaderProps) {
       </motion.div>
     </AnimatePresence>
   )
-}
+})

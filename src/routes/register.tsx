@@ -30,11 +30,11 @@ const eventConfig: Record<string, { minMembers: number; maxMembers: number; labe
   'Bug Hunt':                        { minMembers: 0, maxMembers: 1, label: 'Solo / Duo' },
   // NON-TECHNICAL
   'Engineering Standup Comedy':      { minMembers: 0, maxMembers: 0, label: 'Individual' },
-  'Tech Meme War':                   { minMembers: 0, maxMembers: 0, label: 'Individual' },
+  'Tech Meme War':                   { minMembers: 0, maxMembers: 2, label: '1–3 members' },
   'Mystery Box Innovation':          { minMembers: 1, maxMembers: 2, label: '2–3 members' },
   'Reel Making Challenge':           { minMembers: 0, maxMembers: 2, label: '1–3 members' },
   'Tech Dum Charades':               { minMembers: 2, maxMembers: 3, label: '3–4 members' },
-  'E-Sports':                        { minMembers: 0, maxMembers: 3, label: 'Solo / Team' },
+  'E-Sports':                        { minMembers: 1, maxMembers: 1, label: 'Duo' },
   'Marketing a Useless Product':     { minMembers: 1, maxMembers: 2, label: '2–3 members' },
 }
 
@@ -57,6 +57,8 @@ const nonTechDropdownEvents = [
   'E-Sports',
   'Marketing a Useless Product',
 ]
+
+const eSportsGames = ['PUBG MOBILE', 'E-FOOTBALL', 'FREEFIRE'] as const
 
 const PAYMENT_LINK = 'https://edu.easebuzz.in/register/RAJALAKSHMIbw5w4/ZYPHORIA_2026_SYMPOSIUM'
 
@@ -133,7 +135,7 @@ const selectStyle = (err?: string) => ({
 
 function RegisterPage() {
   const [tab, setTab] = useState<'tech' | 'nontech'>('tech')
-  const [formData, setFormData] = useState({ event: '', memberCount: 0 })
+  const [formData, setFormData] = useState({ event: '', memberCount: 0, eSportsGame: '' })
   const [file, setFile] = useState<File | null>(null)
   const [filePreview, setFilePreview] = useState<string | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -152,6 +154,7 @@ function RegisterPage() {
       ...p,
       event: eventName,
       memberCount: c ? c.minMembers : 0,
+      eSportsGame: eventName === 'E-Sports' ? p.eSportsGame : '',
     }))
     setErrors({})
   }
@@ -211,6 +214,7 @@ function RegisterPage() {
     const errs: Record<string, string> = {}
 
     if (!formData.event)                           errs['event']              = 'Select target event'
+    if (formData.event === 'E-Sports' && !formData.eSportsGame) errs['eSportsGame'] = 'Select E-Sports title'
     if (!file)                                     errs['file']               = 'Payment receipt required'
     if (!TEAM_NAME_REGEX.test(teamName || ''))     errs['teamName']           = 'Invalid team name'
     if (!NAME_REGEX.test(leaderName || ''))        errs['leader.name']        = 'Invalid name'
@@ -258,6 +262,7 @@ function RegisterPage() {
         leader_college:          leaderCollege,
         technical_event:         tab === 'tech' ? formData.event : null,
         non_technical_event:     tab === 'nontech' ? formData.event : null,
+        esports_title:           formData.event === 'E-Sports' ? formData.eSportsGame : null,
         payment_screenshot_url:  publicUrl,
         participant1_name:       count >= 1 ? parts[0].name || null : null,
         participant1_department: count >= 1 ? parts[0].department || null : null,
@@ -430,6 +435,24 @@ function RegisterPage() {
                   </select>
                   {errors.event && <div className="text-[#FF4D6D] text-[10px] mt-1.5 font-mono">{errors.event}</div>}
                 </div>
+
+                {formData.event === 'E-Sports' && (
+                  <div>
+                    <FormLabel>E-Sports Title</FormLabel>
+                    <select
+                      value={formData.eSportsGame}
+                      onChange={(e) => setFormData(p => ({ ...p, eSportsGame: e.target.value }))}
+                      className="w-full bg-[#0D0D14] border outline-none font-mono text-[14px] text-[#EEEEF5] transition-all duration-300 hover:bg-[#12121A] appearance-none"
+                      style={selectStyle(errors.eSportsGame)}
+                    >
+                      <option value="">-- Choose Game --</option>
+                      {eSportsGames.map((game) => (
+                        <option key={game} value={game}>{game}</option>
+                      ))}
+                    </select>
+                    {errors.eSportsGame && <div className="text-[#FF4D6D] text-[10px] mt-1.5 font-mono">{errors.eSportsGame}</div>}
+                  </div>
+                )}
 
                 {/* Team size badge — shown once event is chosen */}
                 {cfg && (
