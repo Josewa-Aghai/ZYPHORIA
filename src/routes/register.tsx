@@ -250,30 +250,30 @@ function RegisterPage() {
       const publicUrl = publicUrlData.publicUrl
 
       const insertData = {
-        team_name:                teamName,
-        leader_name:              leaderName,
-        leader_email:             leaderEmail,
-        leader_phone:             leaderPhone,
-        leader_department:        leaderDept,
-        leader_college:           leaderCollege,
-        technical_event:          tab === 'tech' ? formData.event : null,
-        non_technical_event:      tab === 'nontech' ? formData.event : null,
-        payment_screenshot_url:   publicUrl,
-        participant1_name:        count >= 1 ? parts[0].name || null : null,
-        participant1_department:  count >= 1 ? parts[0].department || null : null,
-        participant1_college:     count >= 1 ? parts[0].college || null : null,
-        participant1_email:       count >= 1 ? parts[0].email || null : null,
-        participant1_phone:       count >= 1 ? parts[0].phone || null : null,
-        participant2_name:        count >= 2 ? parts[1].name || null : null,
-        participant2_department:  count >= 2 ? parts[1].department || null : null,
-        participant2_college:     count >= 2 ? parts[1].college || null : null,
-        participant2_email:       count >= 2 ? parts[1].email || null : null,
-        participant2_phone:       count >= 2 ? parts[1].phone || null : null,
-        participant3_name:        count >= 3 ? parts[2].name || null : null,
-        participant3_department:  count >= 3 ? parts[2].department || null : null,
-        participant3_college:     count >= 3 ? parts[2].college || null : null,
-        participant3_email:       count >= 3 ? parts[2].email || null : null,
-        participant3_phone:       count >= 3 ? parts[2].phone || null : null,
+        team_name:               teamName,
+        leader_name:             leaderName,
+        leader_email:            leaderEmail,
+        leader_phone:            leaderPhone,
+        leader_department:       leaderDept,
+        leader_college:          leaderCollege,
+        technical_event:         tab === 'tech' ? formData.event : null,
+        non_technical_event:     tab === 'nontech' ? formData.event : null,
+        payment_screenshot_url:  publicUrl,
+        participant1_name:       count >= 1 ? parts[0].name || null : null,
+        participant1_department: count >= 1 ? parts[0].department || null : null,
+        participant1_college:    count >= 1 ? parts[0].college || null : null,
+        participant1_email:      count >= 1 ? parts[0].email || null : null,
+        participant1_phone:      count >= 1 ? parts[0].phone || null : null,
+        participant2_name:       count >= 2 ? parts[1].name || null : null,
+        participant2_department: count >= 2 ? parts[1].department || null : null,
+        participant2_college:    count >= 2 ? parts[1].college || null : null,
+        participant2_email:      count >= 2 ? parts[1].email || null : null,
+        participant2_phone:      count >= 2 ? parts[1].phone || null : null,
+        participant3_name:       count >= 3 ? parts[2].name || null : null,
+        participant3_department: count >= 3 ? parts[2].department || null : null,
+        participant3_college:    count >= 3 ? parts[2].college || null : null,
+        participant3_email:      count >= 3 ? parts[2].email || null : null,
+        participant3_phone:      count >= 3 ? parts[2].phone || null : null,
       }
 
       const { error: insertErr } = await supabase.from('registrations').insert([insertData])
@@ -593,7 +593,7 @@ function RegisterPage() {
                   className="group relative border-[1px] border-dashed text-center flex flex-col items-center justify-center cursor-pointer transition-all duration-300 hover:bg-[#12121A]"
                   style={{ borderColor: errors.file ? '#FF4D6D' : '#1E1E2E', background: '#0D0D14', padding: '40px' }}
                 >
-                  <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                  <input id="payment" name="payment" type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
                   {filePreview ? (
                     <div className="flex flex-col items-center">
                       <img src={filePreview} alt="Preview" className="h-20 w-20 object-cover border mb-3" style={{ borderColor: accent }} />

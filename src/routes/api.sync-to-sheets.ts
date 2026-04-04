@@ -101,60 +101,38 @@ export const Route = createFileRoute('/api/sync-to-sheets')({
           const token = await getGoogleToken(clientEmail, privateKey)
 
           // 3. One row matching sheet headers (row 1 in the spreadsheet should be):
-          // TIMESTAMP | TEAM NAME | MEMBER1 | MEMBER2 | MEMBER3 | MEMBER4 |
+          // TIMESTAMP | TEAM NAME | MEMBER 1 | MEMBER 2 | MEMBER 3 | MEMBER 4 |
           // MAIL ID | PHONE NUMBER | DEPARTMENT | COLLEGE NAME | EVENT NAME | PAYMENT PROOF
-          // MEMBER1 = leader; MEMBER2–4 = additional members (blank if none).
+          // MEMBER 1 = leader; MEMBER 2–4 = additional members (blank if none).
           const eventName =
-            registration.technical_event || registration.non_technical_event || ''
+            registration.technical_event || registration.non_technical_event || registration.event || ''
           const rowData = [
             new Date().toISOString(),
             registration.team_name || '',
-            registration.leader_name || '',
-            registration.participant1_name || '',
-            registration.participant2_name || '',
-            registration.participant3_name || '',
-            registration.leader_email || '',
-            registration.leader_phone || '',
-            registration.leader_department || '',
-            registration.leader_college || '',
+            registration.member1 || registration.leader_name || '',
+            registration.member2 || registration.participant1_name || '',
+            registration.member3 || registration.participant2_name || '',
+            registration.member4 || registration.participant3_name || '',
+            registration.leader_email || registration.email || '',
+            registration.leader_phone || registration.phone || '',
+            registration.leader_department || registration.department || '',
+            registration.leader_college || registration.college || '',
             eventName,
-            registration.payment_screenshot_url || '',
+            registration.payment_screenshot_url || registration.payment_proof || '',
           ];
 
           if (rowData.length !== 12) {
             throw new Error(`Expected 12 columns, got ${rowData.length}`)
           }
 
-          // 4. values.append can attach to a "table" that starts at column G if that column was used first.
-          // Read A:L, then PUT the next row at A{row}:L{row} so TIMESTAMP is always column A.
           const tab = resolveSheetTabName(process.env.GOOGLE_SHEETS_RANGE)
-          const readRange = `${tab}!A:L`
-          const readUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(readRange)}`
+          const appendRange = `${tab}!A:L`
+          const appendUrl =
+            `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(appendRange)}:append` +
+            `?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`
 
-          const readRes = await fetch(readUrl, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
-          const readJson = await readRes.json()
-          if (!readRes.ok) {
-            console.error('Sheets read failed:', readJson)
-            return new Response(
-              JSON.stringify({
-                error: 'Failed to read Google Sheet (check tab name and sharing)',
-                details: readJson,
-              }),
-              { status: 502, headers: { 'Content-Type': 'application/json' } },
-            )
-          }
-
-          const existingRows: unknown[][] = readJson.values ?? []
-          const nextRow = existingRows.length + 1
-          const writeRange = `${tab}!A${nextRow}:L${nextRow}`
-          const writeUrl =
-            `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(writeRange)}` +
-            `?valueInputOption=USER_ENTERED`
-
-          const response = await fetch(writeUrl, {
-            method: 'PUT',
+          const response = await fetch(appendUrl, {
+            method: 'POST',
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
