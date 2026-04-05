@@ -26,21 +26,21 @@ export type EventItem = {
 
 const events: EventItem[] = [
   // TECHNICAL
-  { id: 1, category: 'technical', name: 'Reverse Engineering Arena', description: 'Decode and reverse-engineer software or logic puzzles to uncover hidden functionality.', team: '1–2', icon: SearchCode },
-  { id: 2, category: 'technical', name: 'AI Prompt Engineering Battle', description: 'Craft the most effective AI prompts to solve challenges using generative AI tools.', team: '3 per team', icon: Bot },
-  { id: 3, category: 'technical', name: 'UI/UX Redesign Challenge', description: 'Redesign a given app or website to improve usability, aesthetics and user experience.', team: '1–2', icon: Paintbrush },
-  { id: 4, category: 'technical', name: 'Tech Treasure Hunt', description: 'Solve technical clues and puzzles scattered across campus to find the final treasure.', team: '2 per team', icon: MapPin },
-  { id: 5, category: 'technical', name: 'Research Pitch', description: 'Present your research idea or paper in a concise, compelling pitch to a panel of judges.', team: '1–2', icon: Presentation },
-  { id: 6, category: 'technical', name: 'Build a Startup in 60 Min', description: 'Conceptualize and pitch a startup idea with a full business model in just 60 minutes.', team: '1–3', icon: Briefcase },
-  { id: 7, category: 'technical', name: 'Bug Hunt', description: 'Find and fix bugs in provided code snippets across multiple rounds of increasing difficulty.', team: 'Individual', icon: Bug },
+  { id: 1, category: 'technical', name: 'Reverse Engineering Arena', description: 'Analyze inputs, outputs, and hidden flags to uncover what the product is really doing.', team: '1–2', icon: SearchCode },
+  { id: 2, category: 'technical', name: 'AI Prompt Engineering Battle', description: 'Design and refine prompts live to solve a real problem with smart AI use.', team: '3 per team', icon: Bot },
+  { id: 3, category: 'technical', name: 'UI/UX Redesign Challenge', description: 'Turn a poorly structured interface into a clean, visually appealing, user-friendly layout.', team: '1–2', icon: Paintbrush },
+  { id: 4, category: 'technical', name: 'Tech Treasure Hunt', description: 'Follow clues, QR codes, and challenges to unlock the final treasure first.', team: '2 per team', icon: MapPin },
+  { id: 5, category: 'technical', name: 'Research Pitch', description: 'Present an innovative, real-world research solution with clarity and confidence.', team: '1–2', icon: Presentation },
+  { id: 6, category: 'technical', name: 'Build a Startup in 60 Min', description: 'Choose a problem on the spot, add the wild card twist, and pitch a startup fast.', team: '1–3', icon: Briefcase },
+  { id: 7, category: 'technical', name: 'Bug Hunt', description: 'Fix syntax, runtime, and logic errors quickly using only Python IDE tools.', team: 'Individual', icon: Bug },
   // NON-TECHNICAL
-  { id: 8, category: 'non-tech', name: 'Engineering Standup Comedy', description: 'Make the audience laugh with your best engineering-themed original comedy routine.', team: '1–2', icon: Mic },
-  { id: 9, category: 'non-tech', name: 'Tech Meme War', description: 'Create the funniest and most relatable tech memes in a timed competition.', team: '2–3', icon: Image },
-  { id: 10, category: 'non-tech', name: 'Mystery Box Innovation', description: 'Build something innovative using only random items revealed from a mystery box.', team: '3–4', icon: Box },
-  { id: 11, category: 'non-tech', name: 'Reel Making Challenge', description: 'Create an engaging short reel on a given topic within the time limit, edited on-site.', team: '1–4', icon: Video },
+  { id: 8, category: 'non-tech', name: 'Engineering Standup Comedy', description: 'Perform a clean engineering-themed act with good timing, stage presence, and audience engagement.', team: '1–2', icon: Mic },
+  { id: 9, category: 'non-tech', name: 'Tech Meme War', description: 'Act memes silently, caption templates, and create funny tech memes on the spot.', team: '2–3', icon: Image },
+  { id: 10, category: 'non-tech', name: 'Mystery Box Innovation', description: 'Solve surprise innovation tasks quickly using only the mystery box challenge items.', team: '3–4', icon: Box },
+  { id: 11, category: 'non-tech', name: 'Reel Making Challenge', description: 'Create a tech-themed reel on-site with original content and strong presentation.', team: '1–4', icon: Video },
   { id: 12, category: 'non-tech', name: 'Tech Dum Charades', description: 'Act out tech terms, software names and programming concepts without speaking.', team: '3–4', icon: AppWindow },
-  { id: 13, category: 'non-tech', name: 'E-Sports', description: 'Compete in popular esports titles against the best gamers from various colleges.', team: 'Duo', icon: Gamepad2 },
-  { id: 14, category: 'non-tech', name: 'Marketing a Useless Product', description: 'Pitch and market the most useless product imaginable — creativity is king.', team: '2–3', icon: Megaphone },
+  { id: 13, category: 'non-tech', name: 'E-Sports', description: 'Compete in popular gaming titles and prove your team is the strongest.', team: 'Duo', icon: Gamepad2 },
+  { id: 14, category: 'non-tech', name: 'Marketing a Useless Product', description: 'Market a random useless product creatively with a quick pitch and fun presentation.', team: '2–3', icon: Megaphone },
 ]
 
 interface EventGuidelines {
@@ -351,7 +351,7 @@ const eventGuidelines: Record<string, EventGuidelines> = {
     ],
     rules: [
       'Respectful humor only.',
-      'Props are allowed but must be self-arranged.',
+      'Props will be provided by us.',
       'Stick to the time limits.',
     ],
     regulations: [
