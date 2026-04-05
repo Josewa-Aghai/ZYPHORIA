@@ -477,6 +477,7 @@ function Navbar() {
         {/* Center nav — desktop */}
         <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', marginLeft: 'auto', marginRight: '1rem' }} className="desktop-nav">
           {[
+            { label: 'HOME', target: 'home' },
             { label: 'ABOUT', target: 'about' },
             { label: 'EVENTS', target: 'events' },
             { label: 'TEAM', target: 'organizers' }
@@ -520,6 +521,7 @@ function Navbar() {
       {menuOpen && (
         <div className="mobile-side-drawer" style={{ background: 'var(--surface)', borderTop: '1px solid var(--stroke)', padding: '1rem 2rem' }}>
           {[
+            { label: 'HOME', target: 'home' },
             { label: 'ABOUT', target: 'about' },
             { label: 'EVENTS', target: 'events' },
             { label: 'TEAM', target: 'organizers' }
@@ -826,6 +828,7 @@ function Hero() {
 
   return (
     <section
+      id="home"
       style={{
         position: 'relative',
         minHeight: '100vh',
@@ -1502,7 +1505,6 @@ function AboutSection() {
     <section id="about" className="section-padding" style={{ background: 'var(--bg)' }}>
       <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
         <div style={{ textAlign: 'left' }}>
-          <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ ABOUT ]</p>
           <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)', marginBottom: '2rem' }}>
             The Future, Compiled.
           </h2>
@@ -1566,7 +1568,6 @@ function OrganizersSection() {
     <section id="organizers" className="section-padding" style={{ background: 'var(--bg)' }}>
       <div className="container">
         <div style={{ marginBottom: '4rem' }}>
-          <p className="section-label" style={{ color: 'var(--text-muted)' }}>[ TEAM ]</p>
           <h2 className="font-display" style={{ fontSize: 'clamp(36px, 4vw, 52px)', color: 'var(--text-primary)' }}>
             Organizers & Coordinators.
           </h2>
