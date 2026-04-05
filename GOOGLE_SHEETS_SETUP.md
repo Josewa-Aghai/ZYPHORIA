@@ -36,20 +36,32 @@
 1. Go to [Google Sheets](https://sheets.google.com/)
 2. Create a new spreadsheet
 3. Name it "Zyphoria Registrations" or similar
-4. Add headers in row 1 (columns A-L):
+4. Add headers in row 1 (columns A-X):
    ```
    A: TIMESTAMP
    B: TEAM NAME
-   C: MEMBER1
-   D: MEMBER2
-   E: MEMBER3
-   F: MEMBER4
-   G: MAIL ID
-   H: PHONE NUMBER
-   I: DEPARTMENT
-   J: COLLEGE NAME
-   K: EVENT NAME
-   L: PAYMENT PROOF
+   C: MEMBER 1
+   D: MAIL ID
+   E: PHONE NUMBER
+   F: DEPARTMENT
+   G: COLLEGE NAME
+   H: MEMBER 2
+   I: MAIL ID
+   J: PHONE NUMBER
+   K: DEPARTMENT
+   L: COLLEGE NAME
+   M: MEMBER 3
+   N: MAIL ID
+   O: PHONE NUMBER
+   P: DEPARTMENT
+   Q: COLLEGE NAME
+   R: MEMBER 4
+   S: MAIL ID
+   T: PHONE NUMBER
+   U: DEPARTMENT
+   V: COLLEGE NAME
+   W: EVENT NAME
+   X: PAYMENT PROOF
    ```
 
 ## Step 5: Share the Sheet with Service Account

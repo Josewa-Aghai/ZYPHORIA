@@ -69,6 +69,25 @@ const COLLEGE_REGEX = /^[A-Za-z\s&.,'/()-]{2,200}$/
 const TEAM_NAME_REGEX = /^[A-Za-z0-9\s&._'-]{2,100}$/
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+const getChennaiTimestamp = () => {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  }).formatToParts(new Date())
+
+  const valueByType = Object.fromEntries(
+    parts.filter((part) => part.type !== 'literal').map((part) => [part.type, part.value]),
+  ) as Record<string, string>
+
+  return `${valueByType.year}-${valueByType.month}-${valueByType.day} ${valueByType.hour}:${valueByType.minute}:${valueByType.second} IST`
+}
+
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
 function Navbar() {
@@ -229,13 +248,28 @@ function RegisterPage() {
     if (!EMAIL_REGEX.test(leaderEmail || ''))      errs['leader.email']       = 'Invalid email'
     if (!PHONE_REGEX.test(leaderPhone || ''))      errs['leader.phone']       = 'Invalid phone'
 
-    // Validate member fields - name is mandatory, others optional
+    // Validate member fields - all fields required for added members
     for (let i = 0; i < count; i++) {
-      if (!NAME_REGEX.test(parts[i].name || ''))                        errs[`p${i}.name`]       = 'Member name required'
-      if (parts[i].department && !DEPT_REGEX.test(parts[i].department)) errs[`p${i}.department`] = 'Invalid department'
-      if (parts[i].college && !COLLEGE_REGEX.test(parts[i].college))    errs[`p${i}.college`]    = 'Invalid college'
-      if (parts[i].email && !EMAIL_REGEX.test(parts[i].email))          errs[`p${i}.email`]      = 'Invalid email'
-      if (parts[i].phone && !PHONE_REGEX.test(parts[i].phone))          errs[`p${i}.phone`]      = 'Invalid phone'
+      const memberName = (parts[i].name || '').trim()
+      const memberDepartment = (parts[i].department || '').trim()
+      const memberCollege = (parts[i].college || '').trim()
+      const memberEmail = (parts[i].email || '').trim()
+      const memberPhone = (parts[i].phone || '').trim()
+
+      if (!memberName) errs[`p${i}.name`] = 'Member name required'
+      else if (!NAME_REGEX.test(memberName)) errs[`p${i}.name`] = 'Invalid name'
+
+      if (!memberDepartment) errs[`p${i}.department`] = 'Member department required'
+      else if (!DEPT_REGEX.test(memberDepartment)) errs[`p${i}.department`] = 'Invalid department'
+
+      if (!memberCollege) errs[`p${i}.college`] = 'Member college required'
+      else if (!COLLEGE_REGEX.test(memberCollege)) errs[`p${i}.college`] = 'Invalid college'
+
+      if (!memberEmail) errs[`p${i}.email`] = 'Member mail required'
+      else if (!EMAIL_REGEX.test(memberEmail)) errs[`p${i}.email`] = 'Invalid email'
+
+      if (!memberPhone) errs[`p${i}.phone`] = 'Member phone number required'
+      else if (!PHONE_REGEX.test(memberPhone)) errs[`p${i}.phone`] = 'Invalid phone'
     }
 
     // Ensure every participant uses unique contact details within a team.
@@ -300,6 +334,46 @@ function RegisterPage() {
         ? `E-Sports: ${formData.eSportsGame}`
         : formData.event
 
+      const member1 = {
+        name: leaderName || null,
+        email: leaderEmail || null,
+        phone: leaderPhone || null,
+        department: leaderDept || null,
+        college: leaderCollege || null,
+      }
+      const member2 = {
+        name: count >= 1 ? parts[0].name || null : null,
+        email: count >= 1 ? parts[0].email || null : null,
+        phone: count >= 1 ? parts[0].phone || null : null,
+        department: count >= 1 ? parts[0].department || null : null,
+        college: count >= 1 ? parts[0].college || null : null,
+      }
+      const member3 = {
+        name: count >= 2 ? parts[1].name || null : null,
+        email: count >= 2 ? parts[1].email || null : null,
+        phone: count >= 2 ? parts[1].phone || null : null,
+        department: count >= 2 ? parts[1].department || null : null,
+        college: count >= 2 ? parts[1].college || null : null,
+      }
+      const member4 = {
+        name: count >= 3 ? parts[2].name || null : null,
+        email: count >= 3 ? parts[2].email || null : null,
+        phone: count >= 3 ? parts[2].phone || null : null,
+        department: count >= 3 ? parts[2].department || null : null,
+        college: count >= 3 ? parts[2].college || null : null,
+      }
+
+      const normalizedRegistration = {
+        timestamp: getChennaiTimestamp(),
+        team_name: teamName,
+        member1,
+        member2,
+        member3,
+        member4,
+        event_name: fullEventName,
+        payment_proof: publicUrl,
+      }
+
       const insertData = {
         team_name:               teamName,
         leader_name:             leaderName,
@@ -333,7 +407,7 @@ function RegisterPage() {
       void fetch('/api/sync-to-sheets', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ registration: insertData }),
+        body: JSON.stringify({ registration: insertData, normalizedRegistration }),
       })
         .then(async (sheetsRes) => {
           const sheetsJson = await sheetsRes.json().catch(() => null)
