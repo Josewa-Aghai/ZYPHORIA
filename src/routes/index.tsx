@@ -26,22 +26,369 @@ export type EventItem = {
 
 const events: EventItem[] = [
   // TECHNICAL
-  { id: 1, category: 'technical', name: 'Reverse Engineering Arena', description: 'Decode and reverse-engineer software or logic puzzles to uncover hidden functionality.', team: 'Solo / Duo', icon: SearchCode },
-  { id: 2, category: 'technical', name: 'AI Prompt Engineering Battle', description: 'Craft the most effective AI prompts to solve challenges using generative AI tools.', team: 'Individual', icon: Bot },
-  { id: 3, category: 'technical', name: 'UI/UX Redesign Challenge', description: 'Redesign a given app or website to improve usability, aesthetics and user experience.', team: '2–3', icon: Paintbrush },
-  { id: 4, category: 'technical', name: 'Tech Treasure Hunt', description: 'Solve technical clues and puzzles scattered across campus to find the final treasure.', team: '3–4', icon: MapPin },
+  { id: 1, category: 'technical', name: 'Reverse Engineering Arena', description: 'Decode and reverse-engineer software or logic puzzles to uncover hidden functionality.', team: '1–2', icon: SearchCode },
+  { id: 2, category: 'technical', name: 'AI Prompt Engineering Battle', description: 'Craft the most effective AI prompts to solve challenges using generative AI tools.', team: '3 per team', icon: Bot },
+  { id: 3, category: 'technical', name: 'UI/UX Redesign Challenge', description: 'Redesign a given app or website to improve usability, aesthetics and user experience.', team: '1–2', icon: Paintbrush },
+  { id: 4, category: 'technical', name: 'Tech Treasure Hunt', description: 'Solve technical clues and puzzles scattered across campus to find the final treasure.', team: '2 per team', icon: MapPin },
   { id: 5, category: 'technical', name: 'Research Pitch', description: 'Present your research idea or paper in a concise, compelling pitch to a panel of judges.', team: '1–2', icon: Presentation },
-  { id: 6, category: 'technical', name: 'Build a Startup in 60 Min', description: 'Conceptualize and pitch a startup idea with a full business model in just 60 minutes.', team: '2–4', icon: Briefcase },
-  { id: 7, category: 'technical', name: 'Bug Hunt', description: 'Find and fix bugs in provided code snippets across multiple rounds of increasing difficulty.', team: 'Solo / Duo', icon: Bug },
+  { id: 6, category: 'technical', name: 'Build a Startup in 60 Min', description: 'Conceptualize and pitch a startup idea with a full business model in just 60 minutes.', team: '1–3', icon: Briefcase },
+  { id: 7, category: 'technical', name: 'Bug Hunt', description: 'Find and fix bugs in provided code snippets across multiple rounds of increasing difficulty.', team: 'Individual', icon: Bug },
   // NON-TECHNICAL
-  { id: 8, category: 'non-tech', name: 'Engineering Standup Comedy', description: 'Make the audience laugh with your best engineering-themed original comedy routine.', team: 'Individual', icon: Mic },
-  { id: 9, category: 'non-tech', name: 'Tech Meme War', description: 'Create the funniest and most relatable tech memes in a timed competition.', team: '1–3', icon: Image },
-  { id: 10, category: 'non-tech', name: 'Mystery Box Innovation', description: 'Build something innovative using only random items revealed from a mystery box.', team: '2–3', icon: Box },
-  { id: 11, category: 'non-tech', name: 'Reel Making Challenge', description: 'Create an engaging short reel on a given topic within the time limit, edited on-site.', team: '1–3', icon: Video },
+  { id: 8, category: 'non-tech', name: 'Engineering Standup Comedy', description: 'Make the audience laugh with your best engineering-themed original comedy routine.', team: '1–2', icon: Mic },
+  { id: 9, category: 'non-tech', name: 'Tech Meme War', description: 'Create the funniest and most relatable tech memes in a timed competition.', team: '2–3', icon: Image },
+  { id: 10, category: 'non-tech', name: 'Mystery Box Innovation', description: 'Build something innovative using only random items revealed from a mystery box.', team: '3–4', icon: Box },
+  { id: 11, category: 'non-tech', name: 'Reel Making Challenge', description: 'Create an engaging short reel on a given topic within the time limit, edited on-site.', team: '1–4', icon: Video },
   { id: 12, category: 'non-tech', name: 'Tech Dum Charades', description: 'Act out tech terms, software names and programming concepts without speaking.', team: '3–4', icon: AppWindow },
   { id: 13, category: 'non-tech', name: 'E-Sports', description: 'Compete in popular esports titles against the best gamers from various colleges.', team: 'Duo', icon: Gamepad2 },
   { id: 14, category: 'non-tech', name: 'Marketing a Useless Product', description: 'Pitch and market the most useless product imaginable — creativity is king.', team: '2–3', icon: Megaphone },
 ]
+
+interface EventGuidelines {
+  instructions: string[]
+  rules: string[]
+  regulations: string[]
+  evaluation: string[]
+  contact?: {
+    label: string
+    name: string
+    phone: string
+  }
+}
+
+const eventGuidelines: Record<string, EventGuidelines> = {
+  'Reverse Engineering Arena': {
+    instructions: [
+      'Analyze system inputs and outputs.',
+      'Hunt technical flags and metadata.',
+      'Redesign the product with fixes.',
+    ],
+    rules: [
+      'Use only provided systems.',
+      'No plagiarism or unauthorized tools.',
+      'Maintain professional conduct.',
+    ],
+    regulations: [
+      'Team size is 1–2 per team.',
+      'There will be 3 rounds.',
+      'All work must be completed on-site.',
+    ],
+    evaluation: [
+      'Logic and clarity of analysis',
+      'Creativity and realism of fixes',
+      'Teamwork and methodology',
+    ],
+  },
+  'AI Prompt Engineering Battle': {
+    instructions: [
+      'Select a problem to solve.',
+      'Design and refine prompts live.',
+      'Present your solution to the judges.',
+    ],
+    rules: [
+      'Finish within 3 hours.',
+      'Explain model choices clearly.',
+      'No outside help allowed.',
+    ],
+    regulations: [
+      'Team size is 3 per team.',
+      'There will be 3 rounds.',
+      'All work must be live and original.',
+    ],
+    evaluation: [
+      'Strength of solution',
+      'Quality of prompt design',
+      'Smart use of AI agents',
+    ],
+  },
+  'UI/UX Redesign Challenge': {
+    instructions: [
+      'Participants will be provided with a poorly designed interface at the start of the event.',
+      'Redesign the interface to improve usability, clarity, and visual appeal.',
+      'Prepare wireframes, mockups, or a prototype using the allowed tools.',
+    ],
+    rules: [
+      'Allowed tools: Figma, Canva, Adobe XD, or paper sketching.',
+      'Participation can be individual or in teams of 1–2 members.',
+      'Complete the task within a time limit of 2 hours.',
+    ],
+    regulations: [
+      'Team size is 1–2 members.',
+      'All work should be created during the event period.',
+      'Judge decisions are final.',
+    ],
+    evaluation: [
+      'Design clarity and usability',
+      'Creativity and visual appeal',
+      'Presentation of the solution',
+    ],
+  },
+  'Tech Treasure Hunt': {
+    instructions: [
+      'Answer sequential questions to advance.',
+      'Find hidden QR codes for rapid quiz rounds.',
+      'Complete the final vault task to win.',
+    ],
+    rules: [
+      'No unfair means or external help.',
+      'Do not damage any objects.',
+      'Follow all instructions carefully.',
+    ],
+    regulations: [
+      'Team size is 2 per team.',
+      'There will be 3 rounds.',
+      'All activity must be completed on-site.',
+    ],
+    evaluation: [
+      'Time taken to complete tasks',
+      'Logical problem-solving',
+      'Order of completion',
+    ],
+  },
+  'Research Pitch': {
+    instructions: [
+      'Deliver a 3-minute pitch followed by 2-minute Q&A.',
+      'Use PPT or poster format.',
+      'Bring your ID and registration proof.',
+    ],
+    rules: [
+      'No plagiarism or copied ideas.',
+      'Must be feasible and research-based.',
+      'Mobile phone usage is prohibited.',
+    ],
+    regulations: [
+      'Team size is 1–2 per team.',
+      'There will be 1 round.',
+      'All work and materials must be original.',
+    ],
+    evaluation: [
+      'Innovation of the idea',
+      'Clarity of problem and solution',
+      'Judges’ final decision',
+    ],
+  },
+  'Build a Startup in 60 Min': {
+    instructions: [
+      'Choose a problem statement on the spot.',
+      'Incorporate the wild card twist into your idea.',
+      'Pitch the idea and handle Q&A.',
+    ],
+    rules: [
+      'No pre-prepared ideas.',
+      'Follow the assigned constraints.',
+      'Judges’ decision is final.',
+    ],
+    regulations: [
+      'Team size is 1–3 per team.',
+      'There will be 1 round.',
+      'All ideas must be original and created during the event.',
+    ],
+    evaluation: [
+      'Problem clarity',
+      'Solution and unique value',
+      'Pitch quality and teamwork',
+    ],
+  },
+  'Bug Hunt': {
+    instructions: [
+      'Solve syntax and runtime errors first.',
+      'Fix logical bugs in the later round.',
+      'Use Python IDE only.',
+    ],
+    rules: [
+      'No AI tools allowed.',
+      'No internet access.',
+      'Only Python v3.14.3 is permitted.',
+    ],
+    regulations: [
+      'Individual participation only.',
+      'There will be 2 rounds.',
+      'All work must be completed on-site.',
+    ],
+    evaluation: [
+      'Accuracy of debugging',
+      'Speed of completion',
+      'Ranking based on finishers',
+    ],
+  },
+  'Engineering Standup Comedy': {
+    instructions: [
+      'Perform solo or duo comedy acts.',
+      'Use English, Tamil, or Tanglish.',
+      'Props and notes are optional.',
+    ],
+    rules: [
+      'Keep humor clean and respectful.',
+      'Be present before your turn.',
+      'Beginners are welcome.',
+    ],
+    regulations: [
+      'Team size is 1–2 members.',
+      'There will be 2 rounds.',
+      'Judges’ decisions are final.',
+    ],
+    evaluation: [
+      'Humor and impact',
+      'Stage presence and delivery',
+      'Audience engagement',
+    ],
+  },
+  'Tech Meme War': {
+    instructions: [
+      'Act memes silently for teammates to guess.',
+      'Caption funny images and templates.',
+      'Create memes instantly on the given topics.',
+    ],
+    rules: [
+      'Respectful humor only.',
+      'No plagiarism or copied memes.',
+      'Use only allowed tools and websites.',
+    ],
+    regulations: [
+      'Team size is 2–3 per team.',
+      'There will be 3 rounds.',
+      'Judges’ decisions are final.',
+    ],
+    evaluation: [
+      'Originality of memes',
+      'Humor and creativity',
+      'Team collaboration',
+    ],
+  },
+  'Mystery Box Innovation': {
+    instructions: [
+      'Complete mystery rounds within the allotted time limits.',
+      'Use only one mobile phone per team.',
+      'Follow coordinator instructions strictly.',
+    ],
+    rules: [
+      'No communication with other teams.',
+      'No malpractice or unfair means.',
+      'Judges’ decision is final.',
+    ],
+    regulations: [
+      'Team size is 3–4 per team.',
+      'There will be 3 rounds.',
+      'All work must be completed on-site.',
+    ],
+    evaluation: [
+      'Timely completion of tasks',
+      'Discipline and adherence to rules',
+      'Creativity in solving challenges',
+    ],
+  },
+  'Reel Making Challenge': {
+    instructions: [
+      'Submit a pre-recorded tech reel.',
+      'Create an on-spot reel within campus.',
+      'Use your own device for recording and editing.',
+    ],
+    rules: [
+      'Original content only.',
+      'No vulgar or offensive material.',
+      'No external clips allowed.',
+    ],
+    regulations: [
+      'Team size is 1–4 per team.',
+      'There will be 2 rounds.',
+      'All work must be completed on-site.',
+    ],
+    evaluation: [
+      'Creativity',
+      'Relevance to theme',
+      'Technical quality and presentation',
+    ],
+  },
+  'Tech Dum Charades': {
+    instructions: [
+      'Act out tech terms and concepts without speaking.',
+      'Work with your team to guess and communicate clearly.',
+      'Stay energetic and make the performance engaging.',
+    ],
+    rules: [
+      'No speaking, mouthing words, or writing text.',
+      'Use only gestures and body language.',
+      'One guess per turn unless judges allow otherwise.',
+    ],
+    regulations: [
+      'Team size is 3–4 as listed.',
+      'Judges’ decisions are final.',
+      'Keep the activity respectful and safe.',
+    ],
+    evaluation: [
+      'Clarity of the acting',
+      'Team coordination',
+      'Fun and engagement level',
+    ],
+  },
+  'E-Sports': {
+    instructions: [
+      'Register for one game and compete in Duo format.',
+      'Follow official game rules and play fair.',
+      'Be ready for scheduled matches and coordinate with your teammate.',
+    ],
+    rules: [
+      'No emulators — mobile games only.',
+      'No teaming with opponents or using cheats.',
+      'Specific game rules apply based on the selected title.',
+      'Coordinator decisions are final.',
+    ],
+    regulations: [
+      'Team size is fixed at Duo.',
+      'Participants must be present for their match times.',
+      'Repeated rule violations may lead to disqualification.',
+    ],
+    evaluation: [
+      'Match performance and results',
+      'Team coordination',
+      'Sportsmanship and fairness',
+    ],
+  },
+  'Marketing a Useless Product': {
+    instructions: [
+      'Prepare a quick pitch with product name and tagline.',
+      'Present the ad via skit, TV ad, or poster.',
+      'Manage your time effectively.',
+    ],
+    rules: [
+      'Respectful humor only.',
+      'Props are allowed but must be self-arranged.',
+      'Stick to the time limits.',
+    ],
+    regulations: [
+      'Team size is 2–3 per team.',
+      'There will be 2 rounds.',
+      'All materials must be original and created during the event.',
+    ],
+    evaluation: [
+      'Creativity and humor',
+      'Confidence in delivery',
+      'Marketing strategy',
+    ],
+  },
+}
+
+const defaultGuidelines: EventGuidelines = {
+  instructions: [
+    'Follow the event description and team size guidance.',
+    'Work within the time limit and keep your event plan clear.',
+    'Use only permitted tools and event-specific assets.',
+  ],
+  rules: [
+    'No outside help or external resources unless explicitly allowed.',
+    'Respect judges, other teams, and the event venue.',
+    'Coordinator decisions are final.',
+  ],
+  regulations: [
+    'All work must be original and created on-site.',
+    'Participants must follow venue conduct and safety rules.',
+    'Stay within the listed team size for the event.',
+  ],
+  evaluation: [
+    'Overall quality and completion of the event task.',
+    'Creativity, execution, and presentation.',
+    'Adherence to the event rules.',
+  ],
+}
 
 // ─── Countdown ───────────────────────────────────────────────────────────────
 
@@ -383,9 +730,11 @@ function EasterEggModal({ onClose }: { onClose: () => void }) {
 function Hero() {
   const target = new Date('2026-04-15T09:00:00+05:30')
   const { days, hours, mins, secs } = useCountdown(target)
+  const unlockOrder = ['DAYS', 'HOURS', 'MINUTES', 'SECONDS']
 
   // 0 = lime default | 1 = red breach | 2 = lime "restored" | 3 = red urgent | 4 = modal
   const [eggPhase, setEggPhase] = useState<0|1|2|3|4>(0)
+  const [unlockStep, setUnlockStep] = useState(0)
 
   // ── Per-phase colour tokens ────────────────────────────────────────────────
   const isRed  = eggPhase === 1 || eggPhase === 3
@@ -424,6 +773,23 @@ function Hero() {
     'INITIATE NOW  ▶▶▶',   // 3
     'AWAITING PROTOCOL',    // 4
   ][eggPhase]
+
+  const handleUnlockTap = (label: string) => {
+    if (eggPhase === 4) return
+
+    if (label === unlockOrder[unlockStep]) {
+      if (unlockStep === unlockOrder.length - 1) {
+        setEggPhase(4)
+        setUnlockStep(0)
+        return
+      }
+
+      setUnlockStep((step) => step + 1)
+      return
+    }
+
+    setUnlockStep(0)
+  }
 
   const handleHudClick = () => {
     if (eggPhase < 3) setEggPhase((p) => (p + 1) as 0|1|2|3|4)
@@ -513,23 +879,6 @@ function Hero() {
                 {['┌','└','┐','┘'][i]}
               </span>
             ))}
-
-            {/* Click hint tooltip — only in phase 0 */}
-            {eggPhase === 0 && (
-              <div style={{
-                position: 'absolute', top: '6px', left: '50%', transform: 'translateX(-50%)',
-                zIndex: 2,
-              }}>
-                <motion.div
-                  animate={{ opacity: [0, 0.5, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, delay: 4 }}
-                  className="font-mono"
-                  style={{ fontSize: '8px', letterSpacing: '0.15em', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}
-                >
-                  · · ·
-                </motion.div>
-              </div>
-            )}
 
             {/* Tint flicker overlay — red phases only */}
             {isRed && (
@@ -632,7 +981,11 @@ function Hero() {
                   { label: 'MINUTES', value: pad(mins) },
                   { label: 'SECONDS', value: pad(secs) },
                 ].map(({ label, value }) => (
-                  <div key={label} style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <button
+                    key={label}
+                    onClick={() => handleUnlockTap(label)}
+                    style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'transparent', border: 'none', padding: 0, cursor: 'pointer' }}
+                  >
                     <div
                       className="font-display"
                       style={{
@@ -661,7 +1014,7 @@ function Hero() {
                     >
                       <span style={{ opacity: 0.3 }}>[</span>{label}<span style={{ opacity: 0.3 }}>]</span>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
 
@@ -782,6 +1135,7 @@ function EventModal({ event, onClose }: { event: EventItem; onClose: () => void 
   const isTech = event.category === 'technical'
   const isEsports = event.name === 'E-Sports'
   const accentColor = isTech ? 'var(--accent)' : 'var(--danger)'
+  const guidelines = eventGuidelines[event.name] ?? defaultGuidelines
 
   const eSportsOptions = ['PUBG MOBILE', 'E-FOOTBALL', 'FREEFIRE'] as const
   const selectedRules: Record<typeof eSportsOptions[number], string[]> = {
@@ -907,9 +1261,9 @@ function EventModal({ event, onClose }: { event: EventItem; onClose: () => void 
             <div>
               <h4 className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>INSTRUCTIONS</h4>
               <ul className="font-mono" style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px', color: '#EEEEF5', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> {isEsports ? 'Fixed team size of 2 members (Duo)' : `Individual or team of ${event.team}`}</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> {isEsports ? 'Choose one game and register for it' : 'Laptops allowed'}</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> {isEsports ? 'Matches follow official tournament rules' : 'Multiple rounds'}</li>
+                {guidelines.instructions.map((instruction) => (
+                  <li key={instruction} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span>{instruction}</li>
+                ))}
               </ul>
             </div>
 
@@ -945,26 +1299,41 @@ function EventModal({ event, onClose }: { event: EventItem; onClose: () => void 
             <div>
               <h4 className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>RULES</h4>
               <ul className="font-mono" style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px', color: '#EEEEF5', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                {(isEsports ? selectedRules[selectedGame] : [
-                  'No external tools unless noted',
-                  'Time-limited rounds',
-                  'Points for accuracy and speed',
-                ]).map((rule) => (
+                {(isEsports ? selectedRules[selectedGame] : eventGuidelines[event.name]?.rules ?? defaultGuidelines.rules).map((rule) => (
                   <li key={rule} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span>{rule}</li>
                 ))}
               </ul>
             </div>
 
-            {!isEsports && (
+            <div>
+              <h4 className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>REGULATIONS</h4>
+              <ul className="font-mono" style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px', color: '#EEEEF5', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {(eventGuidelines[event.name]?.regulations ?? defaultGuidelines.regulations).map((reg) => (
+                  <li key={reg} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span>{reg}</li>
+                ))}
+              </ul>
+            </div>
+
+            {guidelines.contact && (
               <div>
-                <h4 className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>EVALUATION</h4>
-                <ul className="font-mono" style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px', color: '#EEEEF5', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Correctness of output</li>
-                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Speed of completion</li>
-                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span> Depth of analysis</li>
-                </ul>
+                <h4 className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>{guidelines.contact.label}</h4>
+                <div style={{ fontSize: '14px', color: '#EEEEF5', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                  <span style={{ color: '#A5F14D', fontWeight: 700 }}>{guidelines.contact.name}</span>
+                  <a href={`tel:${guidelines.contact.phone}`} style={{ color: accentColor, textDecoration: 'underline' }}>
+                    {guidelines.contact.phone}
+                  </a>
+                </div>
               </div>
             )}
+
+            <div>
+              <h4 className="font-mono" style={{ fontSize: '11px', textTransform: 'uppercase', color: '#8888A8', marginBottom: '0.75rem', letterSpacing: '0.1em' }}>EVALUATION</h4>
+              <ul className="font-mono" style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '14px', color: '#EEEEF5', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {(eventGuidelines[event.name]?.evaluation ?? defaultGuidelines.evaluation).map((item) => (
+                  <li key={item} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span style={{ color: accentColor }}>·</span>{item}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 

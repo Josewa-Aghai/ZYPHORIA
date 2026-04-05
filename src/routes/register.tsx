@@ -21,18 +21,18 @@ export const Route = createFileRoute('/register')({
 
 const eventConfig: Record<string, { minMembers: number; maxMembers: number; label: string }> = {
   // TECHNICAL
-  'Reverse Engineering Arena':       { minMembers: 0, maxMembers: 1, label: 'Solo / Duo' },
-  'AI Prompt Engineering Battle':    { minMembers: 0, maxMembers: 0, label: 'Individual' },
-  'UI/UX Redesign Challenge':        { minMembers: 1, maxMembers: 2, label: '2–3 members' },
-  'Tech Treasure Hunt':              { minMembers: 2, maxMembers: 3, label: '3–4 members' },
+  'Reverse Engineering Arena':       { minMembers: 0, maxMembers: 1, label: '1–2 members' },
+  'AI Prompt Engineering Battle':    { minMembers: 2, maxMembers: 2, label: '3 per team' },
+  'UI/UX Redesign Challenge':        { minMembers: 0, maxMembers: 1, label: '1–2 members' },
+  'Tech Treasure Hunt':              { minMembers: 1, maxMembers: 1, label: '2 per team' },
   'Research Pitch':                  { minMembers: 0, maxMembers: 1, label: '1–2 members' },
-  'Build a Startup in 60 Min':       { minMembers: 1, maxMembers: 3, label: '2–4 members' },
-  'Bug Hunt':                        { minMembers: 0, maxMembers: 1, label: 'Solo / Duo' },
+  'Build a Startup in 60 Min':       { minMembers: 0, maxMembers: 2, label: '1–3 members' },
+  'Bug Hunt':                        { minMembers: 0, maxMembers: 0, label: 'Individual' },
   // NON-TECHNICAL
-  'Engineering Standup Comedy':      { minMembers: 0, maxMembers: 0, label: 'Individual' },
-  'Tech Meme War':                   { minMembers: 0, maxMembers: 2, label: '1–3 members' },
-  'Mystery Box Innovation':          { minMembers: 1, maxMembers: 2, label: '2–3 members' },
-  'Reel Making Challenge':           { minMembers: 0, maxMembers: 2, label: '1–3 members' },
+  'Engineering Standup Comedy':      { minMembers: 0, maxMembers: 1, label: '1–2 members' },
+  'Tech Meme War':                   { minMembers: 1, maxMembers: 2, label: '2–3 members' },
+  'Mystery Box Innovation':          { minMembers: 2, maxMembers: 3, label: '3–4 members' },
+  'Reel Making Challenge':           { minMembers: 0, maxMembers: 3, label: '1–4 members' },
   'Tech Dum Charades':               { minMembers: 2, maxMembers: 3, label: '3–4 members' },
   'E-Sports':                        { minMembers: 1, maxMembers: 1, label: 'Duo' },
   'Marketing a Useless Product':     { minMembers: 1, maxMembers: 2, label: '2–3 members' },
