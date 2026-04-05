@@ -357,7 +357,7 @@ const eventGuidelines: Record<string, EventGuidelines> = {
     regulations: [
       'Team size is 2–3 per team.',
       'There will be 2 rounds.',
-      'All materials must be original and created during the event.',
+      'Participants can bring props for the second round.',
     ],
     evaluation: [
       'Creativity and humor',

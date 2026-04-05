@@ -58,7 +58,7 @@ const nonTechDropdownEvents = [
   'Marketing a Useless Product',
 ]
 
-const eSportsGames = ['PUBG MOBILE', 'E-FOOTBALL', 'FREEFIRE'] as const
+const eSportsGames = ['PUBG MOBILE', 'FREE FIRE', 'E-FOOTBALL'] as const
 
 const PAYMENT_LINK = 'https://edu.easebuzz.in/register/RAJALAKSHMIbw5w4/ZYPHORIA_2026_SYMPOSIUM'
 
@@ -181,6 +181,8 @@ function RegisterPage() {
   const accent = tab === 'tech' ? '#C8FA64' : '#FF4D6D'
   const accentSoft = tab === 'tech' ? 'rgba(200, 250, 100, 0.05)' : 'rgba(255, 77, 109, 0.08)'
   const eventsList = tab === 'tech' ? techDropdownEvents : nonTechDropdownEvents
+  const isESportsSelected = tab === 'nontech' && formData.event === 'E-Sports'
+  const displayFee = isESportsSelected ? '₹150 per team per event' : '₹300 per team per event'
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0]
@@ -234,6 +236,43 @@ function RegisterPage() {
       if (parts[i].college && !COLLEGE_REGEX.test(parts[i].college))    errs[`p${i}.college`]    = 'Invalid college'
       if (parts[i].email && !EMAIL_REGEX.test(parts[i].email))          errs[`p${i}.email`]      = 'Invalid email'
       if (parts[i].phone && !PHONE_REGEX.test(parts[i].phone))          errs[`p${i}.phone`]      = 'Invalid phone'
+    }
+
+    // Ensure every participant uses unique contact details within a team.
+    const normalizeEmail = (value: string) => value.trim().toLowerCase()
+    const normalizePhone = (value: string) => {
+      const digits = value.replace(/\D/g, '')
+      return digits.length === 12 && digits.startsWith('91') ? digits.slice(2) : digits
+    }
+
+    const seenEmails = new Set<string>()
+    const seenPhones = new Set<string>()
+
+    const registerUnique = (
+      rawValue: string,
+      fieldKey: string,
+      type: 'email' | 'phone',
+      normalize: (v: string) => string
+    ) => {
+      if (!rawValue) return
+      const normalized = normalize(rawValue)
+      if (!normalized) return
+
+      const seen = type === 'email' ? seenEmails : seenPhones
+      if (!seen.has(normalized)) {
+        seen.add(normalized)
+        return
+      }
+
+      if (!errs[fieldKey]) errs[fieldKey] = `Team member duplicate ${type} not allowed`
+    }
+
+    registerUnique(leaderEmail, 'leader.email', 'email', normalizeEmail)
+    registerUnique(leaderPhone, 'leader.phone', 'phone', normalizePhone)
+
+    for (let i = 0; i < count; i++) {
+      registerUnique(parts[i].email || '', `p${i}.email`, 'email', normalizeEmail)
+      registerUnique(parts[i].phone || '', `p${i}.phone`, 'phone', normalizePhone)
     }
 
     setErrors(errs)
@@ -374,7 +413,7 @@ function RegisterPage() {
           <h2 className="font-display mt-2" style={{ fontSize: 'clamp(36px, 5vw, 64px)', color: 'var(--text-primary)', lineHeight: 1.1 }}>
             Join the Symposium.
           </h2>
-          <p className="font-mono text-sm sm:text-base text-[#8888A8] mt-4 opacity-80">₹300 per team per event</p>
+          <p className="font-mono text-sm sm:text-base text-[#8888A8] mt-4 opacity-80">{displayFee}</p>
         </div>
 
         {/* Tabs */}
@@ -600,7 +639,7 @@ function RegisterPage() {
                   </h4>
                 </div>
                 <p className="font-mono text-[13px] text-[#8888A8] leading-relaxed m-0">
-                  Initialize payment of ₹300 per team via our secure uplink. Upload your confirmation receipt below for verification.
+                  Initialize payment of {isESportsSelected ? '₹150 per team' : '₹300 per team'} via our secure uplink. Upload your confirmation receipt below for verification.
                 </p>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
