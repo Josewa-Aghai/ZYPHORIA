@@ -2,8 +2,8 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, User, Phone, Lock, Gamepad, Mail, Instagram } from 'lucide-react'
-import { Toaster } from 'react-hot-toast'
+import { Bot, Paintbrush, MapPin, Presentation, Briefcase, Bug, Mic, Image, Box, Video, AppWindow, Gamepad2, Megaphone, SearchCode, X, User, Lock, Gamepad, Mail, Instagram } from 'lucide-react'
+import { Toaster, toast } from 'react-hot-toast'
 import { IntroLoader } from '../components/IntroLoader'
 import { MiniGame } from '../components/MiniGame'
 
@@ -463,11 +463,11 @@ function Navbar() {
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} style={{ background: scrolled ? undefined : 'transparent' }}>
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
+      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', height: '64px' }}>
         {/* Logo */}
         <Link to="/" style={{ textDecoration: 'none' }}>
           <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-            <span className="font-display" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
+            <span className="font-display nav-brand-text" style={{ fontSize: '18px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
               ZYPH<span style={{ color: 'var(--accent)' }}>ORIA</span>
               <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
             </span>
@@ -475,7 +475,7 @@ function Navbar() {
         </Link>
 
         {/* Center nav — desktop */}
-        <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }} className="desktop-nav">
+        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', marginLeft: 'auto', marginRight: '1rem' }} className="desktop-nav">
           {[
             { label: 'ABOUT', target: 'about' },
             { label: 'EVENTS', target: 'events' },
@@ -502,8 +502,8 @@ function Navbar() {
         </div>
 
         {/* Register button */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Link to="/register" className="btn-lime-pill" style={{ borderRadius: '0' }}>Register</Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: 'auto' }}>
+          <Link to="/register" className="btn-filled" style={{ fontSize: '12px', background: 'transparent', border: '1px solid var(--accent)', color: 'var(--accent)', marginRight: '1rem', textDecoration: 'none' }}>Register</Link>
           {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -518,7 +518,7 @@ function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div style={{ background: 'var(--surface)', borderTop: '1px solid var(--stroke)', padding: '1rem 2rem' }}>
+        <div className="mobile-side-drawer" style={{ background: 'var(--surface)', borderTop: '1px solid var(--stroke)', padding: '1rem 2rem' }}>
           {[
             { label: 'ABOUT', target: 'about' },
             { label: 'EVENTS', target: 'events' },
@@ -572,8 +572,36 @@ function Navbar() {
 
       <style>{`
         @media (max-width: 768px) {
+          .nav-brand-text {
+            font-size: 15px !important;
+          }
+
+          .nav-register-btn {
+            font-size: 10px !important;
+            letter-spacing: 0.08em !important;
+            padding: 0.45rem 0.8rem !important;
+          }
+
           .desktop-nav { display: none !important; }
+
           .mobile-menu-btn { display: block !important; }
+
+          .mobile-side-drawer {
+            position: fixed;
+            top: 64px;
+            right: 0;
+            width: min(78vw, 280px);
+            height: calc(100vh - 64px);
+            padding: 1rem 1.25rem !important;
+            border-left: 1px solid var(--stroke);
+            border-top: 0;
+            box-shadow: -16px 0 40px rgba(0, 0, 0, 0.45);
+            z-index: 110;
+          }
+
+          .mobile-side-drawer a {
+            padding: 1rem 0 !important;
+          }
         }
       `}</style>
     </nav>
@@ -1509,6 +1537,31 @@ function AboutSection() {
 
 function OrganizersSection() {
   const sectionLabelStyle = { fontSize: '11px', textTransform: 'uppercase' as const, color: '#8888A8', letterSpacing: '0.15em', marginBottom: '1rem' };
+  const [feedback, setFeedback] = useState({ name: '', email: '', message: '' })
+  const [feedbackErrors, setFeedbackErrors] = useState<Record<string, string>>({})
+
+  const handleFeedbackSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    const errs: Record<string, string> = {}
+    if (!feedback.name.trim()) errs.name = 'Not filled'
+    if (!feedback.email.trim()) errs.email = 'Not filled'
+    if (!feedback.message.trim()) errs.message = 'Not filled'
+    setFeedbackErrors(errs)
+
+    if (Object.keys(errs).length > 0) {
+      toast.error('Details not filled')
+      return
+    }
+
+    const subject = encodeURIComponent('Zyphoria Website Feedback')
+    const body = encodeURIComponent(
+      `Name: ${feedback.name || 'Anonymous'}\nEmail: ${feedback.email || 'Not provided'}\n\nFeedback:\n${feedback.message}`
+    )
+
+    window.location.href = `mailto:zyphoria26.cse@gmail.com?subject=${subject}&body=${body}`
+  }
+
   return (
     <section id="organizers" className="section-padding" style={{ background: 'var(--bg)' }}>
       <div className="container">
@@ -1573,17 +1626,158 @@ function OrganizersSection() {
                 { name: "M. S. Sathish", phone: "9384579988" },
                 { name: "S. Sanjit Kumar", phone: "8667509464" },
               ].map(s => (
-                <div key={s.name} className="p-4" style={{ background: '#101018', border: '1px solid #1E1E2E' }}>
-                  <div className="flex items-center gap-2 mb-2">
-                    <User size={16} color="#C8FA64" />
-                    <div className="font-display student-coordinator-name font-bold text-[16px] text-[#EEEEF5]">{s.name}</div>
+                <div key={s.name} className="flex items-center gap-4 p-4 group" style={{ background: '#101018', border: '1px solid #1E1E2E', transition: 'all 0.3s ease' }} onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'} onMouseLeave={e => e.currentTarget.style.borderColor = '#1E1E2E'}>
+                  <div className="w-12 h-12 flex items-center justify-center transition-colors" style={{ background: 'rgba(200,250,100,0.05)', border: '1px solid var(--accent)' }}>
+                    <User size={20} color="var(--accent)" />
                   </div>
-                  <a href={`tel:+91${s.phone}`} className="flex items-center gap-1 font-mono text-[11px] text-[#8888A8] hover:text-[#C8FA64] transition-colors">
-                    <Phone size={12} color="#C8FA64" />
-                    {s.phone}
-                  </a>
+                  <div>
+                    <div className="font-display student-coordinator-name font-bold text-[16px] text-[#EEEEF5]">{s.name}</div>
+                    <a href={`tel:+91${s.phone}`} className="font-mono text-[11px] text-[#8888A8] hover:text-[#C8FA64] transition-colors" style={{ textDecoration: 'none' }}>
+                      {s.phone}
+                    </a>
+                  </div>
                 </div>
               ))}
+            </div>
+          </div>
+
+          <div className="contact-feedback-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginTop: '0.5rem' }}>
+            <div className="contact-panel" style={{ padding: '1.75rem', border: '1px solid rgba(255,255,255,0.07)', background: 'linear-gradient(180deg, rgba(14,14,24,0.96), rgba(10,10,16,0.96))', borderRadius: '22px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)' }}>
+              <p className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: '0.65rem' }}>
+                GET IN TOUCH
+              </p>
+              <h3 className="font-display" style={{ fontSize: 'clamp(30px, 4vw, 48px)', color: 'var(--text-primary)', marginBottom: '1.35rem', lineHeight: 0.95 }}>
+                Contact
+              </h3>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.3rem' }}>
+                <div>
+                  <div className="font-display" style={{ fontSize: '16px', color: 'var(--accent)', marginBottom: '0.3rem' }}>Venue</div>
+                  <div className="font-mono" style={{ fontSize: '13px', lineHeight: 1.55, color: 'var(--text-primary)' }}>
+                    Department of CSE, Rajalakshmi Institute of Technology
+                  </div>
+                </div>
+
+                <div>
+                  <div className="font-display" style={{ fontSize: '16px', color: 'var(--accent)', marginBottom: '0.3rem' }}>Email</div>
+                  <a href="mailto:zyphoria26.cse@gmail.com" className="font-mono" style={{ fontSize: '13px', lineHeight: 1.55, color: 'var(--text-primary)', textDecoration: 'none' }}>
+                    zyphoria26.cse@gmail.com
+                  </a>
+                </div>
+
+                <div>
+                  <div className="font-display" style={{ fontSize: '16px', color: 'var(--accent)', marginBottom: '0.3rem' }}>Instagram</div>
+                  <a href="https://www.instagram.com/zyphoria_26_rit?igsh=MXNrMGtuc2ppbGUwcw==" target="_blank" rel="noopener noreferrer" className="font-mono" style={{ fontSize: '13px', lineHeight: 1.55, color: 'var(--text-primary)', textDecoration: 'none' }}>
+                    @zyphoria_26_rit
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="feedback-panel" style={{ padding: '1.75rem', border: '1px solid rgba(255,255,255,0.07)', background: 'linear-gradient(180deg, rgba(14,14,24,0.96), rgba(10,10,16,0.96))', borderRadius: '22px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)' }}>
+              <p className="font-mono feedback-title" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: '0.65rem' }}>
+                SHARE YOUR THOUGHTS
+              </p>
+              <h3 className="font-display" style={{ fontSize: 'clamp(30px, 4vw, 48px)', color: 'var(--text-primary)', marginBottom: '1.35rem', lineHeight: 0.95 }}>
+                FEEDBACK
+              </h3>
+
+              <form onSubmit={handleFeedbackSubmit} style={{ display: 'grid', gap: '0.95rem', maxWidth: '720px' }}>
+                <div>
+                  <label className="font-display feedback-label" style={{ display: 'block', fontSize: '16px', color: 'var(--accent)', marginBottom: '0.3rem' }}>
+                    Name
+                  </label>
+                  <input
+                    value={feedback.name}
+                    onChange={(e) => {
+                      const value = e.target.value
+                      setFeedback((prev) => ({ ...prev, name: value }))
+                      if (value.trim()) {
+                        setFeedbackErrors((prev) => ({ ...prev, name: '' }))
+                      }
+                    }}
+                    placeholder="Enter your name"
+                    className="font-mono feedback-input"
+                    style={{
+                      width: '100%',
+                      background: '#0B0B10',
+                      border: feedbackErrors.name ? '1px solid #FF4D6D' : '1px solid rgba(255,255,255,0.1)',
+                      color: 'var(--accent)',
+                      padding: '0.95rem 1rem',
+                      fontSize: '13px',
+                      outline: 'none',
+                    }}
+                  />
+                  {feedbackErrors.name && <div className="text-[#FF4D6D] text-[10px] mt-1.5 font-mono">{feedbackErrors.name}</div>}
+                </div>
+
+                <div>
+                  <label className="font-display feedback-label" style={{ display: 'block', fontSize: '16px', color: 'var(--accent)', marginBottom: '0.3rem' }}>
+                    Mail
+                  </label>
+                  <input
+                    value={feedback.email}
+                    onChange={(e) => {
+                      const value = e.target.value
+                      setFeedback((prev) => ({ ...prev, email: value }))
+                      if (value.trim()) {
+                        setFeedbackErrors((prev) => ({ ...prev, email: '' }))
+                      }
+                    }}
+                    placeholder="Enter your email"
+                    type="email"
+                    className="font-mono feedback-input"
+                    style={{
+                      width: '100%',
+                      background: '#0B0B10',
+                      border: feedbackErrors.email ? '1px solid #FF4D6D' : '1px solid rgba(255,255,255,0.1)',
+                      color: 'var(--accent)',
+                      padding: '0.95rem 1rem',
+                      fontSize: '13px',
+                      outline: 'none',
+                    }}
+                  />
+                  {feedbackErrors.email && <div className="text-[#FF4D6D] text-[10px] mt-1.5 font-mono">{feedbackErrors.email}</div>}
+                </div>
+
+                <div>
+                  <label className="font-display feedback-label" style={{ display: 'block', fontSize: '16px', color: 'var(--accent)', marginBottom: '0.3rem' }}>
+                    Message
+                  </label>
+                  <textarea
+                    value={feedback.message}
+                    onChange={(e) => {
+                      const value = e.target.value
+                      setFeedback((prev) => ({ ...prev, message: value }))
+                      if (value.trim()) {
+                        setFeedbackErrors((prev) => ({ ...prev, message: '' }))
+                      }
+                    }}
+                    placeholder="Write your feedback here..."
+                    rows={4}
+                    className="font-mono feedback-input feedback-textarea"
+                    style={{
+                      width: '100%',
+                      background: '#0B0B10',
+                      border: feedbackErrors.message ? '1px solid #FF4D6D' : '1px solid rgba(255,255,255,0.1)',
+                      color: 'var(--accent)',
+                      padding: '0.95rem 1rem',
+                      fontSize: '13px',
+                      outline: 'none',
+                      resize: 'vertical',
+                    }}
+                  />
+                  {feedbackErrors.message && <div className="text-[#FF4D6D] text-[10px] mt-1.5 font-mono">{feedbackErrors.message}</div>}
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn-filled"
+                  style={{ fontSize: '12px', width: '170px', justifyContent: 'center', marginTop: '1rem' }}
+                >
+                  Send Feedback
+                </button>
+              </form>
             </div>
           </div>
         </div>
@@ -1596,134 +1790,87 @@ function OrganizersSection() {
 
 function Footer() {
   return (
-    <footer id="contact" style={{ background: 'var(--surface)', borderTop: '1px solid var(--stroke)' }}>
-      <div className="container" style={{ padding: '80px 32px 0' }}>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '2fr 1fr',
-            gap: '4rem',
-            paddingBottom: '4rem',
-            borderBottom: '1px solid var(--stroke)',
-          }}
-          className="footer-grid"
-        >
-          {/* Col 1 — logo + tagline */}
-          <div>
-            <div className="font-display" style={{ fontSize: '24px' }}>
-              ZYPH<span style={{ color: 'var(--accent)' }}>ORIA</span>
-              <span className="font-mono" style={{ fontSize: '12px', color: 'var(--text-muted)', marginLeft: '6px', fontWeight: 400 }}>'26</span>
-            </div>
-            <div style={{ width: '100%', height: '1px', background: '#1E1E2E', margin: '10px 0' }} />
-            <p className="footer-tagline-main">
-              The annual CSE Symposium of<br />
-              Rajalakshmi Institute of Technology
-            </p>
-            <p className="footer-tagline-sub">
-              In association with iDataMind · April 15–16, 2026
-            </p>
+    <footer style={{ background: 'var(--bg)', borderTop: '1px solid var(--stroke)', paddingTop: '1.25rem', paddingBottom: '0.5rem' }}>
+      <div className="container footer-grid" style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '2.5rem', alignItems: 'start' }}>
+        <div>
+          <div style={{ marginBottom: '1rem' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+              <span className="font-display" style={{ fontSize: '42px', color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
+                ZYPH<span style={{ color: 'var(--accent)' }}>ORIA</span>
+                <span className="font-mono" style={{ fontSize: '16px', color: 'var(--text-muted)', marginLeft: '8px', fontWeight: 400, letterSpacing: '0.1em' }}>'26</span>
+              </span>
+            </span>
           </div>
 
-          {/* Col 3 — social only (mobile) */}
-          <div className="social-mobile-only" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <p className="font-mono" style={{ fontSize: '10px', color: '#8888A8', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '8px' }}>
-                SOCIALS
-              </p>
-              <div style={{ display: 'flex', gap: '0.75rem' }}>
-                {[
-                  { label: 'IG', href: 'https://www.instagram.com/zyphoria_26_rit?igsh=MXNrMGtuc2ppbGUwcw==', icon: '/insta1.png' },
-                  { label: 'LI', href: 'mailto:zyphoria26.cse@gmail.com', icon: '/gmail.png' },
-                ].map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  className="font-mono"
-                  target={social.href.startsWith('http') ? '_blank' : undefined}
-                  rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  style={{
-                    width: '38px',
-                    height: '38px',
-                    border: '1px solid var(--stroke)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '10px',
-                    color: 'var(--text-muted)',
-                    textDecoration: 'none',
-                    transition: 'all 0.15s',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--accent)'
-                    e.currentTarget.style.color = 'var(--accent)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'var(--stroke)'
-                    e.currentTarget.style.color = 'var(--text-muted)'
-                  }}
-                >
-                  <img
-                    src={social.icon}
-                    alt={`${social.label} icon`}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    draggable={false}
-                  />
-                </a>
-              ))}
-              </div>
-            </div>
-          </div>
+          <div style={{ height: '1px', width: '100%', background: 'var(--stroke)', marginBottom: '1rem' }} />
+
+          <p className="font-mono" style={{ color: '#A3A3BE', fontSize: '14px', lineHeight: 1.5, marginBottom: '0.35rem' }}>
+            The annual CSE Symposium of
+          </p>
+          <p className="font-mono" style={{ color: '#A3A3BE', fontSize: '14px', lineHeight: 1.5, marginBottom: '0.75rem' }}>
+            Rajalakshmi Institute of Technology
+          </p>
+          <p style={{ color: 'var(--accent)', fontFamily: 'Geist Mono, monospace', fontSize: '14px', letterSpacing: '0.03em', lineHeight: 1.35 }}>
+            In association with iDataMind · April 15-16, 2026
+          </p>
         </div>
 
-        {/* Bottom strip */}
-        <div
-          className="font-mono"
-          style={{
-            padding: '1.25rem 0',
-            textAlign: 'center',
-            fontSize: '10px',
-            color: 'var(--text-muted)',
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-          }}
-        >
-          © ZYPHORIA '26 · CSE DEPARTMENT · RAJALAKSHMI INSTITUTE OF TECHNOLOGY
+        <div className="footer-socials" style={{ textAlign: 'center', paddingTop: '1.9rem' }}>
+          <p className="font-mono" style={{ color: 'var(--text-muted)', fontSize: '14px', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '0.9rem' }}>
+            Socials
+          </p>
+          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+            <a
+              href="https://www.instagram.com/zyphoria_26_rit?igsh=MXNrMGtuc2ppbGUwcw=="
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', border: '1px solid var(--stroke)', background: 'rgba(16,16,24,0.8)' }}
+              aria-label="Instagram"
+            >
+              <img src="/insta1.png" alt="Instagram" style={{ width: '32px', height: '32px', objectFit: 'contain' }} draggable={false} />
+            </a>
+            <a
+              href="mailto:zyphoria26.cse@gmail.com"
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', border: '1px solid var(--stroke)', background: 'rgba(16,16,24,0.8)' }}
+              aria-label="Gmail"
+            >
+              <img src="/gmail.png" alt="Gmail" style={{ width: '32px', height: '32px', objectFit: 'contain' }} draggable={false} />
+            </a>
+          </div>
         </div>
       </div>
 
       <style>{`
-        .footer-tagline-main {
-          font-family: 'JetBrains Mono', monospace;
-          color: #8888A8;
-          font-size: 12px;
-          line-height: 1.7;
+        .footer-socials {
+          margin-right: 6rem;
         }
 
-        .footer-tagline-sub {
-          font-family: 'JetBrains Mono', monospace;
-          color: #C8FA64;
-          font-size: 10px;
-          letter-spacing: 0.1em;
-          margin-top: 6px;
-        }
-
-        @media (max-width: 768px) {
-          .footer-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
-          .student-coordinator-name {
-            font-size: 14px !important;
-            white-space: nowrap !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
+        @media (max-width: 980px) {
+          .footer-grid {
+            grid-template-columns: 1fr !important;
           }
-          .event-card .event-name {
-            white-space: nowrap !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
-            letter-spacing: 0.01em !important;
-            word-spacing: 0.14em !important;
+
+          .footer-socials {
+            margin-right: 0;
           }
         }
       `}</style>
+
+      <div
+        className="font-mono"
+        style={{
+          marginTop: '0.6rem',
+          paddingTop: '0.6rem',
+          borderTop: '1px solid var(--stroke)',
+          textAlign: 'center',
+          fontSize: '10px',
+          color: 'var(--text-muted)',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+        }}
+      >
+        © ZYPHORIA '26 · CSE DEPARTMENT · RAJALAKSHMI INSTITUTE OF TECHNOLOGY
+      </div>
     </footer>
   )
 }
@@ -1743,8 +1890,8 @@ function CtaBanner() {
         </p>
         <Link 
           to="/register" 
-          className="btn-lime-pill hover:opacity-90 transition-opacity" 
-          style={{ padding: '1rem 3rem', fontSize: '14px', display: 'inline-block', background: 'var(--accent)', color: '#08080C', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 'bold', borderRadius: '0px', marginTop: '1rem' }}
+          className="btn-filled" 
+          style={{ padding: '1rem 3rem', fontSize: '12px', marginTop: '1rem' }}
         >
           REGISTER NOW
         </Link>

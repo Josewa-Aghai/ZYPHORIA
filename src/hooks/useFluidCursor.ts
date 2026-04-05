@@ -42,6 +42,10 @@ const useFluidCursor = () => {
 
     const { gl, ext } = getWebGLContext(canvas);
 
+    if (!gl || !ext) {
+      return;
+    }
+
     if (!ext.supportLinearFiltering) {
       config.DYE_RESOLUTION = 256;
       config.SHADING = false;

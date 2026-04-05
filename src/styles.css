@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&display=swap');
 @import url('https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500&display=swap');
 @import "tailwindcss";
-@source "../";
 
 
 :root {
@@ -265,6 +264,53 @@ body::after {
   color: var(--bg);
 }
 
+.btn-lime-pill:active,
+.btn-lime-pill:focus-visible {
+  background: var(--accent);
+  color: var(--bg);
+  box-shadow: 0 0 28px rgba(30, 255, 120, 0.6), 0 0 12px rgba(255, 255, 255, 0.18);
+  filter: brightness(1.12) saturate(1.08);
+  transform: translateY(-1px);
+}
+
+.btn-lime-rect {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 0;
+  font-family: 'Geist Mono', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-lime-rect:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.btn-lime-rect:active,
+.btn-lime-rect:focus-visible {
+  background: transparent;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+  box-shadow: 0 0 28px rgba(255, 255, 255, 0.85), 0 0 12px rgba(255, 255, 255, 0.35);
+  filter: brightness(1.12);
+  transform: translateY(-1px) scale(1.04);
+}
+
+.feedback-input::placeholder,
+.feedback-textarea::placeholder {
+  color: #FFFFFF;
+  opacity: 0.9;
+}
+
 /* Navbar */
 .navbar {
   position: sticky;
@@ -357,5 +403,74 @@ body::after {
   }
   .section-padding {
     padding: 72px 0;
+  }
+
+  .contact-feedback-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .contact-panel,
+  .feedback-panel {
+    padding: 1.25rem !important;
+    border-radius: 18px !important;
+  }
+
+  .contact-panel h3 {
+    font-size: 32px !important;
+  }
+
+  .contact-panel .font-display,
+  .feedback-title {
+    letter-spacing: 0.16em !important;
+  }
+
+  .feedback-title {
+    font-size: 13px !important;
+  }
+
+  .feedback-copy {
+    font-size: 12px !important;
+  }
+
+  .feedback-panel input,
+  .feedback-panel textarea {
+    font-size: 13px !important;
+    padding: 0.9rem 0.95rem !important;
+  }
+
+  .feedback-panel button {
+    width: 100% !important;
+    justify-self: stretch !important;
+    text-align: center !important;
+  }
+
+  .feedback-panel {
+    padding: 1.2rem !important;
+  }
+
+  .feedback-title {
+    font-size: 14px !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  .feedback-copy {
+    font-size: 12px !important;
+    line-height: 1.65 !important;
+  }
+
+  .feedback-label {
+    font-size: 9px !important;
+  }
+
+  .feedback-panel input,
+  .feedback-panel textarea {
+    font-size: 13px !important;
+    padding: 0.9rem 0.95rem !important;
+  }
+
+  .feedback-panel button {
+    width: 100% !important;
+    justify-self: stretch !important;
+    text-align: center !important;
   }
 }

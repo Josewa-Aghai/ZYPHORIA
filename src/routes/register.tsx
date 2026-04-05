@@ -291,27 +291,25 @@ function RegisterPage() {
       const { error: insertErr } = await supabase.from('registrations').insert([insertData])
       if (insertErr) throw insertErr
 
-      try {
-        const sheetsRes = await fetch('/api/sync-to-sheets', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ registration: insertData }),
+      void fetch('/api/sync-to-sheets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ registration: insertData }),
+      })
+        .then(async (sheetsRes) => {
+          const sheetsJson = await sheetsRes.json().catch(() => null)
+
+          if (!sheetsRes.ok) {
+            console.error('Sheets sync failed:', sheetsRes.status, sheetsJson)
+            console.warn('Google Sheets sync warning:', sheetsJson)
+          } else {
+            console.log('Sheets sync ok:', sheetsJson)
+          }
         })
-
-        const sheetsJson = await sheetsRes.json().catch(() => null)
-
-        if (!sheetsRes.ok) {
-          console.error('Sheets sync failed:', sheetsRes.status, sheetsJson)
-          toast.error(
-            `Google Sheets sync failed (${sheetsRes.status}). Check server env + sharing.`,
-          )
-        } else {
-          console.log('Sheets sync ok:', sheetsJson)
-        }
-      } catch (err) {
-        console.error('Sheets sync failed:', err)
-        toast.error('Google Sheets sync failed. Please contact the team.')
-      }
+        .catch((err) => {
+          console.error('Sheets sync failed:', err)
+          console.warn('Google Sheets sync warning:', err)
+        })
 
       setIsSuccess(true)
       window.scrollTo(0, 0)
