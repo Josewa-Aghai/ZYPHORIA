@@ -201,7 +201,7 @@ function RegisterPage() {
   const accentSoft = tab === 'tech' ? 'rgba(200, 250, 100, 0.05)' : 'rgba(255, 77, 109, 0.08)'
   const eventsList = tab === 'tech' ? techDropdownEvents : nonTechDropdownEvents
   const isESportsSelected = tab === 'nontech' && formData.event === 'E-Sports'
-  const displayFee = isESportsSelected ? '₹150 per team per event' : '₹300 per team per event'
+  const displayFee = isESportsSelected ? '₹150 per team' : '₹300 per team per event'
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0]
