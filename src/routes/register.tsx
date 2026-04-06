@@ -30,7 +30,7 @@ const eventConfig: Record<string, { minMembers: number; maxMembers: number; labe
   'Bug Hunt':                        { minMembers: 0, maxMembers: 0, label: 'Individual' },
   // NON-TECHNICAL
   'Engineering Standup Comedy':      { minMembers: 0, maxMembers: 1, label: '1–2 members' },
-  'Tech Meme War':                   { minMembers: 1, maxMembers: 2, label: '2–3 members' },
+  'Tech Meme War':                   { minMembers: 2, maxMembers: 3, label: '3–4 members' },
   'Mystery Box Innovation':          { minMembers: 2, maxMembers: 3, label: '3–4 members' },
   'Reel Making Challenge':           { minMembers: 0, maxMembers: 3, label: '1–4 members' },
   'Tech Dum Charades':               { minMembers: 2, maxMembers: 3, label: '3–4 members' },
@@ -60,7 +60,7 @@ const nonTechDropdownEvents = [
 
 const eSportsGames = ['PUBG MOBILE', 'FREE FIRE', 'E-FOOTBALL'] as const
 
-const PAYMENT_LINK = 'https://edu.easebuzz.in/register/RAJALAKSHMIbw5w4/ZYPHORIA_2026_SYMPOSIUM'
+const PAYMENT_LINK = 'https://forms.easebuzz.in/register/RAJALAKSHMIbw5w4/ZYPHORIA_2026_SYMPOSIUM'
 
 const NAME_REGEX = /^[A-Za-z\s.'-]{2,100}$/
 const PHONE_REGEX = /^(\+91[\s-]?)?[6-9]\d{9}$/
@@ -200,8 +200,7 @@ function RegisterPage() {
   const accent = tab === 'tech' ? '#C8FA64' : '#FF4D6D'
   const accentSoft = tab === 'tech' ? 'rgba(200, 250, 100, 0.05)' : 'rgba(255, 77, 109, 0.08)'
   const eventsList = tab === 'tech' ? techDropdownEvents : nonTechDropdownEvents
-  const isESportsSelected = tab === 'nontech' && formData.event === 'E-Sports'
-  const displayFee = isESportsSelected ? '₹150 per team' : '₹300 per team per event'
+  const displayFee = '₹150 for 2 members | ₹300 for 4 members'
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0]
@@ -713,7 +712,7 @@ function RegisterPage() {
                   </h4>
                 </div>
                 <p className="font-mono text-[13px] text-[#8888A8] leading-relaxed m-0">
-                  Initialize payment of {isESportsSelected ? '₹150 per team' : '₹300 per team'} via our secure uplink. Upload your confirmation receipt below for verification.
+                  {displayFee} Upload your confirmation receipt below for verification.
                 </p>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>
@@ -743,7 +742,7 @@ function RegisterPage() {
                   ) : (
                     <>
                       <Upload size={24} style={{ color: '#4A4A62', marginBottom: '16px' }} />
-                      <p className="font-mono text-[12px] text-[#EEEEF5] mb-1">Upload Transmission Receipt</p>
+                      <p className="font-mono text-[12px] text-[#EEEEF5] mb-1">Upload Transaction Receipt</p>
                       <p className="font-mono text-[10px] text-[#4A4A62]">PNG, JPG or WEBP · Max 5MB</p>
                     </>
                   )}
