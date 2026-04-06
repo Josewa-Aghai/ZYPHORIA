@@ -712,7 +712,7 @@ function RegisterPage() {
                   </h4>
                 </div>
                 <p className="font-mono text-[13px] text-[#8888A8] leading-relaxed m-0">
-                  {displayFee} Upload your confirmation receipt below for verification.
+                  Upload your confirmation receipt below for verification.
                 </p>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flexWrap: 'wrap' }}>

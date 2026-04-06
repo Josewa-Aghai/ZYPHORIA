@@ -1561,7 +1561,9 @@ function OrganizersSection() {
       `Name: ${feedback.name || 'Anonymous'}\nEmail: ${feedback.email || 'Not provided'}\n\nFeedback:\n${feedback.message}`
     )
 
-    window.location.href = `mailto:zyphoria26.cse@gmail.com?subject=${subject}&body=${body}`
+    const cc = encodeURIComponent('jdnk5607@gmail.com')
+
+    window.location.href = `mailto:zyphoria26.cse@gmail.com?cc=${cc}&subject=${subject}&body=${body}`
   }
 
   return (
@@ -1642,39 +1644,7 @@ function OrganizersSection() {
             </div>
           </div>
 
-          <div className="contact-feedback-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginTop: '0.5rem' }}>
-            <div className="contact-panel" style={{ padding: '1.75rem', border: '1px solid rgba(255,255,255,0.07)', background: 'linear-gradient(180deg, rgba(14,14,24,0.96), rgba(10,10,16,0.96))', borderRadius: '22px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)' }}>
-              <p className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: '0.65rem' }}>
-                GET IN TOUCH
-              </p>
-              <h3 className="font-display" style={{ fontSize: 'clamp(30px, 4vw, 48px)', color: 'var(--text-primary)', marginBottom: '1.35rem', lineHeight: 0.95 }}>
-                Contact
-              </h3>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.3rem' }}>
-                <div>
-                  <div className="font-display" style={{ fontSize: '16px', color: 'var(--accent)', marginBottom: '0.3rem' }}>Venue</div>
-                  <div className="font-mono" style={{ fontSize: '13px', lineHeight: 1.55, color: 'var(--text-primary)' }}>
-                    Department of CSE, Rajalakshmi Institute of Technology
-                  </div>
-                </div>
-
-                <div>
-                  <div className="font-display" style={{ fontSize: '16px', color: 'var(--accent)', marginBottom: '0.3rem' }}>Email</div>
-                  <a href="mailto:zyphoria26.cse@gmail.com" className="font-mono" style={{ fontSize: '13px', lineHeight: 1.55, color: 'var(--text-primary)', textDecoration: 'none' }}>
-                    zyphoria26.cse@gmail.com
-                  </a>
-                </div>
-
-                <div>
-                  <div className="font-display" style={{ fontSize: '16px', color: 'var(--accent)', marginBottom: '0.3rem' }}>Instagram</div>
-                  <a href="https://www.instagram.com/zyphoria_26_rit?igsh=MXNrMGtuc2ppbGUwcw==" target="_blank" rel="noopener noreferrer" className="font-mono" style={{ fontSize: '13px', lineHeight: 1.55, color: 'var(--text-primary)', textDecoration: 'none' }}>
-                    @zyphoria_26_rit
-                  </a>
-                </div>
-              </div>
-            </div>
-
+          <div className="contact-feedback-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem', marginTop: '0.5rem' }}>
             <div className="feedback-panel" style={{ padding: '1.75rem', border: '1px solid rgba(255,255,255,0.07)', background: 'linear-gradient(180deg, rgba(14,14,24,0.96), rgba(10,10,16,0.96))', borderRadius: '22px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)' }}>
               <p className="font-mono feedback-title" style={{ fontSize: '10px', color: 'var(--accent)', letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: '0.65rem' }}>
                 SHARE YOUR THOUGHTS
@@ -1887,7 +1857,7 @@ function CtaBanner() {
           Ready to Compete?
         </h2>
         <p className="font-mono text-sm sm:text-base text-[#8888A8] mb-8">
-          ₹150 for 2 members | ₹300 for 4 members · April 15–16, 2026 · Rajalakshmi Institute of Technology
+          April 15–16, 2026 · Rajalakshmi Institute of Technology
         </p>
         <Link 
           to="/register" 
