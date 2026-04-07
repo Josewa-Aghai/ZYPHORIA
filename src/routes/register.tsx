@@ -58,7 +58,7 @@ const nonTechDropdownEvents = [
   'Marketing a Useless Product',
 ]
 
-const eSportsGames = ['PUBG MOBILE', 'FREE FIRE', 'E-FOOTBALL'] as const
+const eSportsGames = ['FREE FIRE', 'E-FOOTBALL'] as const
 
 const PAYMENT_LINK = 'https://forms.easebuzz.in/register/RAJALAKSHMIbw5w4/ZYPHORIA_2026_SYMPOSIUM'
 
