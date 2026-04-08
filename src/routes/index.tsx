@@ -1161,22 +1161,14 @@ function EventModal({ event, onClose }: { event: EventItem; onClose: () => void 
     setTimeout(onClose, 120)
   }
 
-  const [selectedGame, setSelectedGame] = useState<'PUBG MOBILE' | 'E-FOOTBALL' | 'FREEFIRE'>('PUBG MOBILE')
+  const [selectedGame, setSelectedGame] = useState<'E-FOOTBALL' | 'FREEFIRE'>('E-FOOTBALL')
   const isTech = event.category === 'technical'
   const isEsports = event.name === 'E-Sports'
   const accentColor = isTech ? 'var(--accent)' : 'var(--danger)'
   const guidelines = eventGuidelines[event.name] ?? defaultGuidelines
 
-  const eSportsOptions = ['PUBG MOBILE', 'E-FOOTBALL', 'FREEFIRE'] as const
+  const eSportsOptions = ['E-FOOTBALL', 'FREEFIRE'] as const
   const selectedRules: Record<typeof eSportsOptions[number], string[]> = {
-    'PUBG MOBILE': [
-      'Mode: Duo (2v2) — TDM or Classic based on registrations',
-      'Winner: Classic - last surviving team; TDM - based on score',
-      'No teaming with opponents',
-      'Emulators are not allowed (Mobile only)',
-      'TDM Mode: Only M416 allowed',
-      "Coordinator's decision is final",
-    ],
     'E-FOOTBALL': [
       'Mode: Duo (2v2)',
       '8 minutes per match',
