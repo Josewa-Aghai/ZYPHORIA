@@ -861,11 +861,32 @@ function Hero() {
               </span>
             </div>
 
-            <h1 className="font-display" style={{ fontSize: 'clamp(52px, 8vw, 110px)', lineHeight: 0.95, marginBottom: '2rem' }}>
+            <h1 className="font-display" style={{ fontSize: 'clamp(52px, 8vw, 110px)', lineHeight: 0.95, marginBottom: '1.5rem' }}>
               <span style={{ display: 'block' }}>INNOVATE.</span>
               <span style={{ display: 'block' }}>DOMINATE.</span>
               <span style={{ display: 'block', color: 'var(--accent)', textShadow: '0 0 40px rgba(200,250,100,0.3)' }}>ZYPHORIA.</span>
             </h1>
+
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', padding: '6px 12px', background: 'rgba(200,250,100,0.08)', border: '1px solid rgba(200,250,100,0.3)', borderRadius: '4px', gap: '8px' }}>
+                <span style={{ fontSize: '16px' }}>🏆</span>
+                <span className="font-mono" style={{ fontSize: '11px', color: 'var(--text-primary)', letterSpacing: '0.05em' }}>
+                  1ST PRIZE <span style={{ color: 'var(--accent)', fontWeight: 'bold', marginLeft: '4px' }}>₹1,000</span>
+                </span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', padding: '6px 12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '4px', gap: '8px' }}>
+                <span style={{ fontSize: '16px' }}>🥈</span>
+                <span className="font-mono" style={{ fontSize: '11px', color: 'var(--text-primary)', letterSpacing: '0.05em' }}>
+                  2ND PRIZE <span style={{ color: '#E0E0E0', fontWeight: 'bold', marginLeft: '4px' }}>₹700</span>
+                </span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', padding: '6px 12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '4px', gap: '8px' }}>
+                <span style={{ fontSize: '16px' }}>🥉</span>
+                <span className="font-mono" style={{ fontSize: '11px', color: 'var(--text-primary)', letterSpacing: '0.05em' }}>
+                  3RD PRIZE <span style={{ color: '#CD7F32', fontWeight: 'bold', marginLeft: '4px' }}>₹500</span>
+                </span>
+              </div>
+            </div>
 
             <p className="font-mono" style={{ fontSize: '15px', lineHeight: 1.6, color: 'var(--text-muted)', marginBottom: '2.5rem', maxWidth: '480px' }}>
               14 events. 2 days. One department. No limits.
