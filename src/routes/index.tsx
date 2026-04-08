@@ -38,7 +38,7 @@ const events: EventItem[] = [
   { id: 9, category: 'non-tech', name: 'Tech Meme War', description: 'Act memes silently, caption templates, and create funny tech memes on the spot.', team: '3–4', icon: Image },
   { id: 10, category: 'non-tech', name: 'Mystery Box Innovation', description: 'Solve surprise innovation tasks quickly using only the mystery box challenge items.', team: '3–4', icon: Box },
   { id: 11, category: 'non-tech', name: 'Reel Making Challenge', description: 'Create a tech-themed reel on-site with original content and strong presentation.', team: '1–4', icon: Video },
-  { id: 12, category: 'non-tech', name: 'Tech Dum Charades', description: 'Act out tech terms, software names and programming concepts without speaking.', team: '3–4', icon: AppWindow },
+  { id: 12, category: 'non-tech', name: 'Tech Dum Charades', description: 'Act out tech terms, software names and programming concepts without speaking.', team: '2–4', icon: AppWindow },
   { id: 13, category: 'non-tech', name: 'E-Sports', description: 'Compete in popular gaming titles and prove your team is the strongest.', team: 'Duo', icon: Gamepad2 },
   { id: 14, category: 'non-tech', name: 'Marketing a Useless Product', description: 'Market a random useless product creatively with a quick pitch and fun presentation.', team: '2–3', icon: Megaphone },
 ]
@@ -300,24 +300,23 @@ const eventGuidelines: Record<string, EventGuidelines> = {
   },
   'Tech Dum Charades': {
     instructions: [
-      'Act out tech terms and concepts without speaking.',
-      'Work with your team to guess and communicate clearly.',
-      'Stay energetic and make the performance engaging.',
+      'Each team must have 2 to 4 members.',
+      'The event consists of two rounds.',
+      'Participants must follow all instructions given during the event.',
     ],
     rules: [
-      'No speaking, mouthing words, or writing text.',
-      'Use only gestures and body language.',
-      'One guess per turn unless judges allow otherwise.',
+      'Round 1: Teams will have 90 seconds to find as many words as possible.',
+      'Top 8 teams from Round 1 will qualify for the next round.',
+      'In Round 2, teams must identify the single word provided.',
     ],
     regulations: [
-      'Team size is 3–4 as listed.',
-      'Judges’ decisions are final.',
-      'Keep the activity respectful and safe.',
+      'Teams must not use any props or external help.',
+      'Lip movements, gestures, or indicating letters/words are strictly prohibited.',
+      'Any violation will lead to immediate disqualification.',
     ],
     evaluation: [
-      'Clarity of the acting',
-      'Team coordination',
-      'Fun and engagement level',
+      'Teams are judged based on accuracy and time taken.',
+      'The team that finds the correct word in the shortest time will be declared the winner.',
     ],
   },
   'E-Sports': {

@@ -33,7 +33,7 @@ const eventConfig: Record<string, { minMembers: number; maxMembers: number; labe
   'Tech Meme War':                   { minMembers: 2, maxMembers: 3, label: '3–4 members' },
   'Mystery Box Innovation':          { minMembers: 2, maxMembers: 3, label: '3–4 members' },
   'Reel Making Challenge':           { minMembers: 0, maxMembers: 3, label: '1–4 members' },
-  'Tech Dum Charades':               { minMembers: 2, maxMembers: 3, label: '3–4 members' },
+  'Tech Dum Charades':               { minMembers: 2, maxMembers: 4, label: '2–4 members' },
   'E-Sports':                        { minMembers: 1, maxMembers: 1, label: 'Duo' },
   'Marketing a Useless Product':     { minMembers: 1, maxMembers: 2, label: '2–3 members' },
 }
