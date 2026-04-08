@@ -27,7 +27,7 @@ export type EventItem = {
 const events: EventItem[] = [
   // TECHNICAL
   { id: 1, category: 'technical', name: 'Reverse Engineering Arena', description: 'Analyze inputs, outputs, and hidden flags to uncover what the product is really doing.', team: '1–2', icon: SearchCode },
-  { id: 2, category: 'technical', name: 'AI Prompt Engineering Battle', description: 'Design and refine prompts live to solve a real problem with smart AI use.', team: '3 per team', icon: Bot },
+  { id: 2, category: 'technical', name: 'AI Prompt Engineering Battle', description: 'Design and refine prompts live to solve a real problem with smart AI use.', team: '3–4', icon: Bot },
   { id: 3, category: 'technical', name: 'UI/UX Redesign Challenge', description: 'Turn a poorly structured interface into a clean, visually appealing, user-friendly layout.', team: '1–2', icon: Paintbrush },
   { id: 4, category: 'technical', name: 'Tech Treasure Hunt', description: 'Follow clues, QR codes, and challenges to unlock the final treasure first.', team: '2 per team', icon: MapPin },
   { id: 5, category: 'technical', name: 'Research Pitch', description: 'Present an innovative, real-world research solution with clarity and confidence.', team: '1–2', icon: Presentation },
@@ -90,7 +90,7 @@ const eventGuidelines: Record<string, EventGuidelines> = {
       'No outside help allowed.',
     ],
     regulations: [
-      'Team size is 3 per team.',
+      'Team size is 3–4 per team.',
       'There will be 3 rounds.',
       'All work must be live and original.',
     ],

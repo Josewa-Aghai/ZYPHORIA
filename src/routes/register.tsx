@@ -22,7 +22,7 @@ export const Route = createFileRoute('/register')({
 const eventConfig: Record<string, { minMembers: number; maxMembers: number; label: string }> = {
   // TECHNICAL
   'Reverse Engineering Arena':       { minMembers: 0, maxMembers: 1, label: '1–2 members' },
-  'AI Prompt Engineering Battle':    { minMembers: 2, maxMembers: 2, label: '3 per team' },
+  'AI Prompt Engineering Battle':    { minMembers: 2, maxMembers: 3, label: '3–4 members' },
   'UI/UX Redesign Challenge':        { minMembers: 0, maxMembers: 1, label: '1–2 members' },
   'Tech Treasure Hunt':              { minMembers: 1, maxMembers: 1, label: '2 per team' },
   'Research Pitch':                  { minMembers: 0, maxMembers: 1, label: '1–2 members' },
