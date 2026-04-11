@@ -35,7 +35,7 @@ const events: EventItem[] = [
   { id: 7, category: 'technical', name: 'Bug Hunt', description: 'Fix syntax, runtime, and logic errors quickly using only Python IDE tools.', team: 'Individual', icon: Bug },
   // NON-TECHNICAL
   { id: 8, category: 'non-tech', name: 'Engineering Standup Comedy', description: 'Perform a clean engineering-themed act with good timing, stage presence, and audience engagement.', team: '1–2', icon: Mic },
-  { id: 9, category: 'non-tech', name: 'Tech Meme War', description: 'Act memes silently, caption templates, and create funny tech memes on the spot.', team: '3–4', icon: Image },
+  { id: 9, category: 'non-tech', name: 'Tech Meme War', description: 'Act memes silently, caption templates, and create funny tech memes on the spot.', team: '2–4', icon: Image },
   { id: 10, category: 'non-tech', name: 'Mystery Box Innovation', description: 'Solve surprise innovation tasks quickly using only the mystery box challenge items.', team: '3–4', icon: Box },
   { id: 11, category: 'non-tech', name: 'Reel Making Challenge', description: 'Create a tech-themed reel on-site with original content and strong presentation.', team: '1–4', icon: Video },
   { id: 12, category: 'non-tech', name: 'Tech Dum Charades', description: 'Act out tech terms, software names and programming concepts without speaking.', team: '2–4', icon: AppWindow },
@@ -244,7 +244,7 @@ const eventGuidelines: Record<string, EventGuidelines> = {
       'Use only allowed tools and websites.',
     ],
     regulations: [
-      'Team size is 3–4 per team.',
+      'Team size is 2–4 per team.',
       'There will be 3 rounds.',
       'Judges’ decisions are final.',
     ],

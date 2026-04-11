@@ -30,7 +30,7 @@ const eventConfig: Record<string, { minMembers: number; maxMembers: number; labe
   'Bug Hunt':                        { minMembers: 0, maxMembers: 0, label: 'Individual' },
   // NON-TECHNICAL
   'Engineering Standup Comedy':      { minMembers: 0, maxMembers: 1, label: '1–2 members' },
-  'Tech Meme War':                   { minMembers: 2, maxMembers: 3, label: '3–4 members' },
+  'Tech Meme War':                   { minMembers: 1, maxMembers: 3, label: '2–4 members' },
   'Mystery Box Innovation':          { minMembers: 2, maxMembers: 3, label: '3–4 members' },
   'Reel Making Challenge':           { minMembers: 0, maxMembers: 3, label: '1–4 members' },
   'Tech Dum Charades':               { minMembers: 2, maxMembers: 4, label: '2–4 members' },
