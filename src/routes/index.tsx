@@ -30,7 +30,7 @@ const events: EventItem[] = [
   { id: 2, category: 'technical', name: 'AI Prompt Engineering Battle', description: 'Design and refine prompts live to solve a real problem with smart AI use.', team: '3–4', icon: Bot },
   { id: 3, category: 'technical', name: 'UI/UX Redesign Challenge', description: 'Turn a poorly structured interface into a clean, visually appealing, user-friendly layout.', team: '1–2', icon: Paintbrush },
   { id: 4, category: 'technical', name: 'Tech Treasure Hunt', description: 'Follow clues, QR codes, and challenges to unlock the final treasure first.', team: '2 per team', icon: MapPin },
-  { id: 5, category: 'technical', name: 'Research Pitch', description: 'Present an innovative, real-world research solution with clarity and confidence.', team: '1–2', icon: Presentation },
+  { id: 5, category: 'technical', name: 'Research Pitch', description: 'Present an innovative, real-world research solution with clarity and confidence.', team: '2–3', icon: Presentation },
   { id: 6, category: 'technical', name: 'Build a Startup in 60 Min', description: 'Choose a problem on the spot, add the wild card twist, and pitch a startup fast.', team: '1–3', icon: Briefcase },
   { id: 7, category: 'technical', name: 'Bug Hunt', description: 'Fix syntax, runtime, and logic errors quickly using only Python IDE tools.', team: 'Individual', icon: Bug },
   // NON-TECHNICAL
