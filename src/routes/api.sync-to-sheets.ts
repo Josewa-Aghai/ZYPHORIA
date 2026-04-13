@@ -173,24 +173,37 @@ const getGoogleAccessToken = async (clientEmail: string, privateKey: string) => 
   return tokenJson.access_token as string
 }
 
-const appendRowToSheet = async (sheetId: string, range: string, accessToken: string, row: any[]) => {
+const appendRowToSheet = async (sheetId: string, range: string, accessToken: string, row: any[], retries = 3) => {
   const endpoint = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(range)}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`
 
-  const res = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ values: [row] }),
-  })
+  let lastError: Error | null = null;
+  for (let attempt = 0; attempt < retries; attempt++) {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ values: [row] }),
+    })
 
-  if (!res.ok) {
+    if (res.ok) {
+      return res.json().catch(() => ({}))
+    }
+
     const errText = await res.text().catch(() => '')
-    throw new Error(`Failed to append Google Sheet row (${sheetId}): ${res.status} ${errText}`)
+    lastError = new Error(`Failed to append Google Sheet row (${sheetId}): ${res.status} ${errText}`)
+
+    // Only retry on 429 Too Many Requests or 5xx Server Errors
+    if (res.status !== 429 && res.status < 500) {
+      throw lastError;
+    }
+
+    // Wait before retrying (exponential backoff: 1s, 2s, 4s)
+    await new Promise((resolve) => setTimeout(resolve, 1000 * Math.pow(2, attempt)));
   }
 
-  return res.json().catch(() => ({}))
+  throw lastError;
 }
 
 export const Route = createFileRoute('/api/sync-to-sheets')({
@@ -219,7 +232,7 @@ export const Route = createFileRoute('/api/sync-to-sheets')({
 
           const clientEmail = process.env.GOOGLE_CLIENT_EMAIL
           const privateKey = (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n')
-          const range = process.env.GOOGLE_SHEETS_RANGE || 'Sheet1!A:X'
+          const range = process.env.GOOGLE_SHEETS_RANGE || 'Sheet1'
           const sheetIds = getSheetIds()
 
           if (!clientEmail || !privateKey || sheetIds.length === 0) {
