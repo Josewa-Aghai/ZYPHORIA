@@ -252,7 +252,7 @@ export default async function handler(req, res) {
 
     const clientEmail = process.env.GOOGLE_CLIENT_EMAIL
     const privateKey = (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n')
-    const range = process.env.GOOGLE_SHEETS_RANGE || 'Sheet1!A:Z'
+    const range = process.env.GOOGLE_SHEETS_RANGE || 'Sheet1!A:A'
     const sheetIds = getSheetIds()
 
     if (!clientEmail || !privateKey || sheetIds.length === 0) {
