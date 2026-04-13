@@ -232,7 +232,7 @@ export const Route = createFileRoute('/api/sync-to-sheets')({
 
           const clientEmail = process.env.GOOGLE_CLIENT_EMAIL
           const privateKey = (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n')
-          const range = process.env.GOOGLE_SHEETS_RANGE || 'Sheet1'
+          const range = process.env.GOOGLE_SHEETS_RANGE || 'Sheet1!A:Z'
           const sheetIds = getSheetIds()
 
           if (!clientEmail || !privateKey || sheetIds.length === 0) {
