@@ -1388,22 +1388,25 @@ function EventModal({ event, onClose }: { event: EventItem; onClose: () => void 
             className="font-mono"
             style={{ 
               width: '100%', 
-              backgroundColor: accentColor, 
-              color: 'var(--bg)', 
+              backgroundColor: isEsports && selectedGame === 'E-FOOTBALL' ? '#333' : accentColor, 
+              color: isEsports && selectedGame === 'E-FOOTBALL' ? '#888' : 'var(--bg)', 
               border: 'none', 
               padding: '1rem', 
               fontSize: '14px', 
               fontWeight: 700, 
               letterSpacing: '0.05em',
               textTransform: 'uppercase',
-              cursor: 'pointer',
+              cursor: isEsports && selectedGame === 'E-FOOTBALL' ? 'not-allowed' : 'pointer',
               transition: 'all 0.15s ease'
             }}
+            disabled={isEsports && selectedGame === 'E-FOOTBALL'}
             onMouseOver={(e) => {
+              if (isEsports && selectedGame === 'E-FOOTBALL') return;
               e.currentTarget.style.backgroundColor = 'white';
               e.currentTarget.style.boxShadow = `0 0 20px ${accentColor}`;
             }}
             onMouseOut={(e) => {
+              if (isEsports && selectedGame === 'E-FOOTBALL') return;
               e.currentTarget.style.backgroundColor = accentColor;
               e.currentTarget.style.boxShadow = 'none';
             }}
@@ -1415,7 +1418,7 @@ function EventModal({ event, onClose }: { event: EventItem; onClose: () => void 
               handleClose();
             }}
           >
-            REGISTER FOR THIS EVENT →
+            {isEsports && selectedGame === 'E-FOOTBALL' ? 'REGISTRATIONS CLOSED' : 'REGISTER FOR THIS EVENT →'}
           </button>
         </div>
       </div>

@@ -564,7 +564,7 @@ function RegisterPage() {
                     >
                       <option value="">-- Choose Game --</option>
                       {eSportsGames.map((game) => (
-                        <option key={game} value={game}>{game}</option>
+                        <option key={game} value={game} disabled={game === 'E-FOOTBALL'}>{game}{game === 'E-FOOTBALL' ? ' (Registrations Closed)' : ''}</option>
                       ))}
                     </select>
                     {errors.eSportsGame && <div className="text-[#FF4D6D] text-[10px] mt-1.5 font-mono">{errors.eSportsGame}</div>}
