@@ -62,7 +62,9 @@ const nonTechDropdownEvents = [
   'Marketing a Useless Product',
 ]
 
-const eSportsGames = ['FREE FIRE', 'E-FOOTBALL'] as const
+const openESportsGames = ['E-FOOTBALL'] as const
+const closedESportsGames = ['FREE FIRE'] as const
+const eSportsGames = [...openESportsGames, ...closedESportsGames] as const
 
 const PAYMENT_LINK = 'https://forms.easebuzz.in/register/RAJALAKSHMIbw5w4/ZYPHORIA_2026_SYMPOSIUM'
 
@@ -177,7 +179,7 @@ function RegisterPage() {
       ...p,
       event: eventName,
       memberCount: c ? c.minMembers : 0,
-      eSportsGame: eventName === 'E-Sports' ? p.eSportsGame : '',
+      eSportsGame: eventName === 'E-Sports' && openESportsGames.includes(p.eSportsGame as typeof openESportsGames[number]) ? p.eSportsGame : '',
     }))
     setErrors({})
   }
@@ -196,7 +198,7 @@ function RegisterPage() {
         setTab('nontech')
         handleEventChange(eventParam)
       }
-      if (eventParam === 'E-Sports' && eSportsParam && eSportsGames.includes(eSportsParam as typeof eSportsGames[number])) {
+      if (eventParam === 'E-Sports' && eSportsParam && openESportsGames.includes(eSportsParam as typeof openESportsGames[number])) {
         setFormData(prev => ({ ...prev, eSportsGame: eSportsParam }))
       }
     }
@@ -245,6 +247,7 @@ function RegisterPage() {
 
     if (!formData.event)                           errs['event']              = 'Select target event'
     if (formData.event === 'E-Sports' && !formData.eSportsGame) errs['eSportsGame'] = 'Select E-Sports title'
+    if (formData.event === 'E-Sports' && formData.eSportsGame === 'FREE FIRE') errs['eSportsGame'] = 'Free Fire registrations are closed.'
     if (!file)                                     errs['file']               = 'Payment receipt required'
     if (!TEAM_NAME_REGEX.test(teamName || ''))     errs['teamName']           = 'Invalid team name'
     if (!NAME_REGEX.test(leaderName || ''))        errs['leader.name']        = 'Invalid name'
@@ -596,9 +599,12 @@ function RegisterPage() {
                     >
                       <option value="">-- Choose Game --</option>
                       {eSportsGames.map((game) => (
-                        <option key={game} value={game} disabled={game === 'E-FOOTBALL'}>{game}{game === 'E-FOOTBALL' ? ' (Registrations Closed)' : ''}</option>
+                        <option key={game} value={game} disabled={closedESportsGames.includes(game as typeof closedESportsGames[number])}>{game}{closedESportsGames.includes(game as typeof closedESportsGames[number]) ? ' (Registrations Closed)' : ''}</option>
                       ))}
                     </select>
+                    <p className="font-mono text-[10px] mt-1.5" style={{ color: '#8888A8' }}>
+                      Free Fire registrations are closed. Choose E-FOOTBALL instead.
+                    </p>
                     {errors.eSportsGame && <div className="text-[#FF4D6D] text-[10px] mt-1.5 font-mono">{errors.eSportsGame}</div>}
                   </div>
                 )}
