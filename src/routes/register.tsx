@@ -188,8 +188,10 @@ function RegisterPage() {
     const eSportsParam = params.get('eSportsGame')
     if (eventParam) {
       if (techDropdownEvents.includes(eventParam)) {
-        setTab('tech')
-        handleEventChange(eventParam)
+        if (!TECHNICAL_REGISTRATIONS_CLOSED) {
+          setTab('tech')
+          handleEventChange(eventParam)
+        }
       } else if (nonTechDropdownEvents.includes(eventParam)) {
         setTab('nontech')
         handleEventChange(eventParam)
@@ -524,15 +526,18 @@ function RegisterPage() {
               type="button"
               onClick={() => { setTab('tech'); setFormData(p => ({ ...p, event: '', memberCount: 0 })); setErrors({}) }}
               className="font-display font-medium uppercase tracking-widest bg-transparent cursor-pointer"
+              disabled={TECHNICAL_REGISTRATIONS_CLOSED}
               style={{
                 padding: '1.25rem 1.5rem',
                 fontSize: '13px',
-                color: tab === 'tech' ? '#C8FA64' : '#8888A8',
+                color: TECHNICAL_REGISTRATIONS_CLOSED ? '#555' : (tab === 'tech' ? '#C8FA64' : '#8888A8'),
                 borderBottom: tab === 'tech' ? '2px solid #C8FA64' : '2px solid transparent',
                 transition: 'all 0.3s ease',
+                opacity: TECHNICAL_REGISTRATIONS_CLOSED ? 0.5 : 1,
+                cursor: TECHNICAL_REGISTRATIONS_CLOSED ? 'not-allowed' : 'pointer',
               }}
             >
-              ⚡ TECHNICAL · APR 15
+              ⚡ TECHNICAL · APR 15 {TECHNICAL_REGISTRATIONS_CLOSED ? '(CLOSED)' : ''}
             </button>
             <button
               type="button"
