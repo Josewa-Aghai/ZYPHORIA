@@ -16,8 +16,8 @@ export const Route = createFileRoute('/register')({
 })
 
 // ─── Registration Status ──────────────────────────────────────────────────────
-const REGISTRATIONS_CLOSED = true
-const REGISTRATION_CLOSED_MESSAGE = 'Registrations for the event have closed.'
+const TECHNICAL_REGISTRATIONS_CLOSED = true
+const REGISTRATION_CLOSED_MESSAGE = 'Technical event registrations have closed.'
 
 // ─── Event team-size config ──────────────────────────────────────────────────
 // minMembers = min additional members (excluding leader)
@@ -468,7 +468,7 @@ function RegisterPage() {
   }
 
   // ─── Form ───────────────────────────────────────────────────────────────────
-  if (REGISTRATIONS_CLOSED) {
+  if (tab === 'tech' && TECHNICAL_REGISTRATIONS_CLOSED) {
     return (
       <div className="relative min-h-screen pt-20" style={{ background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
         <Navbar />
