@@ -157,7 +157,7 @@ const selectStyle = (err?: string) => ({
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 function RegisterPage() {
-  const [tab, setTab] = useState<'tech' | 'nontech'>('tech')
+  const [tab, setTab] = useState<'tech' | 'nontech'>('nontech')
   const [formData, setFormData] = useState({ event: '', memberCount: 0, eSportsGame: '' })
   const [file, setFile] = useState<File | null>(null)
   const [filePreview, setFilePreview] = useState<string | null>(null)
