@@ -13,6 +13,9 @@ export const Route = createFileRoute('/')({
   component: ZyphoriaHome,
 })
 
+// ─── Registration Status ──────────────────────────────────────────────────────
+const REGISTRATIONS_CLOSED = true
+
 // ─── Data ───────────────────────────────────────────────────────────────────
 
 export type EventItem = {
@@ -1389,28 +1392,29 @@ function EventModal({ event, onClose }: { event: EventItem; onClose: () => void 
             style={{ 
               width: '100%', 
               backgroundColor: isEsports && selectedGame === 'E-FOOTBALL' ? '#333' : accentColor, 
-              color: isEsports && selectedGame === 'E-FOOTBALL' ? '#888' : 'var(--bg)', 
+              color: (isEsports && selectedGame === 'E-FOOTBALL') || REGISTRATIONS_CLOSED ? '#888' : 'var(--bg)', 
               border: 'none', 
               padding: '1rem', 
               fontSize: '14px', 
               fontWeight: 700, 
               letterSpacing: '0.05em',
               textTransform: 'uppercase',
-              cursor: isEsports && selectedGame === 'E-FOOTBALL' ? 'not-allowed' : 'pointer',
+              cursor: ((isEsports && selectedGame === 'E-FOOTBALL') || REGISTRATIONS_CLOSED) ? 'not-allowed' : 'pointer',
               transition: 'all 0.15s ease'
             }}
-            disabled={isEsports && selectedGame === 'E-FOOTBALL'}
+            disabled={(isEsports && selectedGame === 'E-FOOTBALL') || REGISTRATIONS_CLOSED}
             onMouseOver={(e) => {
-              if (isEsports && selectedGame === 'E-FOOTBALL') return;
+              if ((isEsports && selectedGame === 'E-FOOTBALL') || REGISTRATIONS_CLOSED) return;
               e.currentTarget.style.backgroundColor = 'white';
               e.currentTarget.style.boxShadow = `0 0 20px ${accentColor}`;
             }}
             onMouseOut={(e) => {
-              if (isEsports && selectedGame === 'E-FOOTBALL') return;
+              if ((isEsports && selectedGame === 'E-FOOTBALL') || REGISTRATIONS_CLOSED) return;
               e.currentTarget.style.backgroundColor = accentColor;
               e.currentTarget.style.boxShadow = 'none';
             }}
             onClick={() => {
+              if ((isEsports && selectedGame === 'E-FOOTBALL') || REGISTRATIONS_CLOSED) return;
               navigate({
                 to: '/register',
                 search: isEsports ? { event: event.name, eSportsGame: selectedGame } : { event: event.name },
@@ -1418,7 +1422,7 @@ function EventModal({ event, onClose }: { event: EventItem; onClose: () => void 
               handleClose();
             }}
           >
-            {isEsports && selectedGame === 'E-FOOTBALL' ? 'REGISTRATIONS CLOSED' : 'REGISTER FOR THIS EVENT →'}
+            {REGISTRATIONS_CLOSED ? 'REGISTRATIONS CLOSED' : (isEsports && selectedGame === 'E-FOOTBALL' ? 'REGISTRATIONS CLOSED' : 'REGISTER FOR THIS EVENT →')}
           </button>
         </div>
       </div>

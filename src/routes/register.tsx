@@ -15,6 +15,10 @@ export const Route = createFileRoute('/register')({
   component: RegisterPage,
 })
 
+// ─── Registration Status ──────────────────────────────────────────────────────
+const REGISTRATIONS_CLOSED = true
+const REGISTRATION_CLOSED_MESSAGE = 'Registrations for the event have closed.'
+
 // ─── Event team-size config ──────────────────────────────────────────────────
 // minMembers = min additional members (excluding leader)
 // maxMembers = max additional members (excluding leader)
@@ -453,6 +457,29 @@ function RegisterPage() {
             Registration Confirmed.
           </h2>
           <p className="font-mono text-base text-[#8888A8]">Your submission has been received. See you at Zyphoria '26.</p>
+          <div style={{ marginTop: '3rem' }}>
+            <Link to="/" className="btn-ghost font-mono uppercase tracking-[0.2em] text-[12px] opacity-70 hover:opacity-100 transition-opacity">
+              ← BACK TO HOME
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // ─── Form ───────────────────────────────────────────────────────────────────
+  if (REGISTRATIONS_CLOSED) {
+    return (
+      <div className="relative min-h-screen pt-20" style={{ background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+        <Navbar />
+        <div style={{ textAlign: 'center', padding: '0 2rem' }}>
+          <div style={{ marginBottom: '2rem' }}>
+            <span style={{ color: '#FF4D6D', fontSize: '64px', filter: 'drop-shadow(0 0 20px rgba(255, 77, 109, 0.4))' }}>✗</span>
+          </div>
+          <h2 className="font-display uppercase" style={{ fontSize: 'clamp(28px, 4vw, 42px)', color: 'var(--text-primary)', marginBottom: '1rem' }}>
+            Registrations Closed
+          </h2>
+          <p className="font-mono text-base text-[#8888A8]">{REGISTRATION_CLOSED_MESSAGE}</p>
           <div style={{ marginTop: '3rem' }}>
             <Link to="/" className="btn-ghost font-mono uppercase tracking-[0.2em] text-[12px] opacity-70 hover:opacity-100 transition-opacity">
               ← BACK TO HOME
