@@ -17,6 +17,7 @@ export const Route = createFileRoute('/register')({
 
 // ─── Registration Status ──────────────────────────────────────────────────────
 const TECHNICAL_REGISTRATIONS_CLOSED = true
+const ESPORTS_REGISTRATIONS_CLOSED = true
 const REGISTRATION_CLOSED_MESSAGE = 'Technical event registrations have closed.'
 
 // ─── Event team-size config ──────────────────────────────────────────────────
@@ -62,9 +63,9 @@ const nonTechDropdownEvents = [
   'Marketing a Useless Product',
 ]
 
-const openESportsGames = ['E-FOOTBALL'] as const
-const closedESportsGames = ['FREE FIRE'] as const
-const eSportsGames = [...openESportsGames, ...closedESportsGames] as const
+const openESportsGames: readonly string[] = []
+const closedESportsGames = ['E-FOOTBALL', 'FREE FIRE'] as const
+const eSportsGames = [...closedESportsGames] as const
 
 const PAYMENT_LINK = 'https://forms.easebuzz.in/register/RAJALAKSHMIbw5w4/ZYPHORIA_2026_SYMPOSIUM'
 
@@ -195,8 +196,10 @@ function RegisterPage() {
           handleEventChange(eventParam)
         }
       } else if (nonTechDropdownEvents.includes(eventParam)) {
-        setTab('nontech')
-        handleEventChange(eventParam)
+        if (!(ESPORTS_REGISTRATIONS_CLOSED && eventParam === 'E-Sports')) {
+          setTab('nontech')
+          handleEventChange(eventParam)
+        }
       }
       if (eventParam === 'E-Sports' && eSportsParam && openESportsGames.includes(eSportsParam as typeof openESportsGames[number])) {
         setFormData(prev => ({ ...prev, eSportsGame: eSportsParam }))
@@ -246,8 +249,8 @@ function RegisterPage() {
     const errs: Record<string, string> = {}
 
     if (!formData.event)                           errs['event']              = 'Select target event'
-    if (formData.event === 'E-Sports' && !formData.eSportsGame) errs['eSportsGame'] = 'Select E-Sports title'
-    if (formData.event === 'E-Sports' && formData.eSportsGame === 'FREE FIRE') errs['eSportsGame'] = 'Free Fire registrations are closed.'
+    if (formData.event === 'E-Sports' && !formData.eSportsGame && !ESPORTS_REGISTRATIONS_CLOSED) errs['eSportsGame'] = 'Select E-Sports title'
+    if (formData.event === 'E-Sports' && (ESPORTS_REGISTRATIONS_CLOSED || closedESportsGames.includes(formData.eSportsGame as typeof closedESportsGames[number]))) errs['eSportsGame'] = 'E-Sports registrations are closed.'
     if (!file)                                     errs['file']               = 'Payment receipt required'
     if (!TEAM_NAME_REGEX.test(teamName || ''))     errs['teamName']           = 'Invalid team name'
     if (!NAME_REGEX.test(leaderName || ''))        errs['leader.name']        = 'Invalid name'
@@ -583,7 +586,14 @@ function RegisterPage() {
                     style={selectStyle(errors.event)}
                   >
                     <option value="">-- Choose Target --</option>
-                    {eventsList.map(ev => <option key={ev} value={ev}>{ev}</option>)}
+                    {eventsList.map((ev) => {
+                      const isClosedESports = ESPORTS_REGISTRATIONS_CLOSED && ev === 'E-Sports'
+                      return (
+                        <option key={ev} value={ev} disabled={isClosedESports}>
+                          {ev}{isClosedESports ? ' (Registrations Closed)' : ''}
+                        </option>
+                      )
+                    })}
                   </select>
                   {errors.event && <div className="text-[#FF4D6D] text-[10px] mt-1.5 font-mono">{errors.event}</div>}
                 </div>
@@ -603,7 +613,7 @@ function RegisterPage() {
                       ))}
                     </select>
                     <p className="font-mono text-[10px] mt-1.5" style={{ color: '#8888A8' }}>
-                      Free Fire registrations are closed. Choose E-FOOTBALL instead.
+                      E-Sports registrations are closed for both E-FOOTBALL and Free Fire.
                     </p>
                     {errors.eSportsGame && <div className="text-[#FF4D6D] text-[10px] mt-1.5 font-mono">{errors.eSportsGame}</div>}
                   </div>
