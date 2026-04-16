@@ -18,7 +18,8 @@ export const Route = createFileRoute('/register')({
 // ─── Registration Status ──────────────────────────────────────────────────────
 const TECHNICAL_REGISTRATIONS_CLOSED = true
 const ESPORTS_REGISTRATIONS_CLOSED = true
-const REGISTRATION_CLOSED_MESSAGE = 'Technical event registrations have closed.'
+const NON_TECHNICAL_REGISTRATIONS_CLOSED = true
+const REGISTRATION_CLOSED_MESSAGE = 'All event registrations have closed.'
 
 // ─── Event team-size config ──────────────────────────────────────────────────
 // minMembers = min additional members (excluding leader)
@@ -196,7 +197,7 @@ function RegisterPage() {
           handleEventChange(eventParam)
         }
       } else if (nonTechDropdownEvents.includes(eventParam)) {
-        if (!(ESPORTS_REGISTRATIONS_CLOSED && eventParam === 'E-Sports')) {
+        if (!NON_TECHNICAL_REGISTRATIONS_CLOSED && !(ESPORTS_REGISTRATIONS_CLOSED && eventParam === 'E-Sports')) {
           setTab('nontech')
           handleEventChange(eventParam)
         }
@@ -476,7 +477,7 @@ function RegisterPage() {
   }
 
   // ─── Form ───────────────────────────────────────────────────────────────────
-  if (tab === 'tech' && TECHNICAL_REGISTRATIONS_CLOSED) {
+  if ((tab === 'tech' && TECHNICAL_REGISTRATIONS_CLOSED) || (tab === 'nontech' && NON_TECHNICAL_REGISTRATIONS_CLOSED)) {
     return (
       <div className="relative min-h-screen pt-20" style={{ background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
         <Navbar />
@@ -549,15 +550,18 @@ function RegisterPage() {
               type="button"
               onClick={() => { setTab('nontech'); setFormData(p => ({ ...p, event: '', memberCount: 0 })); setErrors({}) }}
               className="font-display font-medium uppercase tracking-widest bg-transparent cursor-pointer"
+              disabled={NON_TECHNICAL_REGISTRATIONS_CLOSED}
               style={{
                 padding: '1.25rem 1.5rem',
                 fontSize: '13px',
-                color: tab === 'nontech' ? '#FF4D6D' : '#8888A8',
+                color: NON_TECHNICAL_REGISTRATIONS_CLOSED ? '#555' : (tab === 'nontech' ? '#FF4D6D' : '#8888A8'),
                 borderBottom: tab === 'nontech' ? '2px solid #FF4D6D' : '2px solid transparent',
                 transition: 'all 0.3s ease',
+                opacity: NON_TECHNICAL_REGISTRATIONS_CLOSED ? 0.5 : 1,
+                cursor: NON_TECHNICAL_REGISTRATIONS_CLOSED ? 'not-allowed' : 'pointer',
               }}
             >
-              🎮 NON-TECHNICAL · APR 16
+              🎮 NON-TECHNICAL · APR 16 {NON_TECHNICAL_REGISTRATIONS_CLOSED ? '(CLOSED)' : ''}
             </button>
           </div>
           <div className="absolute right-6 font-mono text-[#8888A8] text-xl hidden sm:block">]</div>
